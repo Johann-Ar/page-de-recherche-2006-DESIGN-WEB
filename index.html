@@ -1,32 +1,103 @@
+<!--
+  =============================================================================
+  PAGE UNIQUE : index.html
+  Sujet : design numérique 2006 (Leboncoin, Blogmusik, loi DADVSI).
+  =============================================================================
+
+  COMMENT LA PAGE EST CONSTRUITE (recette)
+  -----------------------------------------
+  1. Pas de Flexbox, pas de CSS Grid, pas de "div + float" moderne.
+     Toute la mise en page est un TABLEAU HTML, comme en 2006 :
+     <table class="site" width="900">  → cadre central de 900 pixels.
+
+  2. Ce tableau a TOUJOURS 3 colonnes :
+        160 px  |  580 px  |  160 px
+        marge G | contenu  |  marge D
+     Une ligne "pleine largeur" (titre, menu, bandeau de sujet) utilise
+     colspan="3" : une seule case qui recouvre les 3 colonnes.
+
+  3. Deux types de lignes se répètent :
+     A. BANDEAU  → <tr><td colspan="3" class="noir"> titre + logo
+     B. CONTENU  → <tr><td marge G><td texte / images><td marge D>
+
+  4. Les couleurs identitaires ne changent pas :
+        Leboncoin  #FF4E00  orange
+        Blogmusik  #FF007A  rose
+        DADVSI     #3C14FF  bleu
+        Chrome     #FF00F8  rose fluo (contour de page, filets, curseur liens)
+
+  5. Les "fonds damier" sont de petites images PNG répétées (background-repeat)
+     pour imiter une texture pixel 2006. Les cases photo sont unies (pas de damier).
+
+  6. Les attributs HTML (bgcolor, background, border, font, center) font le
+     graphisme "à l'ancienne". Le <style> ne fait que FORCER ces bords en CSS
+     moderne (les navigateurs d'aujourd'hui ignorent parfois bordercolor).
+
+  POUR COMPRENDRE EN DIRECT (sans lire tout le fichier)
+  -----------------------------------------------------
+  Ouvre la console du navigateur (Cmd+Option+I → onglet Console) puis tape :
+      page2006.aide()
+      page2006.structure()
+      page2006.recette()
+  Ajoute ?pedagogie=1 à l'URL pour afficher un panneau d'analyse sous la page.
+-->
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>2006 DESIGN WEB - Johann et Thaddée - Leboncoin, Blogmusik et loi DADVSI</title>
     <style type="text/css">
+        /* ----- Liens sources [01] : pastille Courier rose clair ----- */
         a.ref { font-family: Courier New, monospace; font-size: 11px; font-weight: bold; text-decoration: none; background: #FFEEFE; padding: 0 3px; }
         a.ref:hover { background: #FF00F8; color: #FFFFFF; }
+        /* ----- Boutons "CONSULTER →" dans les cases image / biblio ----- */
         a.srcbtn { font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: #000000; }
         a.srcbtn:hover { background: #FF00F8; color: #FFFFFF; }
+        /* ----- Gros boutons ► VISITER / ► CONSULTER LA LOI ----- */
         a.visit { font-family: Verdana, sans-serif; font-weight: bold; text-decoration: none; }
         a.visit:hover { color: #FFFF00; }
         details { font-family: Verdana, sans-serif; font-size: 12px; }
-        summary { cursor: url("images/curseur-main-2006.png") 8 2, pointer; font-weight: bold; }
+        summary { font-weight: bold; }
+
+        /*
+          FOND DE PAGE (autour du tableau 900 px)
+          Couleur nuit + tuile d'étoiles. padding 36px : on VOIT le fond
+          au-dessus et en dessous du cadre, ce qui détache la page du navigateur.
+        */
         html, body {
             background-color: #06060E;
             background-image: url("images/fond-etoiles-2006.png");
             background-repeat: repeat;
-            cursor: url("images/curseur-2006.png") 2 2, auto;
             margin: 0;
             padding: 36px 0;
         }
-        a, a:hover, button, label, summary {
-            cursor: url("images/curseur-main-2006.png") 8 2, pointer;
+        /*
+          Curseur 2006 : le PNG en CSS url() clignote (Safari / Chrome
+          recollent l'image à chaque élément). On cache le curseur système
+          et une image #curseur-page suit la souris (voir le script).
+        */
+        html.curseur-js, html.curseur-js * {
+            cursor: none !important;
         }
-        table.site {
-            border: 2px solid #000000;
-            outline: 1px solid #FF00F8;
-            outline-offset: 0;
+        #curseur-page {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            pointer-events: none;
+            z-index: 2147483647;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
         }
+
+        /*
+          Bords HTML 2006 : border="2" bordercolor="#FF4E00"
+          Les navigateurs actuels dessinent souvent un bord gris. On force
+          la couleur avec un sélecteur d'attribut.
+        */
         table[border="2"] {
             border-style: solid;
             border-width: 2px;
@@ -37,9 +108,26 @@
         table[bordercolor="#FF007A"] { border: 2px solid #FF007A; }
         table[bordercolor="#3C14FF"] { border: 2px solid #3C14FF; }
         table[bordercolor="#FF00F8"] { border: 2px solid #FF00F8; }
+
+        /* Cadre fluo : un DIV (pas outline, pas table).
+           outline/border sur <table> est souvent calculé à 0 px dans le navigateur. */
+        div.cadre {
+            display: inline-block;
+            padding: 3px;
+            background-color: #FF00F8;
+        }
+        table.site {
+            border: none;
+            outline: none;
+        }
+        table.site > tbody > tr > td,
+        table.site > tr > td {
+            border: none;
+        }
         img[border="2"] {
             border: 2px solid #000000;
         }
+        /* <hr color="..."> : en CSS actuel, color ne peint plus le filet. */
         hr {
             border: none;
             height: 2px;
@@ -48,6 +136,8 @@
         hr[color="#000000"] { background-color: #000000; }
         hr[color="#FF007A"] { background-color: #FF007A; }
         hr[color="#3C14FF"] { background-color: #3C14FF; }
+
+        /* Damiers saturés = texture des bandeaux / boutons / menus. */
         td.blanc, table.blanc {
             background-color: #FFFFFF;
             background-image: url("images/fond-damier-blanc.png");
@@ -76,6 +166,7 @@
             background-image: url("images/fond-damier-dadvsi.png");
             background-repeat: repeat;
         }
+        /* Cases d'images : fond UNI (pas de damier) dans la couleur claire du sujet. */
         td.lbcclair {
             background-color: #FFD2B0;
             padding-left: 16px;
@@ -105,7 +196,6 @@
             background-color: #FFDDFE;
             background-image: url("images/fond-damier-fluo-moyen.png");
             background-repeat: repeat;
-        }
             padding: 12px 24px 12px 28px;
         }
         font.legende {
@@ -116,13 +206,202 @@
         }
     </style>
     <script type="text/javascript">
-        if (history.scrollRestoration) history.scrollRestoration = 'manual';
-        window.addEventListener('load', function () {
+        /*
+          Curseur pixel : une <img> suit la souris. On ne change le fichier
+          (flèche / main) que quand le type change, pour éviter le clignotement.
+        */
+        (function () {
+            var FLECHE = "images/curseur-2006.png";
+            var MAIN = "images/curseur-main-2006.png";
+            var mode = "fleche";
+            var img;
+
+            function estCliquable(el) {
+                while (el && el !== document.documentElement) {
+                    if (el.tagName === "A" && el.getAttribute("href")) return true;
+                    if (el.tagName === "SUMMARY" || el.tagName === "BUTTON" || el.tagName === "LABEL") return true;
+                    el = el.parentNode;
+                }
+                return false;
+            }
+
+            function placer(e) {
+                var cliquable = estCliquable(e.target);
+                var hx = 2;
+                var hy = 2;
+                if (cliquable) {
+                    if (mode !== "main") {
+                        img.src = MAIN;
+                        mode = "main";
+                    }
+                    hx = 8;
+                    hy = 2;
+                } else if (mode !== "fleche") {
+                    img.src = FLECHE;
+                    mode = "fleche";
+                }
+                img.style.transform = "translate(" + (e.clientX - hx) + "px," + (e.clientY - hy) + "px)";
+                img.style.visibility = "visible";
+            }
+
+            function demarrer() {
+                img = document.createElement("img");
+                img.id = "curseur-page";
+                img.src = FLECHE;
+                img.width = 24;
+                img.height = 24;
+                img.alt = "";
+                img.style.visibility = "hidden";
+                document.body.appendChild(img);
+                (new Image()).src = MAIN;
+                document.documentElement.className += (document.documentElement.className ? " " : "") + "curseur-js";
+                document.addEventListener("mousemove", placer, true);
+                document.addEventListener("mouseover", placer, true);
+                document.documentElement.addEventListener("mouseleave", function () {
+                    img.style.visibility = "hidden";
+                });
+                document.documentElement.addEventListener("mouseenter", function () {
+                    img.style.visibility = "visible";
+                });
+            }
+
+            if (document.body) demarrer();
+            else document.addEventListener("DOMContentLoaded", demarrer);
+        })();
+
+        /*
+          Boîte à outils pédagogique. APIs natives utilisées :
+          querySelector / querySelectorAll, getComputedStyle, console.table,
+          location.search, history.replaceState.
+          Rien n'est chargé depuis Internet.
+        */
+        window.page2006 = {
+            couleurs: {
+                leboncoin: "#FF4E00",
+                blogmusik: "#FF007A",
+                dadvsi: "#3C14FF",
+                fluo: "#FF00F8",
+                nuit: "#06060E"
+            },
+
+            aide: function () {
+                console.log(
+                    "%cpage2006 — mode lecture de la page",
+                    "background:#000;color:#FF00F8;padding:4px 8px;font-weight:bold"
+                );
+                console.log("page2006.recette()     → comment le tableau est assemblé");
+                console.log("page2006.structure()   → colonnes, bandeaux, ancres");
+                console.log("page2006.ancres()      → cibles du menu (#leboncoin…)");
+                console.log("page2006.liens()       → intern / Wayback / sources");
+                console.log("page2006.images()      → fichiers du dossier images/");
+                console.log("page2006.couleurs      → palette");
+                console.log("Ajoute ?pedagogie=1 dans l'URL pour un panneau sous la page.");
+                return "Tape page2006.recette() pour la méthode de création.";
+            },
+
+            recette: function () {
+                var etapes = [
+                    "1. Un <div class=\"cadre\"> rose 3 px entoure <table class=\"site\" width=\"900\">.",
+                    "2. 3 colonnes fixes : 160 | 580 | 160. C'est la grille, pas du CSS Grid.",
+                    "3. Titre / menu / sujets = une ligne colspan=3 (case unique, fond noir damier).",
+                    "4. Texte d'un sujet = une ligne de 3 cases : liste G, article, mots-clés D.",
+                    "5. Une image = petit tableau intérieur border=2 + fond clair du sujet.",
+                    "6. Un bouton Visiter = tableau noir + tableau couleur (damier) + bord blanc.",
+                    "7. Les sources [01] sont des <a class=\"ref\"> vers le document d'origine."
+                ];
+                console.log("%cRecette de création", "font-weight:bold;color:#FF00F8");
+                for (var i = 0; i < etapes.length; i++) console.log(etapes[i]);
+                return etapes;
+            },
+
+            structure: function () {
+                var site = document.querySelector("table.site");
+                var lignes = site ? site.rows.length : 0;
+                var donnees = {
+                    largeurTableau: site ? site.getAttribute("width") : null,
+                    nbLignes: lignes,
+                    nbColonnesMax: site ? site.rows[0].cells.length : null,
+                    bandeauxNoirs: document.querySelectorAll("table.site > tbody > tr > td.noir, table.site > tr > td.noir").length,
+                    ancres: this.ancres(),
+                    styleCalculeContour: site ? getComputedStyle(site).outline : null
+                };
+                console.table(donnees);
+                return donnees;
+            },
+
+            ancres: function () {
+                var nodes = document.querySelectorAll("a[name]");
+                var noms = [];
+                for (var i = 0; i < nodes.length; i++) noms.push("#" + nodes[i].name);
+                return noms;
+            },
+
+            liens: function () {
+                var as = document.querySelectorAll("a[href]");
+                var intern = 0, wayback = 0, sources = 0, autres = 0;
+                for (var i = 0; i < as.length; i++) {
+                    var h = as[i].getAttribute("href") || "";
+                    if (h.charAt(0) === "#") intern++;
+                    else if (h.indexOf("web.archive.org") !== -1) wayback++;
+                    else if (as[i].className.indexOf("ref") !== -1) sources++;
+                    else autres++;
+                }
+                var resume = { liensInternesMenu: intern, archivesWayback: wayback, pastillesSources: sources, autres: autres, total: as.length };
+                console.table(resume);
+                return resume;
+            },
+
+            images: function () {
+                var imgs = document.querySelectorAll("img");
+                var liste = [];
+                for (var i = 0; i < imgs.length; i++) {
+                    liste.push({
+                        fichier: imgs[i].getAttribute("src"),
+                        alt: imgs[i].alt,
+                        largeurHTML: imgs[i].getAttribute("width")
+                    });
+                }
+                console.table(liste);
+                return liste;
+            }
+        };
+
+        if (history.scrollRestoration) history.scrollRestoration = "manual";
+
+        window.addEventListener("load", function () {
+            /* Toujours arriver en haut : un # dans l'URL ferait sauter au milieu. */
             if (location.hash) {
-                history.replaceState(null, '', location.pathname + location.search);
+                history.replaceState(null, "", location.pathname + location.search);
             }
             window.scrollTo(0, 0);
+
+            if (location.search.indexOf("pedagogie=1") !== -1) {
+                page2006.aide();
+                page2006.afficherPanneau();
+            } else {
+                console.log("Pour lire la construction de la page : page2006.aide()");
+            }
         });
+
+        page2006.afficherPanneau = function () {
+            var recette = this.recette();
+            var st = this.structure();
+            var li = this.liens();
+            var html = "";
+            html += "<br><center>";
+            html += "<table width='900' cellpadding='12' cellspacing='0' border='2' bordercolor='#FF00F8' bgcolor='#000000'>";
+            html += "<tr><td class='noir'>";
+            html += "<font face='Verdana' size='4' color='#FF00F8'><b>MODE PÉDAGOGIE</b></font>";
+            html += "<font face='Verdana' size='2' color='#FFFFFF'>";
+            html += "<p>Cette page n'est pas un site moderne. C'est un <b>tableau HTML 2006</b> de 900&nbsp;px, 3 colonnes (160 / 580 / 160). Les bandeaux noirs (titre, Leboncoin, Blogmusik, DADVSI) sont des lignes en colspan=3. Les listes à flèches restent dans les marges.</p>";
+            html += "<p><b>Palette :</b> Leboncoin " + this.couleurs.leboncoin + " · Blogmusik " + this.couleurs.blogmusik + " · DADVSI " + this.couleurs.dadvsi + " · fluo " + this.couleurs.fluo + "</p>";
+            html += "<p><b>Ancres :</b> " + st.ancres.join(" · ") + "</p>";
+            html += "<p><b>Liens :</b> " + li.liensInternesMenu + " internes, " + li.archivesWayback + " Wayback, " + li.pastillesSources + " pastilles [n°].</p>";
+            html += "<p><b>Recette :</b><br>" + recette.join("<br>") + "</p>";
+            html += "<p>Console : <font face='Courier New' color='#FF00F8'>page2006.aide()</font></p>";
+            html += "</font></td></tr></table></center>";
+            document.body.insertAdjacentHTML("beforeend", html);
+        };
     </script>
 </head>
 
@@ -130,8 +409,14 @@
 
 <center>
 
-<table width="900" cellpadding="0" cellspacing="0" border="2" bordercolor="#000000" class="site">
+<!--
+  TABLEAU PRINCIPAL .site
+  Le DIV.cadre (padding 3 px, fond #FF00F8) est le contour fluo, collé au damier.
+-->
+<div class="cadre">
+<table width="900" cellpadding="0" cellspacing="0" border="0" class="site">
 
+    <!-- BANDEAU 1 : titre du dossier (colspan=3 = les 3 colonnes fusionnées) -->
     <tr>
         <td colspan="3" height="100" bgcolor="#000000" background="images/fond-damier.png" class="noir">
             <center>
@@ -149,6 +434,7 @@
         </td>
     </tr>
 
+    <!-- BANDEAU 2 : menu haut. Les href="#…" pointent vers les <a name> du fichier. -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
             <center>
@@ -173,8 +459,12 @@
         </td>
     </tr>
 
+    <!--
+      INTRO = première ligne « 3 colonnes » :
+      td 160 MENU  |  td 580 texte  |  td 160 VISITER / COULEURS
+      C'est le modèle de toutes les parties suivantes.
+    -->
     <tr>
-
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <font face="Verdana" size="2" color="#000000">
                 <center>
@@ -219,6 +509,7 @@
                 <tr>
                     <td>
 
+                        <!-- Ancre d'arrivée du lien ACCUEIL. Pas de href = pas de curseur « main ». -->
                         <a name="intro"></a>
 
                         <center>
@@ -343,8 +634,9 @@
     </tr>
 
 
+    <!-- PARTIE LEBONCOIN : bandeau noir (logo + titre) puis ligne 3 colonnes. -->
     <tr>
-        <td colspan="3" height="100" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
             <a name="leboncoin"></a>
             <center>
                 <table cellpadding="0" cellspacing="0" border="0">
@@ -353,7 +645,7 @@
                             <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
                                 <tr>
                                     <td align="center">
-                                        <img src="images/logo-leboncoin.gif" width="130" border="0" alt="Logo Leboncoin">
+                                        <img src="images/logo-leboncoin.gif" width="200" border="0" alt="Logo Leboncoin">
                                     </td>
                                 </tr>
                             </table>
@@ -386,7 +678,7 @@
                 <tr>
                     <td>
 
-                        <!-- LEBONCOIN -->
+                        <!-- LEBONCOIN : article au centre. Pastille [02] = class="ref". -->
 
                         <font face="Verdana" size="3">
                             <p>
@@ -406,6 +698,7 @@
                             </p>
                         </font>
 
+                        <!-- Case image : tableau dans le tableau, bord = couleur du sujet, fond clair UNI. -->
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
                             <tr>
                                 <td bgcolor="#FFD2B0" class="lbcclair" align="center">
@@ -420,6 +713,7 @@
 
                         <br>
 
+                        <!-- Bouton Visiter : case noire + tableau couleur + bord blanc. -->
                         <center>
                             <table cellpadding="0" cellspacing="0" border="0">
                                 <tr>
@@ -577,14 +871,15 @@
     </tr>
 
 
+    <!-- PARTIE BLOGMUSIK : même recette que Leboncoin, couleur #FF007A. -->
     <tr>
-        <td colspan="3" height="100" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
             <a name="blogmusik"></a>
             <center>
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td valign="middle">
-                            <img src="images/logo-blogmusik.png" width="130" border="0" alt="Logo Blogmusik">
+                            <img src="images/logo-blogmusik.png" width="240" border="0" alt="Logo Blogmusik">
                         </td>
                         <td width="28">&nbsp;</td>
                         <td valign="middle">
@@ -614,7 +909,7 @@
                 <tr>
                     <td>
 
-                        <!-- BLOGMUSIK -->
+                        <!-- BLOGMUSIK : même schéma (texte, captures, bouton Wayback). -->
 
                         <font face="Verdana" size="3">
                             <p>
@@ -720,18 +1015,18 @@
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
                                 <td bgcolor="#FFCDE4" class="bmclair" align="center">
-                                    <img src="images/blogmusik-genres_2006.jpg" width="440" border="2" alt="Classification alphabétique des styles sur Blogmusik">
+                                    <img src="images/blogmusik-genres_2006.jpg" width="440" border="2" alt="Recherche par styles A à Z sur Blogmusik">
                                     <br><br>
-                                    <font face="Courier New" size="2" class="legende">Styles par ordre alphabétique et liens vers d'autres contenus</font>
+                                    <font face="Courier New" size="2" class="legende">Recherche par styles (A à Z) et liens vers d'autres contenus</font>
                                 </td>
                             </tr>
                         </table>
 
                         <font face="Verdana" size="3">
                             <p>
-                                Blogmusik classe les styles de musique par ordre
-                                alphabétique et les hyperliens redirigent vers d'autres
-                                contenus du service.
+                                En bas de page, une recherche par styles (lettres A à Z)
+                                et des hyperliens vers d'autres contenus complètent
+                                la barre de recherche du service.
                             </p>
                         </font>
 
@@ -861,15 +1156,32 @@
     </tr>
 
 
+    <!-- PARTIE DADVSI : logo République (1999) dans une case blanche, comme Leboncoin. -->
     <tr>
-        <td colspan="3" height="100" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
             <a name="dadvsi"></a>
             <center>
-                <font face="Verdana" size="6" color="#FFFFFF">
-                    <b>DADVSI</b>
-                </font>
-                <br>
-                <font face="Verdana" size="3" color="#3C14FF">QUAND LE DROIT DEVIENT UNE CONTRAINTE DE DESIGN</font>
+                <table cellpadding="0" cellspacing="0" border="0">
+                    <tr>
+                        <td valign="middle">
+                            <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
+                                <tr>
+                                    <td align="center">
+                                        <img src="images/logo-republique-francaise-1999.jpg" width="85" height="50" border="0" alt="Logo de la République française (1999)">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td width="28">&nbsp;</td>
+                        <td valign="middle">
+                            <font face="Verdana" size="6" color="#FFFFFF">
+                                <b>DADVSI</b>
+                            </font>
+                            <br>
+                            <font face="Verdana" size="3" color="#3C14FF">QUAND LE DROIT DEVIENT UNE CONTRAINTE DE DESIGN</font>
+                        </td>
+                    </tr>
+                </table>
             </center>
         </td>
     </tr>
@@ -888,7 +1200,7 @@
                 <tr>
                     <td>
 
-                        <!-- DADVSI -->
+                        <!-- DADVSI : bouton Visiter vers Légifrance (pas Wayback), même habillage. -->
 
                         <center>
                             <font face="Verdana" size="5" color="#3C14FF"><b>1er AOÛT 2006</b></font>
@@ -1070,6 +1382,7 @@
     </tr>
 
 
+    <!-- SUITE : SWF, comparaison 2006/2026, question, sources — toujours 3 colonnes. -->
     <tr>
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <font face="Verdana" size="2" color="#000000">
@@ -1088,7 +1401,7 @@
                 <tr>
                     <td>
 
-                        <!-- SWF -->
+                        <!-- SWF : encadré noir damier, comme les titres de partie, mais DANS la colonne. -->
 
                         <a name="swf"></a>
                         <br><br>
@@ -1123,7 +1436,7 @@
                         </font>
 
 
-                        <!-- 2006 / 2026 -->
+                        <!-- 2006 / 2026 : comparaison (cases fluo + damier, pas fond uni). -->
 
                         <a name="2006-2026"></a>
                         <br><br>
@@ -1220,7 +1533,7 @@
                         </table>
 
 
-                        <!-- QUESTION -->
+                        <!-- QUESTION DE RECHERCHE -->
 
                         <a name="question"></a>
                         <br><br>
@@ -1291,7 +1604,7 @@
                         </font>
 
 
-                        <!-- BIBLIOGRAPHIE -->
+                        <!-- BIBLIOGRAPHIE : numéros [01]…[10] = mêmes pastilles que dans le texte. -->
 
                         <a name="bibliographie"></a>
                         <br><br>
@@ -1456,6 +1769,7 @@
         </td>
     </tr>
 
+    <!-- Menu bas : copie du menu haut (en 2006 on répète le menu en bas de page). -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
             <center>
@@ -1480,6 +1794,7 @@
         </td>
     </tr>
 
+    <!-- PIED DE PAGE : seuls auteurs visibles ici (pas dans le bandeau haut). -->
     <tr>
         <td colspan="3" height="80" bgcolor="#000000" background="images/fond-damier.png" class="noir">
             <center>
@@ -1496,6 +1811,7 @@
     </tr>
 
 </table>
+</div>
 </center>
 </body>
 </html>
