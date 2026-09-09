@@ -59,6 +59,24 @@
         /* ----- Gros boutons ► VISITER / ► CONSULTER LA LOI ----- */
         a.visit { font-family: Verdana, sans-serif; font-weight: bold; text-decoration: none; }
         a.visit:hover { color: #FFFF00; }
+        /* Préréglage doux (pas le clignotement 2 images). */
+        table.btn-visite {
+            animation: pulse-doux 1.6s ease-in-out infinite alternate;
+            transform-origin: center center;
+        }
+        img.logo-pulse {
+            animation: pulse-logo 1.2s ease-in-out infinite alternate;
+            transform-origin: center center;
+            display: inline-block;
+        }
+        @keyframes pulse-doux {
+            from { transform: scale(0.98); }
+            to { transform: scale(1.03); }
+        }
+        @keyframes pulse-logo {
+            from { transform: scale(0.88); }
+            to { transform: scale(1); }
+        }
         details { font-family: Verdana, sans-serif; font-size: 12px; }
         summary { font-weight: bold; }
 
@@ -200,6 +218,10 @@
             background-color: transparent;
             background-repeat: repeat-y;
             background-position: center top;
+            background-origin: content-box;
+            background-clip: content-box;
+            padding-top: 20px;
+            padding-bottom: 20px;
         }
         td.aa-lbc { background-image: url("images/AA-leboncoin.gif?t=trans"); }
         td.aa-bm { background-image: url("images/AA-blogmusik.gif?t=trans"); }
@@ -508,30 +530,30 @@
                     <font face="Verdana" size="4" color="#000000"><b>MENU</b></font>
                 </center>
                 <hr size="2" color="#FF00F8">
-                → <a href="#intro"><font color="#000000">Introduction</font></a>
+                <font color="#FF00F8">→</font> <a href="#intro"><font color="#000000">Introduction</font></a>
                 <br><br>
                 <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
-                → Le marché local<br>
-                → Simplicité<br>
-                → Proximité<br>
-                → Accessibilité
+                <font color="#FF00F8">→</font> Le marché local<br>
+                <font color="#FF00F8">→</font> Simplicité<br>
+                <font color="#FF00F8">→</font> Proximité<br>
+                <font color="#FF00F8">→</font> Accessibilité
                 <br><br>
                 <font color="#FF007A"><b>BLOGMUSIK</b></font><br>
-                → MP3<br>
-                → Recherche<br>
-                → Streaming<br>
-                → Flash
+                <font color="#FF00F8">→</font> MP3<br>
+                <font color="#FF00F8">→</font> Recherche<br>
+                <font color="#FF00F8">→</font> Streaming<br>
+                <font color="#FF00F8">→</font> Flash
                 <br><br>
                 <font color="#3C14FF"><b>DADVSI</b></font><br>
-                → Droits d'auteur<br>
-                → DRM<br>
-                → Interopérabilité<br>
-                → Restrictions
+                <font color="#FF00F8">→</font> Droits d'auteur<br>
+                <font color="#FF00F8">→</font> DRM<br>
+                <font color="#FF00F8">→</font> Interopérabilité<br>
+                <font color="#FF00F8">→</font> Restrictions
                 <br><br>
-                → <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                → <a href="#2006-2026"><font color="#000000">2006 / 2026</font></a><br><br>
-                → <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
-                → <a href="#bibliographie"><font color="#000000">Bibliographie</font></a>
+                <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#2006-2026"><font color="#000000">2006 / 2026</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#bibliographie"><font color="#000000">Bibliographie</font></a>
                 <hr size="2" color="#FF00F8">
                 <center>
                     <font face="Courier New" size="1" color="#000000">
@@ -586,7 +608,7 @@
                                 <img class="smiley" src="images/gifcities/music.gif" width="16" height="16" border="0" align="absmiddle" alt="">
                                 ou partager des contenus
                                 deviennent progressivement des activités quotidiennes sur Internet.
-                                <img class="smiley" src="images/gifcities/email.gif" width="16" height="16" border="0" align="absmiddle" alt="">
+                                <img class="smiley" src="images/gifcities/globe.gif" width="16" height="16" border="0" align="absmiddle" alt="">
                             </p>
 
                             <p>
@@ -595,7 +617,7 @@
                                 fixes, les connexions ne sont pas toujours rapides, et le
                                 développement d'interfaces riches repose encore largement
                                 sur des technologies comme Flash
-                                <img class="smiley" src="images/gifcities/computer.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img src="images/gifcities/flash.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
                             </p>
 
                         </font>
@@ -639,16 +661,6 @@
                     <a href="https://web.archive.org/web/20060826080205/http://blogmusik.net/" target="_blank" rel="noopener noreferrer"><font color="#FF007A"><b>► BLOGMUSIK 2006</b></font></a>
                 </font>
                 <hr size="2" color="#FF00F8">
-                <center>
-                    <font face="Verdana" size="3" color="#000000"><b>COULEURS</b></font>
-                    <br><br>
-                    <font color="#FF4E00">█ LEBONCOIN</font>
-                    <br><br>
-                    <font color="#FF007A">█ BLOGMUSIK</font>
-                    <br><br>
-                    <font color="#3C14FF">█ DADVSI</font>
-                </center>
-                <hr size="2" color="#FF00F8">
                 <font face="Verdana" size="2" color="#000000">
                     <b>À RETENIR :</b>
                     <br><br>
@@ -687,7 +699,7 @@
                             <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
                                 <tr>
                                     <td align="center">
-                                        <img src="images/logo-leboncoin.gif" width="200" border="0" alt="Logo Leboncoin">
+                                        <img class="logo-pulse" src="images/logo-leboncoin.gif" width="200" border="0" alt="Logo Leboncoin">
                                     </td>
                                 </tr>
                             </table>
@@ -712,10 +724,10 @@
                 <tr>
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
-                → Le marché local<br>
-                → Simplicité<br>
-                → Proximité<br>
-                → Accessibilité
+                <font color="#FF00F8">→</font> Le marché local<br>
+                <font color="#FF00F8">→</font> Simplicité<br>
+                <font color="#FF00F8">→</font> Proximité<br>
+                <font color="#FF00F8">→</font> Accessibilité
             </font>
                     </td>
                 </tr>
@@ -745,7 +757,8 @@
                                 Sur la chronologie de La revue des médias (INA),
                                 « Les grandes dates de l'internet, des terminaux et des
                                 services de contenus numériques », le lancement de
-                                leboncoin est daté du 1er janvier 2006.
+                                leboncoin est daté du 1er janvier 2006
+                                <img class="smiley" src="images/gifcities/star.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://larevuedesmedias.ina.fr/chronologie/les-grandes-dates-de-linternet-des-terminaux-et-des-services-de-contenus-numeriques" target="_blank" rel="noopener noreferrer">[08]</a>
                             </p>
                         </font>
@@ -767,7 +780,7 @@
 
                         <!-- Bouton Visiter : case noire + tableau couleur + bord blanc. -->
                         <center>
-                            <table cellpadding="0" cellspacing="0" border="0">
+                            <table class="btn-visite" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td bgcolor="#000000">
                                         <table cellpadding="8" cellspacing="0" border="2" bordercolor="#FFFFFF" bgcolor="#FF4E00" background="images/fond-damier-orange.png" class="orange">
@@ -806,7 +819,8 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                Le premier intérêt du site réside dans sa simplicité.
+                                Le premier intérêt du site réside dans sa simplicité
+                                <img class="smiley" src="images/gifcities/wink.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Le design ne cherche pas à impressionner par des effets
@@ -818,7 +832,8 @@
                                 Cette simplicité correspond également aux contraintes du Web
                                 de l'époque : une interface légère permet de limiter les
                                 éléments à charger et de rendre le service accessible au
-                                plus grand nombre.
+                                plus grand nombre
+                                <img src="images/gifcities/etoile-jaune.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -838,7 +853,8 @@
                             <p>
                                 Pour rechercher des annonces, leboncoin propose à l'utilisateur
                                 de naviguer entre une carte interactive et une barre de recherche.
-                                Le geste est déjà proche de ce que l'on retrouve encore aujourd'hui.
+                                Le geste est déjà proche de ce que l'on retrouve encore aujourd'hui
+                                <img class="smiley" src="images/gifcities/cool.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 Dans la liste, les grandes catégories et sous-catégories
                                 resserrent la multiplicité théorique des offres : on ne
                                 parcourt pas « tout le Web », on choisit un type d'objet
@@ -872,7 +888,8 @@
                             <p>
                                 Dans ses premières versions, les images associées aux
                                 annonces ne s'affichent pas directement : des icônes
-                                les remplacent. La page reste plus légère, et voir la
+                                les remplacent
+                                <img src="images/gifcities/recycle.gif" width="28" height="25" border="0" align="absmiddle" alt="">. La page reste plus légère, et voir la
                                 photo demande un clic supplémentaire. Cette décision
                                 répond aux contraintes techniques du chargement, mais
                                 elle aligne aussi l'interface sur l'aspect « journal »
@@ -885,6 +902,7 @@
                             <p>
                                 L'une des particularités du site est de remettre la
                                 proximité géographique au centre de l'expérience.
+                                <img src="images/gifcities/xp.gif" width="34" height="32" border="0" align="absmiddle" alt="">
                                 L'interface reprend l'organisation d'un journal de
                                 petites annonces local.
                             </p>
@@ -898,7 +916,8 @@
                                 <a class="ref" href="https://leboncoincorporate.com/entreprise/" target="_blank" rel="noopener noreferrer">[02]</a>
                             </p>
                             <p>
-                                Ainsi, le site prône l'accessibilité et la simplicité à tous.
+                                Ainsi, le site prône l'accessibilité et la simplicité à tous
+                                <img class="smiley" src="images/gifcities/heart.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -913,12 +932,10 @@
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
                 <center>
-                    <font face="Verdana" size="4" color="#FF4E00"><b>█</b></font>
-                    <br><br>
                     SIMPLICITÉ
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     PROXIMITÉ
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     ACCESSIBILITÉ
                 </center>
             </font>
@@ -940,7 +957,7 @@
                 <table cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <td valign="middle">
-                            <img src="images/logo-blogmusik.png" width="240" border="0" alt="Logo Blogmusik">
+                            <img class="logo-pulse" src="images/logo-blogmusik.png" width="240" border="0" alt="Logo Blogmusik">
                         </td>
                         <td width="28">&nbsp;</td>
                         <td valign="middle">
@@ -962,10 +979,10 @@
                 <tr>
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
-                → MP3<br>
-                → Recherche<br>
-                → Streaming<br>
-                → Flash
+                <font color="#FF00F8">→</font> MP3<br>
+                <font color="#FF00F8">→</font> Recherche<br>
+                <font color="#FF00F8">→</font> Streaming<br>
+                <font color="#FF00F8">→</font> Flash
             </font>
                     </td>
                 </tr>
@@ -992,7 +1009,7 @@
                             <p>
                                 Dès l'automne 2006, le service propose déjà plus de
                                 200 000 titres à l'écoute
-                                <img class="smiley" src="images/gifcities/cd.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/gifcities/note.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 Le projet deviendra ensuite Deezer.
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
                             </p>
@@ -1004,7 +1021,7 @@
                         </font>
 
                         <center>
-                            <table cellpadding="0" cellspacing="0" border="0">
+                            <table class="btn-visite" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td bgcolor="#000000">
                                         <table cellpadding="8" cellspacing="0" border="2" bordercolor="#FFFFFF" bgcolor="#FF007A" background="images/fond-damier-rose.png" class="rose">
@@ -1043,7 +1060,8 @@
                             <p>
                                 Avant même le catalogue, l'interface demande de se connecter :
                                 l'écoute n'est pas un simple affichage de page, c'est un
-                                compte, un accès, une session.
+                                compte, un accès, une session
+                                <img class="smiley" src="images/gifcities/mail2.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -1056,7 +1074,8 @@
                             <p>
                                 Le problème change complètement d'échelle. Comment présenter
                                 des milliers, puis des centaines de milliers de morceaux
-                                sans perdre l'utilisateur ?
+                                sans perdre l'utilisateur
+                                <img class="smiley" src="images/gifcities/ball.gif" width="16" height="16" border="0" align="absmiddle" alt=""> ?
                             </p>
                             <p>
                                 L'interface doit permettre de rechercher un titre, identifier
@@ -1081,7 +1100,8 @@
                                 de musiques à sa disposition. Les listes verticales,
                                 les catégories musicales et les informations associées
                                 aux morceaux transforment une immense quantité de
-                                données en bibliothèque navigable.
+                                données en bibliothèque navigable
+                                <img src="images/gifcities/bateau.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -1110,7 +1130,8 @@
                             <p>
                                 Dans la continuité du skeuomorphisme, un lecteur MP3
                                 devient une interface dans le navigateur. En septembre 2006,
-                                TechCrunch décrit un lecteur Flash « that looks like an iPod ».
+                                TechCrunch décrit un lecteur Flash « that looks like an iPod »
+                                <img class="smiley" src="images/gifcities/flower.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/" target="_blank" rel="noopener noreferrer">[04]</a>
                             </p>
                             <p>
@@ -1148,7 +1169,8 @@
                                 Sur le même objet-écran, une couche de partage s'affiche
                                 par-dessus le lecteur. La musique peut désormais être
                                 transmise, montrée, inscrite dans un usage social, sans
-                                pour autant devoir quitter le navigateur.
+                                pour autant devoir quitter le navigateur
+                                <img class="smiley" src="images/gifcities/exit.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -1158,7 +1180,8 @@
                         <font face="Verdana" size="3">
                             <p>
                                 À cette période, les lecteurs Flash Player jouent un rôle
-                                important dans la conception d'interfaces interactives.
+                                important dans la conception d'interfaces interactives
+                                <img class="smiley" src="images/gifcities/fire.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 Blogmusik s'appuie sur cette technologie pour développer
                                 le service et pour lire la musique depuis le navigateur.
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
@@ -1184,7 +1207,8 @@
                                 <td>
                                     <font face="Verdana" size="3">
                                         <b>NE PLUS NÉCESSAIREMENT POSSÉDER LE FICHIER<br>
-                                        POUR ACCÉDER À LA MUSIQUE.</b>
+                                        POUR ACCÉDER À LA MUSIQUE
+                                <img class="smiley" src="images/gifcities/phone.gif" width="16" height="16" border="0" align="absmiddle" alt="">.</b>
                                     </font>
                                     <br><br>
                                     <font face="Verdana" size="3">
@@ -1204,7 +1228,8 @@
                         <font face="Verdana" size="3">
                             <p>
                                 Mais en 2006, cette nouvelle pratique se heurte encore
-                                directement à la question des droits d'auteur.
+                                directement à la question des droits d'auteur
+                                <img class="smiley" src="images/gifcities/warning.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -1219,12 +1244,10 @@
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
                 <center>
-                    <font face="Verdana" size="4" color="#FF007A"><b>█</b></font>
-                    <br><br>
                     RECHERCHE
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     LECTEUR
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     STREAMING
                 </center>
             </font>
@@ -1249,7 +1272,7 @@
                             <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
                                 <tr>
                                     <td align="center">
-                                        <img src="images/logo-republique-francaise-1999.jpg" width="85" height="50" border="0" alt="Logo de la République française (1999)">
+                                        <img class="logo-pulse" src="images/logo-republique-francaise-1999.jpg" width="85" height="50" border="0" alt="Logo de la République française (1999)">
                                     </td>
                                 </tr>
                             </table>
@@ -1274,10 +1297,10 @@
                 <tr>
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
-                → Droits d'auteur<br>
-                → DRM<br>
-                → Interopérabilité<br>
-                → Restrictions
+                <font color="#FF00F8">→</font> Droits d'auteur<br>
+                <font color="#FF00F8">→</font> DRM<br>
+                <font color="#FF00F8">→</font> Interopérabilité<br>
+                <font color="#FF00F8">→</font> Restrictions
             </font>
                     </td>
                 </tr>
@@ -1306,7 +1329,7 @@
                         <br>
 
                         <center>
-                            <table cellpadding="0" cellspacing="0" border="0">
+                            <table class="btn-visite" cellpadding="0" cellspacing="0" border="0">
                                 <tr>
                                     <td bgcolor="#000000">
                                         <table cellpadding="8" cellspacing="0" border="2" bordercolor="#FFFFFF" bgcolor="#3C14FF" background="images/fond-damier-dadvsi.png" class="dadvsi">
@@ -1338,6 +1361,7 @@
                             <p>
                                 La loi DADVSI de 2006 est destinée à encadrer et réguler
                                 les utilisations non autorisées d'une œuvre numérique.
+                                <img src="images/gifcities/joconde.gif" width="20" height="26" alt="" border="0" align="absmiddle">
                                 Ces protections peuvent par exemple limiter la copie, le
                                 transfert ou l'utilisation d'un fichier sur certains
                                 appareils. La loi prévoit cependant que ces protections
@@ -1364,7 +1388,8 @@
                                 systèmes. Avec les mesures de protection numérique, un
                                 fichier peut être utilisable sur un appareil mais pas sur
                                 un autre. Il peut également être lié à un logiciel ou à
-                                une plateforme particulière.
+                                une plateforme particulière
+                                <img class="smiley" src="images/gifcities/mouse.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Ainsi pour l'utilisateur, cela crée une situation simple
@@ -1462,12 +1487,10 @@
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
                 <center>
-                    <font face="Verdana" size="4" color="#3C14FF"><b>█</b></font>
-                    <br><br>
                     DROIT
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     CONTRÔLE
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     RESTRICTION
                 </center>
             </font>
@@ -1492,10 +1515,10 @@
                     <font face="Verdana" size="4" color="#000000"><b>SUITE</b></font>
                 </center>
                 <hr size="2" color="#FF00F8">
-                → <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                → <a href="#2006-2026"><font color="#000000">2006 / 2026</font></a><br><br>
-                → <a href="#question"><font color="#000000">Question</font></a><br><br>
-                → <a href="#bibliographie"><font color="#000000">Bibliographie</font></a>
+                <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#2006-2026"><font color="#000000">2006 / 2026</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#bibliographie"><font color="#000000">Bibliographie</font></a>
             </font>
                     </td>
                 </tr>
@@ -1531,7 +1554,8 @@
                                 Le format .swf est associé aux lecteurs Flash. La
                                 documentation indique que ce système permet de lier
                                 graphismes vectoriels, texte, vidéo et son sur Internet,
-                                via Adobe Flash Player par exemple.
+                                via Adobe Flash Player par exemple
+                                <img class="smiley" src="images/gifcities/flash.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://web.archive.org/web/20210927020520/www.adobe.com/devnet/swf.html" target="_blank" rel="noopener noreferrer">[07]</a>
                             </p>
                             <p>
@@ -1571,28 +1595,30 @@
                             <tr>
                                 <td bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo" valign="top">
                                     <font face="Verdana" size="2">
-                                        → Haut débit en développement
+                                        <font color="#FF00F8">→</font> Haut débit en développement
                                         <a class="ref" href="https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/observatoire-des-marches-des-communications-electroniques-en-france/imports/stats/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006.html" target="_blank" rel="noopener noreferrer">[01]</a>
                                         <br><br>
-                                        → Écrans principalement fixes
+                                        <font color="#FF00F8">→</font> Écrans principalement fixes
                                         <br><br>
-                                        → Flash encore central pour de nombreuses interfaces riches
+                                        <font color="#FF00F8">→</font> Flash encore central pour de nombreuses interfaces riches
+                                        <img class="smiley" src="images/gifcities/coin.gif" width="16" height="16" border="0" align="absmiddle" alt="">
                                         <a class="ref" href="https://web.archive.org/web/20210927020520/www.adobe.com/devnet/swf.html" target="_blank" rel="noopener noreferrer">[07]</a>
                                         <br><br>
-                                        → Interfaces fortement dépendantes des technologies disponibles
+                                        <font color="#FF00F8">→</font> Interfaces fortement dépendantes des technologies disponibles
                                     </font>
                                 </td>
                                 <td bgcolor="#FFD9FC" background="images/fond-damier-fluo-moyen.png" class="fluo-moyen" valign="top">
                                     <font face="Verdana" size="2">
-                                        → Connexions beaucoup plus rapides
+                                        <font color="#FF00F8">→</font> Connexions beaucoup plus rapides
                                         <br><br>
-                                        → Diversité des tailles d'écran
+                                        <font color="#FF00F8">→</font> Diversité des tailles d'écran
                                         <br><br>
-                                        → Responsive design et CSS moderne
+                                        <font color="#FF00F8">→</font> Responsive design et CSS moderne
                                         <br><br>
-                                        → Applications Web riches
+                                        <font color="#FF00F8">→</font> Applications Web riches
                                         <br><br>
-                                        → Flash Player n'est plus pris en charge depuis le 31 décembre 2020
+                                        <font color="#FF00F8">→</font> Flash Player n'est plus pris en charge depuis le 31 décembre 2020
+                                        <img class="smiley" src="images/gifcities/warning.gif" width="16" height="16" border="0" align="absmiddle" alt="">
                                     </font>
                                 </td>
                             </tr>
@@ -1607,7 +1633,9 @@
                                 accessible ; rendre compréhensible une nouvelle technologie ;
                                 concevoir une expérience lorsque des contraintes juridiques ou
                                 techniques empêchent certaines actions.
-                                L'intérêt de ces interfaces légères et compactes, nées de la
+                                L'intérêt de ces interfaces légères
+                                <img src="images/gifcities/plume.gif" width="28" height="28" border="0" align="absmiddle" alt="">
+                                et compactes, nées de la
                                 contrainte, se lit aussi dans le présent : leur économie de
                                 moyens fait écho aux exigences contemporaines de sobriété
                                 numérique, notamment la limitation du poids des pages et de
@@ -1629,7 +1657,8 @@
                                     <font face="Verdana" size="3">
                                         <font color="#FF007A"><b>Blogmusik</b></font>
                                         répond à la seconde par la recherche, la catégorisation
-                                        et la métaphore du lecteur musical.
+                                        et la métaphore du lecteur musical
+                                        <img class="smiley" src="images/gifcities/cd.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                     </font>
                                 </td>
                             </tr>
@@ -1670,7 +1699,8 @@
                                                 En 2006, comment les contraintes techniques,
                                                 économiques et juridiques ont-elles façonné
                                                 les formes du design web et les nouveaux
-                                                usages numériques ?
+                                                usages numériques
+                                                <img class="smiley" src="images/gifcities/ball.gif" width="16" height="16" border="0" align="absmiddle" alt=""> ?
                                             </b>
                                         </font>
                                     </center>
@@ -1682,13 +1712,15 @@
 
                         <font face="Verdana" size="3">
                             <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
-                            → simplicité<br>→ proximité<br>→ accessibilité<br>→ petites annonces
+                            <font color="#FF00F8">→</font> simplicité<br><font color="#FF00F8">→</font> proximité<br><font color="#FF00F8">→</font> accessibilité<br><font color="#FF00F8">→</font> petites annonces
                             <br><br>
                             <font color="#FF007A"><b>BLOGMUSIK</b></font><br>
-                            → recherche<br>→ organisation des données<br>→ lecteur multimédia<br>→ streaming
+                            <font color="#FF00F8">→</font> recherche<br><font color="#FF00F8">→</font> organisation des données<br><font color="#FF00F8">→</font> lecteur multimédia
+                            <img class="smiley" src="images/gifcities/note.gif" width="16" height="16" border="0" align="absmiddle" alt=""><br><font color="#FF00F8">→</font> streaming
                             <br><br>
                             <font color="#3C14FF"><b>DADVSI</b></font><br>
-                            → droits d'auteur<br>→ mesures techniques / DRM<br>→ interopérabilité<br>→ restrictions
+                            <font color="#FF00F8">→</font> droits d'auteur<br><font color="#FF00F8">→</font> mesures techniques / DRM<br><font color="#FF00F8">→</font> interopérabilité
+                            <img class="smiley" src="images/gifcities/book.gif" width="16" height="16" border="0" align="absmiddle" alt=""><br><font color="#FF00F8">→</font> restrictions
                         </font>
 
                         <br><br>
@@ -1712,7 +1744,8 @@
                                 Le design ne cherche pas encore seulement à être fluide,
                                 responsive et invisible. Il doit composer avec la technologie
                                 disponible. Ces contraintes contribuent à définir les usages
-                                qui deviendront, quelques années plus tard, la norme du Web.
+                                qui deviendront, quelques années plus tard, la norme du Web
+                                <img class="smiley" src="images/gifcities/planete.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -1873,12 +1906,10 @@
                     <td valign="top">
             <font face="Verdana" size="2" color="#000000">
                 <center>
-                    <font face="Verdana" size="4" color="#000000"><b>█</b></font>
-                    <br><br>
                     2006 / 2026
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     QUESTION
-                    <br><br>
+                    <hr size="1" noshade color="#FF00F8">
                     SOURCES
                 </center>
             </font>
