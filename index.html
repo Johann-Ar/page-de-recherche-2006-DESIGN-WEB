@@ -67,6 +67,15 @@
           Couleur nuit + tuile d'étoiles. padding 36px : on VOIT le fond
           au-dessus et en dessous du cadre, ce qui détache la page du navigateur.
         */
+        /*
+          Curseur 2006 : CSS natif (pas de JS).
+          Chrome ignore souvent les PNG 24 px : tuiles 32×32 + fichier .cur.
+          cursor:inherit sur les cases HTML, sans * ni url() répété
+          (sinon le PNG reclignote à chaque cellule).
+        */
+        html {
+            cursor: url("images/curseur-2006.cur"), url("images/curseur-2006.png") 2 2, default;
+        }
         html, body {
             background-color: #080610;
             background-image: url("images/fond-etoiles-2006.png");
@@ -74,58 +83,22 @@
             margin: 0;
             padding: 36px 0;
         }
-        /*
-          Curseur 2006 : pas de cursor:url(), pas de <img src> qui change.
-          Deux canevas 24 px déjà peints, un calque GPU (translate3d).
-          cursor:none seulement sur html + liens (pas de * : ça recollait
-          le curseur système à chaque case du tableau).
-        */
-        html.curseur-js {
-            cursor: none !important;
+        body,
+        table, tbody, tr, td, th,
+        font, img, p, b, u, i, center, div, hr {
+            cursor: inherit;
         }
-        html.curseur-js a,
-        html.curseur-js a:hover,
-        html.curseur-js a:active,
-        html.curseur-js a:visited,
-        html.curseur-js summary,
-        html.curseur-js button,
-        html.curseur-js label,
-        html.curseur-js input,
-        html.curseur-js textarea,
-        html.curseur-js select {
-            cursor: none !important;
-        }
-        #curseur-page {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 24px;
-            height: 24px;
-            margin: 0;
-            padding: 0;
-            border: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 2147483647;
-            will-change: transform;
-            transform: translate3d(-64px, -64px, 0);
-            opacity: 0;
-        }
-        #curseur-page canvas {
-            position: absolute;
-            left: 0;
-            top: 0;
-            display: block;
-            pointer-events: none;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
+        a[href],
+        a[href]:hover,
+        a[href]:active,
+        a[href]:visited,
+        summary {
+            cursor: url("images/curseur-main-2006.cur"), url("images/curseur-main-2006.png") 8 2, pointer;
         }
 
         /*
           Filtre « vieux écran 2006 » : calque fixe au-dessus de TOUTE la page
           (étoiles + tableau). pointer-events:none = on clique à travers.
-          z-index sous le curseur pixel. Pas de filter sur html/body :
-          ça casserait position:fixed du curseur.
         */
         #ecran-2006 {
             position: fixed;
@@ -294,143 +267,6 @@
         }
     </style>
     <script type="text/javascript">
-        /*
-          Curseur pixel : deux <canvas> pré-dessinés (flèche / main).
-          La position est lue en pointermove, peinte une fois par frame
-          (requestAnimationFrame + translate3d). Aucun src, aucun mouseover.
-        */
-        (function () {
-            var FLECHE = "images/curseur-2006.png";
-            var MAIN = "images/curseur-main-2006.png";
-            var wrap, cFleche, cMain;
-            var mode = "fleche";
-            var x = 0;
-            var y = 0;
-            var hx = 2;
-            var hy = 2;
-            var visible = false;
-            var pret = false;
-            var etaitVisible = false;
-            var dernierT = "";
-
-            function estCliquable(el) {
-                while (el && el !== document.documentElement) {
-                    if (el.id === "curseur-page") {
-                        el = el.parentNode;
-                        continue;
-                    }
-                    if (el.tagName === "A" && el.getAttribute("href")) return true;
-                    if (el.tagName === "SUMMARY" || el.tagName === "BUTTON" || el.tagName === "LABEL") return true;
-                    el = el.parentNode;
-                }
-                return false;
-            }
-
-            function peindre(canvas, image) {
-                var ctx = canvas.getContext("2d");
-                ctx.imageSmoothingEnabled = false;
-                if (ctx.webkitImageSmoothingEnabled !== undefined) ctx.webkitImageSmoothingEnabled = false;
-                if (ctx.mozImageSmoothingEnabled !== undefined) ctx.mozImageSmoothingEnabled = false;
-                ctx.clearRect(0, 0, 24, 24);
-                ctx.drawImage(image, 0, 0, 24, 24);
-            }
-
-            function charger(src, canvas, suite) {
-                var im = new Image();
-                im.onload = function () {
-                    peindre(canvas, im);
-                    suite();
-                };
-                im.src = src;
-            }
-
-            function choisirSprite(cliquable) {
-                if (cliquable) {
-                    hx = 8;
-                    hy = 2;
-                    if (mode !== "main") {
-                        mode = "main";
-                        cFleche.style.opacity = "0";
-                        cMain.style.opacity = "1";
-                    }
-                } else {
-                    hx = 2;
-                    hy = 2;
-                    if (mode !== "fleche") {
-                        mode = "fleche";
-                        cFleche.style.opacity = "1";
-                        cMain.style.opacity = "0";
-                    }
-                }
-            }
-
-            function boucle() {
-                if (pret) {
-                    if (visible !== etaitVisible) {
-                        wrap.style.opacity = visible ? "1" : "0";
-                        etaitVisible = visible;
-                    }
-                    if (visible) {
-                        var t = "translate3d(" + (x - hx) + "px," + (y - hy) + "px,0)";
-                        if (t !== dernierT) {
-                            dernierT = t;
-                            wrap.style.transform = t;
-                        }
-                    }
-                }
-                window.requestAnimationFrame(boucle);
-            }
-
-            function surPointer(e) {
-                x = e.clientX;
-                y = e.clientY;
-                visible = true;
-                choisirSprite(estCliquable(document.elementFromPoint(x, y)));
-            }
-
-            function demarrer() {
-                wrap = document.createElement("div");
-                wrap.id = "curseur-page";
-
-                cFleche = document.createElement("canvas");
-                cFleche.width = 24;
-                cFleche.height = 24;
-                cFleche.style.opacity = "1";
-
-                cMain = document.createElement("canvas");
-                cMain.width = 24;
-                cMain.height = 24;
-                cMain.style.opacity = "0";
-
-                wrap.appendChild(cFleche);
-                wrap.appendChild(cMain);
-                document.body.appendChild(wrap);
-
-                var restants = 2;
-                function unPret() {
-                    restants -= 1;
-                    if (restants === 0) pret = true;
-                }
-                charger(FLECHE, cFleche, unPret);
-                charger(MAIN, cMain, unPret);
-
-                document.documentElement.className += (document.documentElement.className ? " " : "") + "curseur-js";
-
-                var typeMove = window.PointerEvent ? "pointermove" : "mousemove";
-                document.addEventListener(typeMove, surPointer, { capture: true, passive: true });
-                document.documentElement.addEventListener("mouseleave", function () {
-                    visible = false;
-                });
-                document.addEventListener("pointerout", function (e) {
-                    if (!e.relatedTarget) visible = false;
-                }, true);
-                window.requestAnimationFrame(boucle);
-            }
-
-            if (document.body) demarrer();
-            else document.addEventListener("DOMContentLoaded", demarrer);
-        })();
-
         /*
           Boîte à outils pédagogique. APIs natives utilisées :
           querySelector / querySelectorAll, getComputedStyle, console.table,
