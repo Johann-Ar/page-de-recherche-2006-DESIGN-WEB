@@ -26,10 +26,14 @@
         DADVSI     #3C14FF  bleu
         Chrome     #FF00F8  rose fluo (contour de page, filets, curseur liens)
 
-  5. Les "fonds damier" sont de petites images PNG répétées (background-repeat)
-     pour imiter une texture pixel 2006. Les cases photo sont unies (pas de damier).
+  5. Teintes claires = même recette (~20 % couleur identitaire + blanc) :
+        Leboncoin #FFD8C4 · Blogmusik #FFCCE4 · DADVSI #D4CCFF
+        Cases fluo / pastilles = teintes du chrome #FF00F8 (#FFCCF9, #FFD9FC, #FFE6FE).
 
-  6. Les attributs HTML (bgcolor, background, border, font, center) font le
+  6. Chaque couleur a son propre damier (fond-damier-blanc.png, -orange.png, etc.).
+     Les bandeaux noirs gardent images/fond-damier.png.
+
+  7. Les attributs HTML (bgcolor, background, border, font, center) font le
      graphisme "à l'ancienne". Le <style> ne fait que FORCER ces bords en CSS
      moderne (les navigateurs d'aujourd'hui ignorent parfois bordercolor).
 
@@ -47,7 +51,7 @@
     <title>2006 DESIGN WEB - Johann et Thaddée - Leboncoin, Blogmusik et loi DADVSI</title>
     <style type="text/css">
         /* ----- Liens sources [01] : pastille Courier rose clair ----- */
-        a.ref { font-family: Courier New, monospace; font-size: 11px; font-weight: bold; text-decoration: none; background: #FFEEFE; padding: 0 3px; }
+        a.ref { font-family: Courier New, monospace; font-size: 11px; font-weight: bold; text-decoration: none; background: #FFE6FE; padding: 0 3px; }
         a.ref:hover { background: #FF00F8; color: #FFFFFF; }
         /* ----- Boutons "CONSULTER →" dans les cases image / biblio ----- */
         a.srcbtn { font-family: Verdana, sans-serif; font-size: 11px; font-weight: bold; color: #000000; }
@@ -64,18 +68,31 @@
           au-dessus et en dessous du cadre, ce qui détache la page du navigateur.
         */
         html, body {
-            background-color: #06060E;
+            background-color: #080610;
             background-image: url("images/fond-etoiles-2006.png");
             background-repeat: repeat;
             margin: 0;
             padding: 36px 0;
         }
         /*
-          Curseur 2006 : le PNG en CSS url() clignote (Safari / Chrome
-          recollent l'image à chaque élément). On cache le curseur système
-          et une image #curseur-page suit la souris (voir le script).
+          Curseur 2006 : pas de cursor:url(), pas de <img src> qui change.
+          Deux canevas 24 px déjà peints, un calque GPU (translate3d).
+          cursor:none seulement sur html + liens (pas de * : ça recollait
+          le curseur système à chaque case du tableau).
         */
-        html.curseur-js, html.curseur-js * {
+        html.curseur-js {
+            cursor: none !important;
+        }
+        html.curseur-js a,
+        html.curseur-js a:hover,
+        html.curseur-js a:active,
+        html.curseur-js a:visited,
+        html.curseur-js summary,
+        html.curseur-js button,
+        html.curseur-js label,
+        html.curseur-js input,
+        html.curseur-js textarea,
+        html.curseur-js select {
             cursor: none !important;
         }
         #curseur-page {
@@ -87,10 +104,54 @@
             margin: 0;
             padding: 0;
             border: 0;
+            overflow: hidden;
             pointer-events: none;
             z-index: 2147483647;
+            will-change: transform;
+            transform: translate3d(-64px, -64px, 0);
+            opacity: 0;
+        }
+        #curseur-page canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: block;
+            pointer-events: none;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
+        }
+
+        /*
+          Filtre « vieux écran 2006 » : calque fixe au-dessus de TOUTE la page
+          (étoiles + tableau). pointer-events:none = on clique à travers.
+          z-index sous le curseur pixel. Pas de filter sur html/body :
+          ça casserait position:fixed du curseur.
+        */
+        #ecran-2006 {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 999990;
+            -webkit-backdrop-filter: contrast(1.08) saturate(1.12) sepia(0.14) brightness(0.96);
+            backdrop-filter: contrast(1.08) saturate(1.12) sepia(0.14) brightness(0.96);
+            background-image:
+                repeating-linear-gradient(
+                    to bottom,
+                    rgba(0, 0, 0, 0.14) 0px,
+                    rgba(0, 0, 0, 0.14) 1px,
+                    rgba(255, 220, 160, 0.03) 2px,
+                    transparent 3px
+                );
+            box-shadow: inset 0 0 90px 28px rgba(0, 0, 0, 0.42);
+            animation: ecran-2006-scintillement 5s infinite;
+        }
+        @keyframes ecran-2006-scintillement {
+            0%, 92%, 100% { opacity: 1; }
+            94% { opacity: 0.94; }
+            96% { opacity: 1; }
         }
 
         /*
@@ -119,6 +180,9 @@
         table.site {
             border: none;
             outline: none;
+            border-collapse: separate;
+            border-spacing: 2px;
+            background-color: #000000;
         }
         table.site > tbody > tr > td,
         table.site > tr > td {
@@ -134,10 +198,12 @@
         }
         hr[color="#FF00F8"] { background-color: #FF00F8; }
         hr[color="#000000"] { background-color: #000000; }
+        hr[color="#FF4E00"] { background-color: #FF4E00; }
         hr[color="#FF007A"] { background-color: #FF007A; }
         hr[color="#3C14FF"] { background-color: #3C14FF; }
 
-        /* Damiers saturés = texture des bandeaux / boutons / menus. */
+        /* Un damier par couleur (tuiles déjà teintées). Pas de blend :
+           le PNG noir des bandeaux ne doit pas recouvrir le blanc / l'orange. */
         td.blanc, table.blanc {
             background-color: #FFFFFF;
             background-image: url("images/fond-damier-blanc.png");
@@ -145,6 +211,15 @@
         }
         td.blanc {
             padding: 14px 12px 14px 16px;
+        }
+        td.contenu {
+            background-color: #FFFFFF;
+            background-image: none;
+        }
+        td.contenu td.blanc,
+        td.contenu table.blanc {
+            background-image: none;
+            background-color: #FFFFFF;
         }
         td.noir, table.noir, tr.noir {
             background-color: #000000;
@@ -166,58 +241,84 @@
             background-image: url("images/fond-damier-dadvsi.png");
             background-repeat: repeat;
         }
-        /* Cases d'images : fond UNI (pas de damier) dans la couleur claire du sujet. */
         td.lbcclair {
-            background-color: #FFD2B0;
+            background-color: #FFD8C4;
+            background-image: url("images/fond-damier-lbc-clair.png");
+            background-repeat: repeat;
             padding-left: 16px;
             padding-right: 16px;
         }
         td.bmclair {
-            background-color: #FFCDE4;
+            background-color: #FFCCE4;
+            background-image: url("images/fond-damier-bm-clair.png");
+            background-repeat: repeat;
             padding-left: 16px;
             padding-right: 16px;
         }
         td.daclaire {
-            background-color: #D4CFFF;
+            background-color: #D4CCFF;
+            background-image: url("images/fond-damier-da-clair.png");
+            background-repeat: repeat;
             padding-left: 16px;
             padding-right: 16px;
         }
         td.fluo-fort {
-            background-color: #FFCCFE;
+            background-color: #FFCCF9;
             background-image: url("images/fond-damier-fluo-fort.png");
             background-repeat: repeat;
         }
         td.fluo, tr.fluo {
-            background-color: #FFEEFE;
+            background-color: #FFE6FE;
             background-image: url("images/fond-damier-fluo.png");
             background-repeat: repeat;
         }
         td.fluo-moyen {
-            background-color: #FFDDFE;
+            background-color: #FFD9FC;
             background-image: url("images/fond-damier-fluo-moyen.png");
             background-repeat: repeat;
             padding: 12px 24px 12px 28px;
+        }
+        table.analyse {
+            background-color: #FFE6FE;
+            background-image: url("images/fond-damier-analyse.png");
+            background-repeat: repeat;
         }
         font.legende {
             font-family: Courier New, monospace;
             font-weight: bold;
             color: #FF00F8;
-            opacity: 0.55;
+            opacity: 0.7;
+        }
+        font.legende[size="2"] {
+            font-size: 15px;
         }
     </style>
     <script type="text/javascript">
         /*
-          Curseur pixel : une <img> suit la souris. On ne change le fichier
-          (flèche / main) que quand le type change, pour éviter le clignotement.
+          Curseur pixel : deux <canvas> pré-dessinés (flèche / main).
+          La position est lue en pointermove, peinte une fois par frame
+          (requestAnimationFrame + translate3d). Aucun src, aucun mouseover.
         */
         (function () {
             var FLECHE = "images/curseur-2006.png";
             var MAIN = "images/curseur-main-2006.png";
+            var wrap, cFleche, cMain;
             var mode = "fleche";
-            var img;
+            var x = 0;
+            var y = 0;
+            var hx = 2;
+            var hy = 2;
+            var visible = false;
+            var pret = false;
+            var etaitVisible = false;
+            var dernierT = "";
 
             function estCliquable(el) {
                 while (el && el !== document.documentElement) {
+                    if (el.id === "curseur-page") {
+                        el = el.parentNode;
+                        continue;
+                    }
                     if (el.tagName === "A" && el.getAttribute("href")) return true;
                     if (el.tagName === "SUMMARY" || el.tagName === "BUTTON" || el.tagName === "LABEL") return true;
                     el = el.parentNode;
@@ -225,44 +326,105 @@
                 return false;
             }
 
-            function placer(e) {
-                var cliquable = estCliquable(e.target);
-                var hx = 2;
-                var hy = 2;
+            function peindre(canvas, image) {
+                var ctx = canvas.getContext("2d");
+                ctx.imageSmoothingEnabled = false;
+                if (ctx.webkitImageSmoothingEnabled !== undefined) ctx.webkitImageSmoothingEnabled = false;
+                if (ctx.mozImageSmoothingEnabled !== undefined) ctx.mozImageSmoothingEnabled = false;
+                ctx.clearRect(0, 0, 24, 24);
+                ctx.drawImage(image, 0, 0, 24, 24);
+            }
+
+            function charger(src, canvas, suite) {
+                var im = new Image();
+                im.onload = function () {
+                    peindre(canvas, im);
+                    suite();
+                };
+                im.src = src;
+            }
+
+            function choisirSprite(cliquable) {
                 if (cliquable) {
-                    if (mode !== "main") {
-                        img.src = MAIN;
-                        mode = "main";
-                    }
                     hx = 8;
                     hy = 2;
-                } else if (mode !== "fleche") {
-                    img.src = FLECHE;
-                    mode = "fleche";
+                    if (mode !== "main") {
+                        mode = "main";
+                        cFleche.style.opacity = "0";
+                        cMain.style.opacity = "1";
+                    }
+                } else {
+                    hx = 2;
+                    hy = 2;
+                    if (mode !== "fleche") {
+                        mode = "fleche";
+                        cFleche.style.opacity = "1";
+                        cMain.style.opacity = "0";
+                    }
                 }
-                img.style.transform = "translate(" + (e.clientX - hx) + "px," + (e.clientY - hy) + "px)";
-                img.style.visibility = "visible";
+            }
+
+            function boucle() {
+                if (pret) {
+                    if (visible !== etaitVisible) {
+                        wrap.style.opacity = visible ? "1" : "0";
+                        etaitVisible = visible;
+                    }
+                    if (visible) {
+                        var t = "translate3d(" + (x - hx) + "px," + (y - hy) + "px,0)";
+                        if (t !== dernierT) {
+                            dernierT = t;
+                            wrap.style.transform = t;
+                        }
+                    }
+                }
+                window.requestAnimationFrame(boucle);
+            }
+
+            function surPointer(e) {
+                x = e.clientX;
+                y = e.clientY;
+                visible = true;
+                choisirSprite(estCliquable(document.elementFromPoint(x, y)));
             }
 
             function demarrer() {
-                img = document.createElement("img");
-                img.id = "curseur-page";
-                img.src = FLECHE;
-                img.width = 24;
-                img.height = 24;
-                img.alt = "";
-                img.style.visibility = "hidden";
-                document.body.appendChild(img);
-                (new Image()).src = MAIN;
+                wrap = document.createElement("div");
+                wrap.id = "curseur-page";
+
+                cFleche = document.createElement("canvas");
+                cFleche.width = 24;
+                cFleche.height = 24;
+                cFleche.style.opacity = "1";
+
+                cMain = document.createElement("canvas");
+                cMain.width = 24;
+                cMain.height = 24;
+                cMain.style.opacity = "0";
+
+                wrap.appendChild(cFleche);
+                wrap.appendChild(cMain);
+                document.body.appendChild(wrap);
+
+                var restants = 2;
+                function unPret() {
+                    restants -= 1;
+                    if (restants === 0) pret = true;
+                }
+                charger(FLECHE, cFleche, unPret);
+                charger(MAIN, cMain, unPret);
+
                 document.documentElement.className += (document.documentElement.className ? " " : "") + "curseur-js";
-                document.addEventListener("mousemove", placer, true);
-                document.addEventListener("mouseover", placer, true);
+
+                var typeMove = window.PointerEvent ? "pointermove" : "mousemove";
+                document.addEventListener(typeMove, surPointer, { capture: true, passive: true });
                 document.documentElement.addEventListener("mouseleave", function () {
-                    img.style.visibility = "hidden";
+                    visible = false;
                 });
-                document.documentElement.addEventListener("mouseenter", function () {
-                    img.style.visibility = "visible";
-                });
+                document.addEventListener("pointerout", function (e) {
+                    if (!e.relatedTarget) visible = false;
+                }, true);
+                window.requestAnimationFrame(boucle);
             }
 
             if (document.body) demarrer();
@@ -281,7 +443,13 @@
                 blogmusik: "#FF007A",
                 dadvsi: "#3C14FF",
                 fluo: "#FF00F8",
-                nuit: "#06060E"
+                nuit: "#080610",
+                lbcclair: "#FFD8C4",
+                bmclair: "#FFCCE4",
+                daclaire: "#D4CCFF",
+                fluoFort: "#FFCCF9",
+                fluoMoyen: "#FFD9FC",
+                fluoPale: "#FFE6FE"
             },
 
             aide: function () {
@@ -405,7 +573,7 @@
     </script>
 </head>
 
-<body bgcolor="#06060E" background="images/fond-etoiles-2006.png" text="#000000" link="#FF00F8" vlink="#800080" alink="#FF0000">
+<body bgcolor="#080610" background="images/fond-etoiles-2006.png" text="#000000" link="#FF00F8" vlink="#7A0076" alink="#FF00F8">
 
 <center>
 
@@ -414,7 +582,7 @@
   Le DIV.cadre (padding 3 px, fond #FF00F8) est le contour fluo, collé au damier.
 -->
 <div class="cadre">
-<table width="900" cellpadding="0" cellspacing="0" border="0" class="site">
+<table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
 
     <!-- BANDEAU 1 : titre du dossier (colspan=3 = les 3 colonnes fusionnées) -->
     <tr>
@@ -520,7 +688,7 @@
                                 <font color="#3C14FF">loi DADVSI</font>
                             </font>
                             <br>
-                            <font face="Verdana" size="3" color="#555555">
+                            <font face="Verdana" size="3" color="#404040">
                                 Comment le design numérique de 2006 traduit-il
                                 les contraintes techniques, les nouveaux usages
                                 et les tensions juridiques du Web ?
@@ -560,7 +728,7 @@
 
                         <table width="100%" cellpadding="10" cellspacing="0" border="2" bordercolor="#000000">
                             <tr>
-                                <td bgcolor="#FFCCFE" background="images/fond-damier-fluo-fort.png" class="fluo-fort">
+                                <td bgcolor="#FFCCF9" background="images/fond-damier-fluo-fort.png" class="fluo-fort">
                                     <font face="Verdana" size="3">
                                         <b>Trois exemples permettent d'observer cette période
                                         sous des angles différents :</b>
@@ -701,7 +869,7 @@
                         <!-- Case image : tableau dans le tableau, bord = couleur du sujet, fond clair UNI. -->
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
                             <tr>
-                                <td bgcolor="#FFD2B0" class="lbcclair" align="center">
+                                <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-lancement-ina_2006.jpg" width="440" border="2" alt="Chronologie INA : lancement de leboncoin le 1er janvier 2006">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Chronologie INA : lancement de leboncoin, 1er janvier 2006</font>
@@ -742,7 +910,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
                             <tr>
-                                <td bgcolor="#FFD2B0" class="lbcclair" align="center">
+                                <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-accueil_2006.jpg" width="440" border="2" alt="Page d'accueil de Leboncoin">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Première interface / page d'accueil</font>
@@ -774,7 +942,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
                             <tr>
-                                <td bgcolor="#FFD2B0" class="lbcclair" align="center">
+                                <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-categories_2006.jpg" width="440" border="2" alt="Recherche d'annonces par catégories">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Recherche par catégories, dans une barre unique</font>
@@ -796,7 +964,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
                             <tr>
-                                <td bgcolor="#FFD2B0" class="lbcclair" align="center">
+                                <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-annonces_2006.jpg" width="440" border="2" alt="Page des petites annonces Leboncoin">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Page des petites annonces</font>
@@ -808,7 +976,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
                             <tr>
-                                <td bgcolor="#FFD2B0" class="lbcclair" align="center">
+                                <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-icones_2006.jpg" width="440" border="2" alt="Icônes d'images dans les annonces Leboncoin">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Icônes à la place des photos</font>
@@ -958,7 +1126,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
-                                <td bgcolor="#FFCDE4" class="bmclair" align="center">
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-connexion_2006.jpg" width="440" border="2" alt="Barre de connexion de Blogmusik">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Barre de connexion</font>
@@ -994,7 +1162,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
-                                <td bgcolor="#FFCDE4" class="bmclair" align="center">
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-recherche_2006.jpg" width="440" border="2" alt="Barre de recherche de Blogmusik">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Barre de recherche</font>
@@ -1014,7 +1182,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
-                                <td bgcolor="#FFCDE4" class="bmclair" align="center">
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-genres_2006.jpg" width="440" border="2" alt="Recherche par styles A à Z sur Blogmusik">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Recherche par styles (A à Z) et liens vers d'autres contenus</font>
@@ -1050,7 +1218,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
-                                <td bgcolor="#FFCDE4" class="bmclair" align="center">
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-ipod_2006.jpg" width="440" border="2" alt="Réplique web de l'iPod sur Blogmusik">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Le lecteur musical dans le navigateur</font>
@@ -1062,7 +1230,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
-                                <td bgcolor="#FFCDE4" class="bmclair" align="center">
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-partage_2006.jpg" width="440" border="2" alt="Interface de partage sur le lecteur iPod Blogmusik">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Partage de musique, affiché sur le lecteur</font>
@@ -1106,7 +1274,7 @@
                         <font face="Verdana" size="4" color="#FF007A"><b>Une première forme de streaming</b></font>
                         <hr size="2" color="#FF007A">
 
-                        <table width="100%" cellpadding="8" cellspacing="0" border="2" bordercolor="#FF00F8" bgcolor="#FFE8FC" background="images/fond-damier-analyse.png" class="analyse">
+                        <table width="100%" cellpadding="8" cellspacing="0" border="2" bordercolor="#FF00F8" bgcolor="#FFE6FE" background="images/fond-damier-analyse.png" class="analyse">
                             <tr>
                                 <td>
                                     <font face="Verdana" size="3">
@@ -1178,7 +1346,7 @@
                                 <b>DADVSI</b>
                             </font>
                             <br>
-                            <font face="Verdana" size="3" color="#3C14FF">QUAND LE DROIT DEVIENT UNE CONTRAINTE DE DESIGN</font>
+                            <font face="Verdana" size="3" color="#3C14FF">QUAND LE DROIT DEVIENT<br>UNE CONTRAINTE DE DESIGN</font>
                         </td>
                     </tr>
                 </table>
@@ -1259,7 +1427,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#3C14FF">
                             <tr>
-                                <td bgcolor="#D4CFFF" class="daclaire" align="center">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <img src="images/dadvsi-adoption-assemblee_2006.jpg" width="440" border="2" alt="Adoption du projet de loi DADVSI à l'Assemblée nationale">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Adoption du projet à l'Assemblée nationale</font>
@@ -1285,7 +1453,7 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#3C14FF">
                             <tr>
-                                <td bgcolor="#D4CFFF" class="daclaire" align="center">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <img src="images/dadvsi-marche-7mai_2006.jpg" width="440" border="2" alt="Marche contre la loi DADVSI, 7 mai 2006">
                                     <br><br>
                                     <font face="Courier New" size="2" class="legende">Marche contre la loi DADVSI, avec dépôt de gerbe à la mémoire du droit d'auteur, le 7 mai 2006</font>
@@ -1303,7 +1471,7 @@
 
                         <table width="100%" cellpadding="8" cellspacing="2" border="2" bordercolor="#3C14FF">
                             <tr>
-                                <td bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <font face="Verdana" size="2"><b>CONTENU PROTÉGÉ</b></font>
                                 </td>
                             </tr>
@@ -1311,7 +1479,7 @@
                                 <td align="center"><font face="Verdana" size="2">↓</font></td>
                             </tr>
                             <tr>
-                                <td bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <font face="Verdana" size="2"><b>MESURE TECHNIQUE</b></font>
                                 </td>
                             </tr>
@@ -1319,7 +1487,7 @@
                                 <td align="center"><font face="Verdana" size="2">↓</font></td>
                             </tr>
                             <tr>
-                                <td bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <font face="Verdana" size="2"><b>LOGICIEL / APPAREIL / SYSTÈME</b></font>
                                 </td>
                             </tr>
@@ -1327,7 +1495,7 @@
                                 <td align="center"><font face="Verdana" size="2">↓</font></td>
                             </tr>
                             <tr>
-                                <td bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <font face="Verdana" size="2"><b>ACCÈS OU LIMITATION</b></font>
                                 </td>
                             </tr>
@@ -1349,13 +1517,13 @@
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#3C14FF">
                             <tr>
-                                <td width="45%" bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
+                                <td width="45%" bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <font face="Verdana" size="4" color="#3C14FF"><b>FACILITER L'ACCÈS</b></font>
                                 </td>
                                 <td width="10%" align="center">
                                     <font face="Verdana" size="5">VS</font>
                                 </td>
-                                <td width="45%" bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
+                                <td width="45%" bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire" align="center">
                                     <font face="Verdana" size="4" color="#3C14FF"><b>CONTRÔLER L'UTILISATION</b></font>
                                 </td>
                             </tr>
@@ -1461,7 +1629,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td bgcolor="#FFEEFE" background="images/fond-damier-fluo.png" class="fluo" valign="top">
+                                <td bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo" valign="top">
                                     <font face="Verdana" size="2">
                                         → Haut débit en développement
                                         <a class="ref" href="https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/observatoire-des-marches-des-communications-electroniques-en-france/imports/stats/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006.html" target="_blank" rel="noopener noreferrer">[01]</a>
@@ -1474,7 +1642,7 @@
                                         → Interfaces fortement dépendantes des technologies disponibles
                                     </font>
                                 </td>
-                                <td bgcolor="#FFDDFE" background="images/fond-damier-fluo-moyen.png" class="fluo-moyen" valign="top">
+                                <td bgcolor="#FFD9FC" background="images/fond-damier-fluo-moyen.png" class="fluo-moyen" valign="top">
                                     <font face="Verdana" size="2">
                                         → Connexions beaucoup plus rapides
                                         <br><br>
@@ -1504,7 +1672,7 @@
 
                         <table width="100%" cellpadding="8" cellspacing="2" border="2" bordercolor="#000000">
                             <tr>
-                                <td bgcolor="#FFD2B0" background="images/fond-damier-lbc-clair.png" class="lbcclair">
+                                <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair">
                                     <font face="Verdana" size="3">
                                         <font color="#FF4E00"><b>Leboncoin</b></font>
                                         répond à la première question par la simplicité et la proximité.
@@ -1512,7 +1680,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td bgcolor="#FFCDE4" background="images/fond-damier-bm-clair.png" class="bmclair">
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair">
                                     <font face="Verdana" size="3">
                                         <font color="#FF007A"><b>Blogmusik</b></font>
                                         répond à la seconde par la recherche, la catégorisation
@@ -1521,7 +1689,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td bgcolor="#D4CFFF" background="images/fond-damier-da-clair.png" class="daclaire">
+                                <td bgcolor="#D4CCFF" background="images/fond-damier-da-clair.png" class="daclaire">
                                     <font face="Verdana" size="3">
                                         <font color="#3C14FF"><b>DADVSI</b></font>
                                         révèle la troisième : lorsqu'une règle ou une technologie
@@ -1550,7 +1718,7 @@
 
                         <table width="100%" cellpadding="15" cellspacing="0" border="2" bordercolor="#FF00F8">
                             <tr>
-                                <td bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
+                                <td bgcolor="#FFFFFF">
                                     <center>
                                         <font face="Verdana" size="4" color="#000000">
                                             <b>
@@ -1630,7 +1798,7 @@
                         <br>
 
                         <table width="100%" cellpadding="8" cellspacing="0" border="2" bordercolor="#000000">
-                            <tr bgcolor="#FFEEFE" background="images/fond-damier-fluo.png" class="fluo">
+                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
                                 <td>
                                     <font face="Courier New" size="2"><b>[01]</b></font>
                                     <font face="Verdana" size="2">
@@ -1654,7 +1822,7 @@
                                     </font>
                                 </td>
                             </tr>
-                            <tr bgcolor="#FFEEFE" background="images/fond-damier-fluo.png" class="fluo">
+                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
                                 <td>
                                     <font face="Courier New" size="2"><b>[03]</b></font>
                                     <font face="Verdana" size="2">
@@ -1678,7 +1846,7 @@
                                     </font>
                                 </td>
                             </tr>
-                            <tr bgcolor="#FFEEFE" background="images/fond-damier-fluo.png" class="fluo">
+                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
                                 <td>
                                     <font face="Courier New" size="2"><b>[05]</b></font>
                                     <font face="Verdana" size="2">
@@ -1702,7 +1870,7 @@
                                     </font>
                                 </td>
                             </tr>
-                            <tr bgcolor="#FFEEFE" background="images/fond-damier-fluo.png" class="fluo">
+                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
                                 <td>
                                     <font face="Courier New" size="2"><b>[07]</b></font>
                                     <font face="Verdana" size="2">
@@ -1725,7 +1893,7 @@
                                     </font>
                                 </td>
                             </tr>
-                            <tr bgcolor="#FFEEFE" background="images/fond-damier-fluo.png" class="fluo">
+                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
                                 <td>
                                     <font face="Courier New" size="2"><b>[09]</b></font>
                                     <font face="Verdana" size="2">
@@ -1813,5 +1981,9 @@
 </table>
 </div>
 </center>
+
+<!-- Calque écran 2006 : scanlines + teinte chaude + vignette. -->
+<div id="ecran-2006"></div>
+
 </body>
 </html>
