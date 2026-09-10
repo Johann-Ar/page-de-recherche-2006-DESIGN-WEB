@@ -16,9 +16,12 @@
      Une ligne "pleine largeur" (titre, menu, bandeau de sujet) utilise
      colspan="3" : une seule case qui recouvre les 3 colonnes.
 
-  3. Deux types de lignes se répètent :
-     A. BANDEAU  → <tr><td colspan="3" class="noir"> titre + logo
-     B. CONTENU  → <tr><td marge G><td texte / images><td marge D>
+  3. La tête de page + la sous-tête (menu QUESTION | TERRAIN | …) sont
+     SORTIES du rail : un seul bloc #entete-fixe, au-dessus des pages, qui
+     ne bouge pas quand on change de section. Dans chaque page il ne reste
+     donc que des lignes CONTENU → <tr><td marge G><td texte / images><td marge D>.
+     Les titres de partie (LEBONCOIN, BLOGMUSIK, DADVSI, CONCLUSION) sont
+     des encadrés noir damier PLACÉS DANS la colonne centrale.
 
   4. Les couleurs identitaires ne changent pas :
         Leboncoin  #FF4E00  orange
@@ -81,6 +84,9 @@
             width: 82px;
             height: 82px;
             margin: 8px auto;
+            /* Réplique MP3 agrandie d'un facteur 1,25 (molette + boutons + pastille son). */
+            transform: scale(1.25);
+            transform-origin: center center;
         }
         div.ipod-nav {
             position: relative;
@@ -170,7 +176,7 @@
         td.ipod-bande {
             background-color: #000000;
             background-image: none;
-            height: 110px;
+            height: 138px;
         }
         .titre-rubrique { cursor: url("images/curseur-main-2006.cur"), url("images/curseur-main-2006.png") 8 2, pointer; }
         .titre-rubrique:hover { background-color: #FF00F8; color: #FFFFFF !important; }
@@ -567,6 +573,34 @@
         font.trouvaille-ici {
             outline: 1px solid #000000;
         }
+
+        /*
+          EN-TÊTE PERSISTANTE (tête de page + sous-tête).
+          Elle vit AU-DESSUS du rail des pages, dans #page-fouille : elle ne
+          bouge pas, ne disparaît pas et n'est pas remplacée quand le rail
+          glisse d'une page à l'autre. Même cadre rose 3 px, même largeur 900.
+          Le raccord haut/bas est collé (padding 0) pour garder une colonne
+          continue, sans toucher aux marges verticales.
+        */
+        #entete-fixe {
+            text-align: center;
+        }
+        #entete-fixe .cadre {
+            padding-bottom: 0;
+        }
+        #rail-pages .cadre {
+            padding-top: 0;
+        }
+
+        /* Contours des régions de la carte : trait épaissi (érosion du noir). */
+        img.carte-france {
+            filter: url("#epaissir-carte");
+        }
+
+        /* Réplique MP3 : même fond sombre à damier que les autres bandeaux noirs. */
+        td.ipod-bande {
+            background-image: url("images/fond-damier.png");
+        }
     </style>
     <noscript>
         <style type="text/css">#porte-region { display: none; } #page-fouille { display: block !important; }</style>
@@ -612,7 +646,7 @@
                 var etapes = [
                     "1. Un <div class=\"cadre\"> rose 3 px entoure <table class=\"site\" width=\"900\">.",
                     "2. 3 colonnes fixes : 160 | 580 | 160. C'est la grille, pas du CSS Grid.",
-                    "3. Titre / menu / sujets = une ligne colspan=3 (case unique, fond noir damier).",
+                    "3. Tête de page + sous-tête = un seul bloc #entete-fixe au-dessus du rail (il ne bouge pas). Titres de partie = encadrés noir damier DANS la colonne centrale.",
                     "4. Texte d'un sujet = une ligne de 3 cases : liste G, article, mots-clés D.",
                     "5. Une image = petit tableau intérieur border=2 + fond clair du sujet.",
                     "6. Un bouton Visiter = tableau noir + tableau couleur (damier) + bord blanc.",
@@ -750,7 +784,22 @@
             this.pageIndex = idx;
             this.majEcranIpod(idx);
             if (rail) rail.scrollLeft = idx * this.largeurPage();
+            this.ajusterHauteurRail();
             window.scrollTo(0, 0);
+        };
+        /* Le rail est un seul <tr> : toutes les cases-page ont la hauteur de
+           la plus haute. On force la hauteur visible du rail sur la page
+           affichée (les autres débordent et sont masquées) : plus de grand
+           blanc vertical sous les pages courtes. */
+        page2006.ajusterHauteurRail = function () {
+            var rail = document.getElementById("rail-pages");
+            var train = document.getElementById("train-pages");
+            if (!rail || !train || !train.rows[0]) return;
+            var cell = train.rows[0].cells[this.pageIndex];
+            if (!cell) return;
+            var inner = cell.firstElementChild || cell;
+            var h = inner.offsetHeight || cell.offsetHeight || 0;
+            if (h) rail.style.height = h + "px";
         };
         page2006.viderFx = function () {
             var box = document.getElementById("fx-2000");
@@ -841,6 +890,7 @@
             start = rail.scrollLeft || 0;
             if (idx === this.pageIndex && Math.abs(dest - start) < 2) {
                 this.majEcranIpod(idx);
+                this.ajusterHauteurRail();
                 window.scrollTo(0, 0);
                 return false;
             }
@@ -1046,6 +1096,7 @@
             if (z > 175) z = 175;
             this.zoomNiveau = z;
             this.appliquerZoom();
+            this.ajusterHauteurRail();
             return false;
         };
 
@@ -1172,6 +1223,8 @@
             }
             window.scrollTo(0, 0);
             this.montrerPage(0, true);
+            this.ajusterHauteurRail();
+            window.setTimeout(function () { page2006.ajusterHauteurRail(); }, 60);
         };
 
         page2006.retourCarte = function () {
@@ -1201,7 +1254,7 @@
             var txt = document.getElementById("texte-chargement");
             if (carte) carte.style.display = "none";
             if (wait) wait.style.display = "block";
-            if (txt) txt.innerHTML = "Connec-xion depuis " + nom + "…";
+            if (txt) txt.innerHTML = "Connexion depuis " + nom + "…";
             this.jouer("modem");
             window.setTimeout(function () {
                 page2006.ouvrirFouille(nom);
@@ -1349,6 +1402,10 @@
             } else {
                 console.log("Pour lire la construction de la page : page2006.aide()");
             }
+
+            page2006.ajusterHauteurRail();
+            window.setTimeout(function () { page2006.ajusterHauteurRail(); }, 300);
+            window.addEventListener("resize", function () { page2006.ajusterHauteurRail(); });
         });
 
         page2006.afficherPanneau = function () {
@@ -1361,7 +1418,7 @@
             html += "<tr><td class='noir'>";
             html += "<font face='Verdana' size='4' color='#FF00F8'><b>MODE PÉDAGOGIE</b></font>";
             html += "<font face='Verdana' size='2' color='#FFFFFF'>";
-            html += "<p>Cette page n'est pas un site moderne. C'est un <b>tableau HTML 2006</b> de 900&nbsp;px, 3 colonnes (160 / 580 / 160). Les bandeaux noirs (titre, Leboncoin, Blogmusik, DADVSI) sont des lignes en colspan=3. Les listes à flèches restent dans les marges.</p>";
+            html += "<p>Cette page n'est pas un site moderne. C'est un <b>tableau HTML 2006</b> de 900&nbsp;px, 3 colonnes (160 / 580 / 160). La tête de page et la sous-tête sont un bloc fixe au-dessus des pages (#entete-fixe) ; les titres de partie (Leboncoin, Blogmusik, DADVSI, Conclusion) sont des encadrés noir damier dans la colonne centrale. Les listes à flèches restent dans les marges.</p>";
             html += "<p><b>Palette :</b> Leboncoin " + this.couleurs.leboncoin + " · Blogmusik " + this.couleurs.blogmusik + " · DADVSI " + this.couleurs.dadvsi + " · fluo " + this.couleurs.fluo + "</p>";
             html += "<p><b>Ancres :</b> " + st.ancres.join(" · ") + "</p>";
             html += "<p><b>Liens :</b> " + li.liensInternesMenu + " internes, " + li.archivesWayback + " Wayback, " + li.pastillesSources + " pastilles [n°].</p>";
@@ -1374,6 +1431,13 @@
 </head>
 
 <body bgcolor="#080610" background="images/fond-etoiles-2006.png" text="#000000" link="#FF00F8" vlink="#7A0076" alink="#FF00F8">
+
+<!-- Filtre carte : érode le noir = trait des frontières régionales épaissi. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="epaissir-carte" x="-10%" y="-10%" width="120%" height="120%">
+        <feMorphology operator="erode" radius="0.85"></feMorphology>
+    </filter>
+</svg>
 
 <center>
 
@@ -1414,10 +1478,10 @@
                     <td>
                         <center>
                             <font face="Verdana" size="4" color="#000000">
-                                <b>Avant de nous lire,<br>dites-nous d'où vous êtes&nbsp;?</b>
+                                <b>Avant de nous lire,<br>dites-nous où vous êtes&nbsp;?</b>
                             </font>
                             <br>
-                            <img src="images/gifcities/smiley-interrogatif.gif" width="64" height="64" border="0" alt="Smiley interrogatif">
+                            <img src="images/gifcities/smiley-interrogatif-net.gif" width="64" height="64" border="0" alt="Smiley interrogatif">
                             <br><br>
                             <font face="Verdana" size="2" color="#404040">
                                 Comme un code postal, comme la porte Leboncoin de 2006 :
@@ -1463,7 +1527,7 @@
                                 <img src="images/gifcities/computer.gif" width="16" height="16" border="0" alt="">
                                 <br><br>
                                 <font face="Verdana" size="4" color="#FF00F8">
-                                    <b id="texte-chargement">Connexion…</b>
+                                    <b id="texte-chargement">Connexion depuis …</b>
                                 </font>
                                 <br>
                                 <font face="Verdana" size="2" color="#000000">Veuillez patienter…</font>
@@ -1483,27 +1547,35 @@
                     <hr size="2" color="#FF00F8">
                     Cliquez une région
                     pour ouvrir
-                    la fouille.
+                    la page de recherche
                 </font>
             </center>
         </td>
     </tr>
 </table>
 <script>
-    /* Garde une vraie table 3 colonnes, avec les deux marges inversées. */
+    /* Table 3 colonnes de l'accueil :
+       BIENVENUE reste à gauche, la carte au centre, la liste RÉGIONS passe
+       à droite de la carte. */
     (function () {
         var ligne = document.querySelector("#porte-region .rangee-accueil");
-        var bienvenue = ligne && ligne.querySelector(".marge-bienvenue");
-        if (ligne && bienvenue) ligne.insertBefore(bienvenue, ligne.firstElementChild);
+        if (!ligne) return;
+        var bienvenue = ligne.querySelector(".marge-bienvenue");
+        var regions = ligne.querySelector(".marge-regions");
+        if (bienvenue) ligne.insertBefore(bienvenue, ligne.firstElementChild);
+        if (regions) ligne.appendChild(regions);
     }());
 </script>
 </div>
 
 <div id="page-fouille">
-<div id="rail-pages">
-<table id="train-pages" cellpadding="0" cellspacing="0" border="0">
-    <tr>
-<td class="page-h" valign="top" width="906">
+
+<!--
+  EN-TÊTE PERSISTANTE : tête de page + sous-tête.
+  Placée HORS du rail des pages : elle ne disparaît pas, n'est pas remplacée
+  et ne se déplace pas quand le rail glisse d'une section à l'autre.
+-->
+<div id="entete-fixe">
 <div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
@@ -1594,6 +1666,17 @@
             </center>
         </td>
     </tr>
+</table>
+</div>
+</div>
+<!-- Fin de l'en-tête persistante. Le rail des pages glisse en dessous. -->
+
+<div id="rail-pages">
+<table id="train-pages" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+<td class="page-h" valign="top" width="906">
+<div class="cadre">
+<table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <table class="marge-aa" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
@@ -1656,7 +1739,7 @@
 
                         <center>
                             <font face="Verdana" size="4" color="#000000">
-                                <b>Un réseau mondial peut-il avoir une nationalité ?</b>
+                                <b>À QUOI RESSEMBLAIT LE WEB EN FRANCE ?</b>
                             </font>
                             <br><br>
                             <font face="Verdana" size="3" color="#404040">
@@ -1714,7 +1797,7 @@
                         <table width="100%" cellpadding="8" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
                             <tr>
                                 <td align="center" valign="middle">
-                                    <font face="Verdana" size="4" color="#FFFFFF"><b>NOTRE PARCELLE DE FOUILLE</b></font>
+                                    <font face="Verdana" size="4" color="#FFFFFF"><b>TERRAIN DE RECHERCHE</b></font>
                                 </td>
                             </tr>
                         </table>
@@ -2098,71 +2181,6 @@
 <div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
-        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
-            <a name="leboncoin"></a>
-            <table width="100%" cellpadding="6" cellspacing="0" border="0">
-                <tr>
-                    <td width="230" valign="middle" align="left">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td width="36">&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td align="center" valign="middle">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td valign="middle">
-                                    <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
-                                        <tr>
-                                            <td align="center">
-                                                <img class="logo-pulse" src="images/logo-leboncoin.gif" width="160" border="0" alt="Logo Leboncoin">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td width="16">&nbsp;</td>
-                                <td valign="middle">
-                                    <font face="Verdana" size="5" color="#FFFFFF">
-                                        <b>LEBONCOIN</b>
-                                    </font>
-                                    <br>
-                                    <font face="Verdana" size="2" color="#FF4E00">LE WEB COMME MARCHÉ LOCAL</font>
-                                    <br>
-                                    <font face="Verdana" size="1" color="#FFFFFF">INTERNET, MAIS AU COIN DE LA RUE</font>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td width="230" valign="middle" align="right">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td>
-                        <form class="recherche-2006" action="index.html" method="get" autocomplete="off">
-                            <table cellpadding="0" cellspacing="0" border="2" bordercolor="#FFFF00" bgcolor="#FFFF00">
-                                <tr>
-                                    <td bgcolor="#FFFF00" valign="middle">
-                                            <input type="text" name="find" size="18" value="Rechercher…" class="ph-gras" autocomplete="off" onfocus="if(this.value=='Rechercher…'||this.value=='...')this.value='';" onblur="if(this.value=='')this.value='Rechercher…';">
-                                    </td>
-                                    <td bgcolor="#000000" valign="middle">
-                                        <font face="Verdana" size="1">
-                                            <input type="submit" value="OK">
-                                        </font>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                                </td>
-                                <td width="36">&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <table class="marge-aa" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -2218,6 +2236,32 @@
             <table width="100%" cellpadding="22" cellspacing="0" border="0">
                 <tr>
                     <td>
+
+                        <!-- Titre de partie : ancien bandeau noir, désormais DANS la colonne. -->
+                        <a name="leboncoin"></a>
+                        <table width="100%" cellpadding="10" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+                            <tr>
+                                <td valign="middle" align="center" width="180">
+                                    <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
+                                        <tr>
+                                            <td align="center">
+                                                <img class="logo-pulse" src="images/logo-leboncoin.gif" width="150" border="0" alt="Logo Leboncoin">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td width="16">&nbsp;</td>
+                                <td valign="middle">
+                                    <font face="Verdana" size="5" color="#FFFFFF"><b>LEBONCOIN</b></font>
+                                    <br>
+                                    <font face="Verdana" size="2" color="#FF4E00">LE WEB COMME MARCHÉ LOCAL</font>
+                                    <br>
+                                    <font face="Verdana" size="1" color="#FFFFFF">INTERNET, MAIS AU COIN DE LA RUE</font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br>
 
                         <!-- LEBONCOIN : article au centre. Pastille [02] = class="ref". -->
 
@@ -2681,63 +2725,6 @@
 <div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
-        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
-            <a name="blogmusik"></a>
-            <table width="100%" cellpadding="6" cellspacing="0" border="0">
-                <tr>
-                    <td width="230" valign="middle" align="left">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td width="36">&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td align="center" valign="middle">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td valign="middle">
-                                    <img src="images/logo-blogmusik.gif" width="180" border="0" alt="Logo Blogmusik">
-                                </td>
-                                <td width="16">&nbsp;</td>
-                                <td valign="middle">
-                                    <font face="Verdana" size="5" color="#FFFFFF">
-                                        <b>BLOGMUSIK</b>
-                                    </font>
-                                    <br>
-                                    <font face="Verdana" size="2" color="#FF007A">L'IPOD DANS LE NAVIGATEUR</font>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td width="230" valign="middle" align="right">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td>
-                        <form class="recherche-2006" action="index.html" method="get" autocomplete="off">
-                            <table cellpadding="0" cellspacing="0" border="2" bordercolor="#FFFF00" bgcolor="#FFFF00">
-                                <tr>
-                                    <td bgcolor="#FFFF00" valign="middle">
-                                            <input type="text" name="find" size="18" value="Rechercher…" class="ph-gras" autocomplete="off" onfocus="if(this.value=='Rechercher…'||this.value=='...')this.value='';" onblur="if(this.value=='')this.value='Rechercher…';">
-                                    </td>
-                                    <td bgcolor="#000000" valign="middle">
-                                        <font face="Verdana" size="1">
-                                            <input type="submit" value="OK">
-                                        </font>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                                </td>
-                                <td width="36">&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <table class="marge-aa" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -2793,6 +2780,24 @@
             <table width="100%" cellpadding="22" cellspacing="0" border="0">
                 <tr>
                     <td>
+
+                        <!-- Titre de partie : ancien bandeau noir, désormais DANS la colonne. -->
+                        <a name="blogmusik"></a>
+                        <table width="100%" cellpadding="10" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+                            <tr>
+                                <td valign="middle" align="center" width="180">
+                                    <img src="images/logo-blogmusik.gif" width="170" border="0" alt="Logo Blogmusik">
+                                </td>
+                                <td width="16">&nbsp;</td>
+                                <td valign="middle">
+                                    <font face="Verdana" size="5" color="#FFFFFF"><b>BLOGMUSIK</b></font>
+                                    <br>
+                                    <font face="Verdana" size="2" color="#FF007A">L'IPOD DANS LE NAVIGATEUR</font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br>
 
                         <!-- BLOGMUSIK : même schéma (texte, captures, bouton Wayback). -->
 
@@ -3326,65 +3331,6 @@
 <div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
-        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
-            <a name="dadvsi"></a>
-            <table width="100%" cellpadding="6" cellspacing="0" border="0">
-                <tr>
-                    <td width="230" valign="middle" align="left">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td width="36">&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td align="center" valign="middle">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td valign="middle">
-                                    <img src="images/logo-republique-francaise-1999.gif" width="90" height="58" border="0" alt="Logo de la République française (1999)">
-                                </td>
-                                <td width="16">&nbsp;</td>
-                                <td valign="middle">
-                                    <font face="Verdana" size="5" color="#FFFFFF">
-                                        <b>DADVSI</b>
-                                    </font>
-                                    <br>
-                                    <font face="Verdana" size="2" color="#3C14FF">QUAND LE DROIT DEVIENT<br>UNE CONTRAINTE DE DESIGN</font>
-                                    <br>
-                                    <font face="Verdana" size="1" color="#FFFFFF">QUAND LE WEB RENCONTRE LE DROIT</font>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td width="230" valign="middle" align="right">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td>
-                        <form class="recherche-2006" action="index.html" method="get" autocomplete="off">
-                            <table cellpadding="0" cellspacing="0" border="2" bordercolor="#FFFF00" bgcolor="#FFFF00">
-                                <tr>
-                                    <td bgcolor="#FFFF00" valign="middle">
-                                            <input type="text" name="find" size="18" value="Rechercher…" class="ph-gras" autocomplete="off" onfocus="if(this.value=='Rechercher…'||this.value=='...')this.value='';" onblur="if(this.value=='')this.value='Rechercher…';">
-                                    </td>
-                                    <td bgcolor="#000000" valign="middle">
-                                        <font face="Verdana" size="1">
-                                            <input type="submit" value="OK">
-                                        </font>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                                </td>
-                                <td width="36">&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <table class="marge-aa" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -3440,6 +3386,26 @@
             <table width="100%" cellpadding="22" cellspacing="0" border="0">
                 <tr>
                     <td>
+
+                        <!-- Titre de partie : ancien bandeau noir, désormais DANS la colonne. -->
+                        <a name="dadvsi"></a>
+                        <table width="100%" cellpadding="10" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+                            <tr>
+                                <td valign="middle" align="center" width="110">
+                                    <img src="images/logo-republique-francaise-1999.gif" width="90" height="58" border="0" alt="Logo de la République française (1999)">
+                                </td>
+                                <td width="16">&nbsp;</td>
+                                <td valign="middle">
+                                    <font face="Verdana" size="5" color="#FFFFFF"><b>DADVSI</b></font>
+                                    <br>
+                                    <font face="Verdana" size="2" color="#3C14FF">QUAND LE DROIT DEVIENT<br>UNE CONTRAINTE DE DESIGN</font>
+                                    <br>
+                                    <font face="Verdana" size="1" color="#FFFFFF">QUAND LE WEB RENCONTRE LE DROIT</font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br>
 
                         <!-- DADVSI : bouton Visiter vers Légifrance (pas Wayback), même habillage. -->
 
@@ -3836,66 +3802,6 @@
 <div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
-        <td colspan="3" height="120" bgcolor="#000000" background="images/fond-damier.png" class="noir">
-            <a name="conclusion"></a>
-            <table width="100%" cellpadding="6" cellspacing="0" border="0">
-                <tr>
-                    <td width="230" valign="middle" align="left">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td width="36">&nbsp;</td>
-                                <td>&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td align="center" valign="middle">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td valign="middle">
-                                    <table cellpadding="4" cellspacing="0" border="0" bgcolor="#FFFFFF">
-                                        <tr>
-                                            <td align="center">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                                <td width="16">&nbsp;</td>
-                                <td valign="middle">
-                                    <font face="Verdana" size="5" color="#FFFFFF">
-                                        <b>CONCLUSION</b>
-                                    </font>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td width="230" valign="middle" align="right">
-                        <table cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td>
-                        <form class="recherche-2006" action="index.html" method="get" autocomplete="off">
-                            <table cellpadding="0" cellspacing="0" border="2" bordercolor="#FFFF00" bgcolor="#FFFF00">
-                                <tr>
-                                    <td bgcolor="#FFFF00" valign="middle">
-                                            <input type="text" name="find" size="18" value="Rechercher…" class="ph-gras" autocomplete="off" onfocus="if(this.value=='Rechercher…'||this.value=='...')this.value='';" onblur="if(this.value=='')this.value='Rechercher…';">
-                                    </td>
-                                    <td bgcolor="#000000" valign="middle">
-                                        <font face="Verdana" size="1">
-                                            <input type="submit" value="OK">
-                                        </font>
-                                    </td>
-                                </tr>
-                            </table>
-                        </form>
-                                </td>
-                                <td width="36">&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </td>
-    </tr>
-    <tr>
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc" valign="top">
             <table class="marge-aa" width="100%" height="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
@@ -3951,6 +3857,18 @@
             <table width="100%" cellpadding="22" cellspacing="0" border="0">
                 <tr>
                     <td>
+
+                        <!-- Titre de partie : ancien bandeau noir, désormais DANS la colonne. -->
+                        <a name="conclusion"></a>
+                        <table width="100%" cellpadding="12" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
+                            <tr>
+                                <td align="center" valign="middle">
+                                    <font face="Verdana" size="5" color="#FFFFFF"><b>CONCLUSION</b></font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br>
 
                         <a name="web-francais"></a>
                         <br><br>
