@@ -78,14 +78,14 @@
         table.btn-visite a, table.btn-visite a:hover, table.btn-visite a:visited { text-decoration: none; }
         a.accueil, a.accueil:visited { color: #FFFFFF; text-decoration: none; }
         a.accueil:hover, a.accueil:active { color: #FF00F8; text-decoration: none; }
-        /* Réplique MP3 : molette seule (sans chassis), moitié de taille, blanc sur bande noire. */
+        /* Réplique MP3 : molette seule (sans chassis), version noire, posée dans la colonne de contenu. */
         div.ipod-corps {
             position: relative;
             width: 82px;
             height: 82px;
             margin: 8px auto;
-            /* Réplique MP3 agrandie d'un facteur 1,25 (molette + boutons + pastille son). */
-            transform: scale(1.25);
+            /* Réplique MP3 agrandie d'un facteur ~1,56 (1,25 puis encore 1,25). */
+            transform: scale(1.5625);
             transform-origin: center center;
         }
         div.ipod-nav {
@@ -94,13 +94,13 @@
             height: 82px;
             margin: 0 auto;
             background:
-                radial-gradient(circle at 35% 30%, #ffffff 0%, #f2f2f2 42%, #d4d4d4 78%, #efefef 100%);
-            border: 1px solid #b0b0b0;
+                radial-gradient(circle at 35% 30%, #3a3a3a 0%, #1a1a1a 52%, #000000 100%);
+            border: 1px solid #000000;
             border-radius: 50%;
             box-shadow:
-                0 1px 0 #ffffff,
-                inset 0 2px 3px rgba(255,255,255,0.95),
-                inset 0 -3px 5px rgba(0,0,0,0.12);
+                0 1px 3px rgba(0,0,0,0.45),
+                inset 0 2px 3px rgba(255,255,255,0.12),
+                inset 0 -3px 6px rgba(0,0,0,0.6);
         }
         a.ipod-plus, a.ipod-minus, a.ipod-prev, a.ipod-next,
         a.ipod-plus:hover, a.ipod-minus:hover, a.ipod-prev:hover, a.ipod-next:hover,
@@ -122,7 +122,6 @@
             text-shadow: none;
             overflow: hidden;
             border-radius: 50%;
-            transition: background-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
         }
         a.ipod-plus, a.ipod-minus { left: 30px; }
         a.ipod-plus { top: 4px; }
@@ -150,13 +149,13 @@
             margin: -16px 0 0 -16px;
             text-align: center;
             background:
-                radial-gradient(circle at 35% 30%, #ffffff 0%, #e6e6e6 55%, #c8c8c8 100%);
-            border: 1px solid #9a9a9a;
+                radial-gradient(circle at 35% 30%, #2b2b2b 0%, #141414 55%, #000000 100%);
+            border: 1px solid #000000;
             border-radius: 50%;
             box-shadow:
-                0 1px 1px rgba(0,0,0,0.25),
-                inset 0 1px 2px rgba(255,255,255,0.95),
-                inset 0 -2px 2px rgba(0,0,0,0.12);
+                0 1px 1px rgba(0,0,0,0.4),
+                inset 0 1px 2px rgba(255,255,255,0.14),
+                inset 0 -2px 2px rgba(0,0,0,0.5);
         }
         a.ipod-son img {
             width: 12px;
@@ -164,7 +163,7 @@
             border: 0;
             margin-top: 10px;
             image-rendering: pixelated;
-            filter: brightness(0);
+            filter: brightness(0) invert(1);
         }
         a.ipod-son:hover, a.ipod-son:active {
             background:
@@ -172,11 +171,6 @@
         }
         a.ipod-son:hover img, a.ipod-son:active img {
             filter: brightness(0) invert(1);
-        }
-        td.ipod-bande {
-            background-color: #000000;
-            background-image: none;
-            height: 138px;
         }
         .titre-rubrique { cursor: url("images/curseur-main-2006.cur"), url("images/curseur-main-2006.png") 8 2, pointer; }
         .titre-rubrique:hover { background-color: #FF00F8; color: #FFFFFF !important; }
@@ -246,14 +240,17 @@
         #page-fouille { display: none; text-align: center; overflow: hidden; }
         a.reg { font-family: Verdana, sans-serif; font-size: 11px; color: #000000; text-decoration: none; }
         a.reg:hover, a.reg.reg-actif { background: #FFFF00; color: #000000; font-weight: bold; }
-        img.carte-france { border: 0; }
+        /* Carte de France : un seul SVG. Traits noirs des régions par-dessus,
+           remplissage rose fluo #FF00F8 seulement au survol (ou depuis la
+           liste RÉGIONS, via la classe .survol). Le reste = transparent. */
+        svg.carte-france { border: 0; display: inline-block; max-width: 100%; height: auto; }
+        svg.carte-france .carte-fills use { fill: transparent; cursor: url("images/curseur-main-2006.cur"), url("images/curseur-main-2006.png") 8 2, pointer; }
+        svg.carte-france .carte-fills use:hover,
+        svg.carte-france .carte-fills use.survol { fill: #FF00F8; }
+        svg.carte-france .carte-traits use { fill: none; stroke: #000000; stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; pointer-events: none; }
         #zone-carte, #chargement-region { min-height: 455px; }
-        #texte-chargement {
-            animation: clignote-2006 0.45s steps(2, end) infinite;
-        }
-        @keyframes clignote-2006 {
-            50% { visibility: hidden; }
-        }
+        /* Le clignotement de « Connexion depuis … » est fait en JS
+           (page2006.demarrerClignote), à l'ancienne : setInterval + visibility. */
         /* Préréglage doux (pas le clignotement 2 images). */
         table.btn-visite {
             animation: pulse-doux 1.6s ease-in-out infinite alternate;
@@ -295,15 +292,15 @@
             background-repeat: repeat;
             margin: 0;
             padding: 36px 0;
-            animation: fond-etoiles-scintil 2.4s steps(1, end) infinite;
+            /* Même battement que les GIF étoiles verticaux (AA-*.gif : 4 images
+               de 540 ms). 3 tuiles × 540 ms = 1,62 s : le fond et les rubans
+               d'étoiles changent sur le même tempo. */
+            animation: fond-etoiles-scintil 1.62s steps(1, end) infinite;
         }
         @keyframes fond-etoiles-scintil {
             0%, 100% { background-image: url("images/fond-etoiles-2006.png"); }
             33% { background-image: url("images/fond-etoiles-2006-b.png"); }
             66% { background-image: url("images/fond-etoiles-2006-c.png"); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-            html, body { animation: none; }
         }
         body,
         table, tbody, tr, td, th,
@@ -332,14 +329,8 @@
             z-index: 999990;
             -webkit-backdrop-filter: contrast(1.08) saturate(1.12) sepia(0.14) brightness(1.06);
             backdrop-filter: contrast(1.08) saturate(1.12) sepia(0.14) brightness(1.06);
-            background-image:
-                repeating-linear-gradient(
-                    to bottom,
-                    rgba(0, 0, 0, 0.11) 0px,
-                    rgba(0, 0, 0, 0.11) 1px,
-                    rgba(255, 220, 160, 0.03) 2px,
-                    transparent 3px
-                );
+            background-image: url("images/scanlines-2006.png");
+            background-repeat: repeat;
             box-shadow: inset 0 0 90px 28px rgba(0, 0, 0, 0.32);
             animation: ecran-2006-scintillement 5s infinite;
         }
@@ -546,8 +537,7 @@
             padding: 4px 6px;
         }
         input[type="text"].ph-gras {
-            font-weight: 900;
-            -webkit-text-stroke: 0.7px #000000;
+            font-weight: bold;
         }
         input[type="submit"] {
             border: 0;
@@ -591,25 +581,13 @@
         #rail-pages .cadre {
             padding-top: 0;
         }
-
-        /* Contours des régions de la carte : trait épaissi (érosion du noir). */
-        img.carte-france {
-            filter: url("#epaissir-carte");
-        }
-
-        /* Réplique MP3 : même fond sombre à damier que les autres bandeaux noirs. */
-        td.ipod-bande {
-            background-image: url("images/fond-damier.png");
-        }
     </style>
     <noscript>
         <style type="text/css">#porte-region { display: none; } #page-fouille { display: block !important; }</style>
     </noscript>
     <script type="text/javascript">
         /*
-          Boîte à outils pédagogique. APIs natives utilisées :
-          querySelector / querySelectorAll, getComputedStyle, console.table,
-          location.search, history.replaceState.
+          Boîte à outils pédagogique.
           Rien n'est chargé depuis Internet.
         */
         window.page2006 = {
@@ -658,44 +636,47 @@
             },
 
             structure: function () {
-                var site = document.querySelector("table.site");
+                var site = document.getElementsByClassName("site")[0];
                 var lignes = site ? site.rows.length : 0;
                 var donnees = {
                     largeurTableau: site ? site.getAttribute("width") : null,
                     nbLignes: lignes,
                     nbColonnesMax: site ? site.rows[0].cells.length : null,
-                    bandeauxNoirs: document.querySelectorAll("table.site > tbody > tr > td.noir, table.site > tr > td.noir").length,
-                    ancres: this.ancres(),
-                    styleCalculeContour: site ? getComputedStyle(site).outline : null
+                    bandeauxNoirs: document.getElementsByClassName("noir").length,
+                    ancres: this.ancres()
                 };
-                console.table(donnees);
+                console.log(donnees);
                 return donnees;
             },
 
             ancres: function () {
-                var nodes = document.querySelectorAll("a[name]");
+                var nodes = document.getElementsByTagName("a");
                 var noms = [];
-                for (var i = 0; i < nodes.length; i++) noms.push("#" + nodes[i].name);
+                for (var i = 0; i < nodes.length; i++) {
+                    if (nodes[i].name) noms.push("#" + nodes[i].name);
+                }
                 return noms;
             },
 
             liens: function () {
-                var as = document.querySelectorAll("a[href]");
-                var intern = 0, wayback = 0, sources = 0, autres = 0;
+                var as = document.getElementsByTagName("a");
+                var intern = 0, wayback = 0, sources = 0, autres = 0, total = 0;
                 for (var i = 0; i < as.length; i++) {
-                    var h = as[i].getAttribute("href") || "";
+                    var h = as[i].getAttribute("href");
+                    if (h === null) continue;
+                    total++;
                     if (h.charAt(0) === "#") intern++;
                     else if (h.indexOf("web.archive.org") !== -1) wayback++;
                     else if (as[i].className.indexOf("ref") !== -1) sources++;
                     else autres++;
                 }
-                var resume = { liensInternesMenu: intern, archivesWayback: wayback, pastillesSources: sources, autres: autres, total: as.length };
-                console.table(resume);
+                var resume = { liensInternesMenu: intern, archivesWayback: wayback, pastillesSources: sources, autres: autres, total: total };
+                console.log(resume);
                 return resume;
             },
 
             images: function () {
-                var imgs = document.querySelectorAll("img");
+                var imgs = document.getElementsByTagName("img");
                 var liste = [];
                 for (var i = 0; i < imgs.length; i++) {
                     liste.push({
@@ -704,7 +685,7 @@
                         largeurHTML: imgs[i].getAttribute("width")
                     });
                 }
-                console.table(liste);
+                console.log(liste);
                 return liste;
             }
         };
@@ -725,7 +706,7 @@
             leboncoin: 1,
             blogmusik: 2,
             dadvsi: 3, interoperabilite: 3,
-            conclusion: 4, "web-francais": 4, swf: 4, "2006-2026": 4, archeologie: 4,
+            conclusion: 4, "web-francais": 4, swf: 4,
             trous: 4, question: 4, constat: 4, bibliographie: 4, refaire: 4
         };
         page2006.sons = {};
@@ -797,7 +778,7 @@
             if (!rail || !train || !train.rows[0]) return;
             var cell = train.rows[0].cells[this.pageIndex];
             if (!cell) return;
-            var inner = cell.firstElementChild || cell;
+            var inner = cell.getElementsByClassName("cadre")[0] || cell;
             var h = inner.offsetHeight || cell.offsetHeight || 0;
             if (h) rail.style.height = h + "px";
         };
@@ -864,7 +845,7 @@
                     page2006._fxTimer = null;
                     done();
                 }
-            }, 28);
+            }, 12); /* transition accélérée ~2,25× (28 → 12 ms par image) */
         };
         page2006.jouerFxPuis = function (changer) {
             var type = this.fxNoms[this.fxTour % this.fxNoms.length];
@@ -1189,11 +1170,30 @@
             22: "Rhône-Alpes"
         };
 
+        page2006.zonesCarte = function () {
+            var g = document.getElementsByClassName("carte-fills")[0];
+            return g ? g.getElementsByTagName("use") : [];
+        };
+
+        page2006.liensRegion = function () {
+            var p = document.getElementById("porte-region");
+            var out = [], as, i;
+            if (!p) return out;
+            as = p.getElementsByTagName("a");
+            for (i = 0; i < as.length; i++) {
+                if ((" " + as[i].className + " ").indexOf(" reg ") !== -1) out.push(as[i]);
+            }
+            return out;
+        };
+
         page2006.survolRegion = function (id) {
-            var img = document.images.carte_france;
-            var liens = document.querySelectorAll("#porte-region a.reg");
+            var zones = this.zonesCarte();
+            var liens = this.liensRegion();
             var i;
-            if (img) img.src = "images/carte-lbc/france_" + id + ".gif";
+            for (i = 0; i < zones.length; i++) {
+                if (zones[i].getAttribute("data-r") === String(id)) zones[i].setAttribute("class", "survol");
+                else zones[i].removeAttribute("class");
+            }
             for (i = 0; i < liens.length; i++) {
                 if (i === id - 1) liens[i].className = "reg reg-actif";
                 else liens[i].className = "reg";
@@ -1203,17 +1203,35 @@
         };
 
         page2006.quitteRegion = function () {
-            var img = document.images.carte_france;
-            var liens = document.querySelectorAll("#porte-region a.reg");
+            var zones = this.zonesCarte();
+            var liens = this.liensRegion();
             var i;
-            if (img) img.src = "images/carte-lbc/france.gif";
+            for (i = 0; i < zones.length; i++) zones[i].removeAttribute("class");
             for (i = 0; i < liens.length; i++) liens[i].className = "reg";
             return true;
+        };
+
+        page2006.stopClignote = function () {
+            if (this._clignoteTimer) { window.clearInterval(this._clignoteTimer); this._clignoteTimer = null; }
+            var el = document.getElementById("texte-chargement");
+            if (el) el.style.visibility = "visible";
+        };
+
+        page2006.demarrerClignote = function () {
+            this.stopClignote();
+            var el = document.getElementById("texte-chargement");
+            if (!el) return;
+            var on = true;
+            this._clignoteTimer = window.setInterval(function () {
+                on = !on;
+                el.style.visibility = on ? "visible" : "hidden";
+            }, 225);
         };
 
         page2006.ouvrirFouille = function (nom) {
             var porte = document.getElementById("porte-region");
             var page = document.getElementById("page-fouille");
+            this.stopClignote();
             if (porte) porte.style.display = "none";
             if (page) page.style.display = "block";
             var badges = document.getElementsByClassName("badge-region");
@@ -1238,6 +1256,7 @@
             if (porte) porte.style.display = "block";
             if (wait) wait.style.display = "none";
             if (carte) carte.style.display = "block";
+            this.stopClignote();
             for (bi = 0; bi < badges.length; bi++) badges[bi].innerHTML = "";
             this.quitteRegion();
             window.scrollTo(0, 0);
@@ -1255,6 +1274,7 @@
             if (carte) carte.style.display = "none";
             if (wait) wait.style.display = "block";
             if (txt) txt.innerHTML = "Connexion depuis " + nom + "…";
+            this.demarrerClignote();
             this.jouer("modem");
             window.setTimeout(function () {
                 page2006.ouvrirFouille(nom);
@@ -1373,7 +1393,11 @@
                 }
             }
 
-            var titres = document.querySelectorAll(".marge-aa font");
+            var titres = [], margeAA = document.getElementsByClassName("marge-aa"), mi, fs, fi;
+            for (mi = 0; mi < margeAA.length; mi++) {
+                fs = margeAA[mi].getElementsByTagName("font");
+                for (fi = 0; fi < fs.length; fi++) titres.push(fs[fi]);
+            }
             var cibleTitre, ti, texteTitre;
             for (ti = 0; ti < titres.length; ti++) {
                 texteTitre = String(titres[ti].textContent || "").replace(/^\s+|\s+$/g, "");
@@ -1432,16 +1456,11 @@
 
 <body bgcolor="#080610" background="images/fond-etoiles-2006.png" text="#000000" link="#FF00F8" vlink="#7A0076" alink="#FF00F8">
 
-<!-- Filtre carte : érode le noir = trait des frontières régionales épaissi. -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-    <filter id="epaissir-carte" x="-10%" y="-10%" width="120%" height="120%">
-        <feMorphology operator="erode" radius="0.85"></feMorphology>
-    </filter>
-</svg>
-
 <center>
 
 <div id="porte-region">
+<!-- Contour rose fluo autour de l'accueil, comme les autres pages du site. -->
+<div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr class="rangee-accueil">
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc marge-regions" valign="top">
@@ -1477,46 +1496,97 @@
                 <tr>
                     <td>
                         <center>
-                            <font face="Verdana" size="4" color="#000000">
-                                <b>Avant de nous lire,<br>dites-nous où vous êtes&nbsp;?</b>
-                            </font>
-                            <br>
-                            <img src="images/gifcities/smiley-interrogatif-net.gif" width="64" height="64" border="0" alt="Smiley interrogatif">
-                            <br><br>
-                            <font face="Verdana" size="2" color="#404040">
-                                Comme un code postal, comme la porte Leboncoin de 2006 :
-                                on n'entre pas dans le Web français par le monde entier.
-                                On commence par un territoire.
-                            </font>
+                            <table cellpadding="0" cellspacing="0" border="0">
+                                <tr>
+                                    <td valign="middle" align="right">
+                                        <font face="Verdana" size="4" color="#000000">
+                                            <b>Avant de nous lire,<br>dites-nous où vous êtes&nbsp;?</b>
+                                        </font>
+                                    </td>
+                                    <td width="14">&nbsp;</td>
+                                    <td valign="middle">
+                                        <img src="images/gifcities/oncle-sam-pointe.gif" width="28" height="40" border="0" alt="Oncle Sam qui pointe du doigt">
+                                    </td>
+                                </tr>
+                            </table>
                         </center>
                         <br>
                         <div id="zone-carte">
                             <center>
-                                <img class="carte-france" name="carte_france" src="images/carte-lbc/france.gif" width="410" height="423" border="0" usemap="#france_map" alt="Carte des régions de France">
-<map name="france_map">
-                                <area shape="poly" coords="362,212,340,214,333,222,325,218,321,221,313,212,304,211,301,225,290,221,289,226,275,231,270,224,267,233,265,242,271,252,273,260,289,265,292,270,272,292,277,309,284,313,301,311,316,311,318,316,327,318,330,314,323,302,343,282,348,282,345,275,350,270,369,273,382,262,378,228,365,212" href="#haut" title="Rhône-Alpes" alt="Rhône-Alpes" onmouseover="page2006.survolRegion(22);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(22);">
-                                <area shape="poly" coords="364,275,350,272,347,275,352,284,343,284,324,303,332,313,328,321,317,318,313,313,299,313,305,328,298,332,295,340,282,354,339,372,377,359,405,325,374,284,366,275" href="#haut" title="Provence-Alpes-Côte d'Azur" alt="Provence-Alpes-Côte d'Azur" onmouseover="page2006.survolRegion(21);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(21);">
-                                <area shape="poly" coords="131,184,119,187,127,214,125,219,114,221,111,217,102,224,101,244,114,258,139,273,172,239,168,227,181,217,173,209,167,194,156,191,147,183,141,186,132,184" href="#haut" title="Poitou-Charentes" alt="Poitou-Charentes" onmouseover="page2006.survolRegion(20);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(20);">
-                                <area shape="poly" coords="189,43,204,58,202,65,204,84,216,84,231,93,244,91,253,101,258,96,258,82,271,75,269,65,280,52,264,48,247,53,223,45,222,40,215,42,205,37,193,32" href="#haut" title="Picardie" alt="Picardie" onmouseover="page2006.survolRegion(19);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(19);">
-                                <area shape="poly" coords="113,118,115,140,106,147,67,164,67,173,80,205,104,222,111,214,115,219,121,215,125,217,126,214,117,185,130,181,142,183,145,181,148,161,161,156,173,134,169,130,159,130,154,123,144,123,140,118" href="#haut" title="Pays de la Loire" alt="Pays de la Loire" onmouseover="page2006.survolRegion(18);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(18);">
-                                <area shape="poly" coords="191,30,199,35,207,36,213,41,224,38,224,43,248,50,263,46,281,50,279,29,231,-2,190,2" href="#haut" title="Nord-Pas-de-Calais" alt="Nord-Pas-de-Calais" onmouseover="page2006.survolRegion(17);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(17);">
-                                <area shape="poly" coords="192,280,181,296,175,299,173,319,142,330,134,328,132,343,142,355,132,370,129,385,197,397,200,391,212,391,212,388,206,385,205,371,197,360,200,352,227,353,229,345,248,336,255,325,247,318,239,297,232,287,225,295,212,300,210,286" href="#haut" title="Midi-Pyrénées" alt="Midi-Pyrénées" onmouseover="page2006.survolRegion(16);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(16);">
-                                <area shape="poly" coords="322,62,311,68,303,70,305,79,300,83,302,94,299,98,302,110,314,119,316,125,323,127,325,140,330,142,334,140,347,139,359,145,369,124,364,114,370,108,368,100,362,96,360,92,368,86,372,91,380,91,386,82" href="#haut" title="Lorraine" alt="Lorraine" onmouseover="page2006.survolRegion(15);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(15);">
-                                <area shape="poly" coords="181,219,171,225,170,229,173,238,166,246,168,251,180,253,182,255,185,273,191,278,211,284,214,265,224,262,222,243,226,239,226,226,215,217,202,217,182,219" href="#haut" title="Limousin" alt="Limousin" onmouseover="page2006.survolRegion(14);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(14);">
-                                <area shape="poly" coords="246,400,230,406,197,404,200,393,214,391,213,386,207,384,206,371,198,359,202,354,229,354,231,346,251,337,256,323,248,316,241,296,251,287,270,292,276,311,284,316,296,313,303,327,295,331,294,340,282,351" href="#haut" title="Languedoc-Roussillon" alt="Languedoc-Roussillon" onmouseover="page2006.survolRegion(13);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(13);">
-                                <area shape="poly" coords="190,47,190,47,202,59,200,67,202,84,196,88,189,102,178,108,164,102,153,74,148,57" href="#haut" title="Haute-Normandie" alt="Haute-Normandie" onmouseover="page2006.survolRegion(11);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(11);">
-                                <area shape="poly" coords="339,214,333,220,326,216,319,219,315,212,319,195,313,190,320,173,317,159,322,156,329,155,326,149,334,141,348,141,366,149,366,155,374,170" href="#haut" title="Franche-Comté" alt="Franche-Comté" onmouseover="page2006.survolRegion(10);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(10);">
-                                <area shape="poly" coords="202,86,191,101,197,114,205,120,209,127,223,127,226,134,238,133,242,124,252,123,255,114,253,105,243,92,231,94,216,86" href="#haut" title="Île-de-France" alt="Île-de-France" onmouseover="page2006.survolRegion(12);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(12);">
-                                <area shape="poly" coords="403,347,374,376,376,396,385,421,400,422,413,381,405,346" href="#haut" title="Corse" alt="Corse" onmouseover="page2006.survolRegion(9);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(9);">
-                                <area shape="poly" coords="292,41,292,41,277,57,270,65,272,76,260,82,260,96,253,105,257,113,254,122,260,135,272,144,289,142,292,139,298,142,301,152,311,159,319,156,325,156,323,147,328,143,323,139,321,128,315,126,313,120,301,110,298,98,300,93,299,82,303,77,301,68,311,66" href="#haut" title="Champagne-Ardenne" alt="Champagne-Ardenne" onmouseover="page2006.survolRegion(8);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(8);">
-                                <area shape="poly" coords="190,103,179,109,173,109,176,118,172,125,174,134,161,159,149,161,147,180,156,189,168,193,173,200,174,209,183,217,202,216,215,215,225,211,230,201,239,199,239,181,235,152,242,144,239,134,227,137,222,128,208,130,205,120,196,116,192,102" href="#haut" title="Centre" alt="Centre" onmouseover="page2006.survolRegion(7);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(7);">
-                                <area shape="poly" coords="68,163,92,152,105,146,114,137,112,117,102,119,98,116,96,111,88,105,60,107,44,96,0,106,2,142,48,166" href="#haut" title="Bretagne" alt="Bretagne" onmouseover="page2006.survolRegion(6);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(6);">
-                                <area shape="poly" coords="253,124,243,126,240,133,243,145,236,154,241,198,262,202,272,216,272,222,277,229,288,224,289,219,300,222,302,210,313,211,318,195,311,189,318,173,315,159,311,161,300,154,298,144,293,140,289,144,272,145,260,136,253,123" href="#haut" title="Bourgogne" alt="Bourgogne" onmouseover="page2006.survolRegion(5);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(5);">
-                                <area shape="poly" coords="152,74,162,102,171,107,175,120,166,130,154,121,144,121,140,115,116,117,106,115,101,118,98,113,98,101,89,57,111,62,118,76" href="#haut" title="Basse-Normandie" alt="Basse-Normandie" onmouseover="page2006.survolRegion(4);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(4);">
-                                <area shape="poly" coords="242,200,219,217,227,226,229,239,223,243,226,263,216,267,212,283,213,298,230,289,230,283,240,295,251,284,270,292,290,271,282,265,271,263,271,255,263,243,266,224,272,217,261,203,243,200" href="#haut" title="Auvergne" alt="Auvergne" onmouseover="page2006.survolRegion(3);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(3);">
-                                <area shape="poly" coords="87,349,79,356,89,359,91,369,95,366,111,376,116,376,122,380,128,380,131,369,140,355,135,347,130,345,131,328,132,325,142,329,154,323,171,319,171,312,173,306,174,296,181,294,190,279,183,275,181,255,171,253,164,249,138,274,121,264,103,254,87,349" href="#haut" title="Aquitaine" alt="Aquitaine" onmouseover="page2006.survolRegion(2);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(2);">
-                                <area shape="poly" coords="383,88,381,92,372,93,367,89,361,92,364,98,369,99,371,108,365,114,370,124,362,146,370,149,366,154,369,161,378,162,385,157,381,151,385,122,397,96,397,89,385,87" href="#haut" title="Alsace" alt="Alsace" onmouseover="page2006.survolRegion(1);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(1);">
-                            </map>
+                                <svg class="carte-france" viewBox="-3 -5 421 433" width="410" height="424" role="img" aria-label="Carte des régions de France">
+                                    <defs>
+                                        <polygon id="fr-r1" points="383,88,381,92,372,93,367,89,361,92,364,98,369,99,371,108,365,114,370,124,362,146,370,149,366,154,369,161,378,162,385,157,381,151,385,122,397,96,397,89,385,87"/>
+                                        <polygon id="fr-r2" points="87,349,79,356,89,359,91,369,95,366,111,376,116,376,122,380,128,380,131,369,140,355,135,347,130,345,131,328,132,325,142,329,154,323,171,319,171,312,173,306,174,296,181,294,190,279,183,275,181,255,171,253,164,249,138,274,121,264,103,254,87,349"/>
+                                        <polygon id="fr-r3" points="242,200,219,217,227,226,229,239,223,243,226,263,216,267,212,283,213,298,230,289,230,283,240,295,251,284,270,292,290,271,282,265,271,263,271,255,263,243,266,224,272,217,261,203,243,200"/>
+                                        <polygon id="fr-r4" points="152,74,162,102,171,107,175,120,166,130,154,121,144,121,140,115,116,117,106,115,101,118,98,113,98,101,89,57,111,62,118,76"/>
+                                        <polygon id="fr-r5" points="253,124,243,126,240,133,243,145,236,154,241,198,262,202,272,216,272,222,277,229,288,224,289,219,300,222,302,210,313,211,318,195,311,189,318,173,315,159,311,161,300,154,298,144,293,140,289,144,272,145,260,136,253,123"/>
+                                        <polygon id="fr-r6" points="68,163,92,152,105,146,114,137,112,117,102,119,98,116,96,111,88,105,60,107,44,96,0,106,2,142,48,166"/>
+                                        <polygon id="fr-r7" points="190,103,179,109,173,109,176,118,172,125,174,134,161,159,149,161,147,180,156,189,168,193,173,200,174,209,183,217,202,216,215,215,225,211,230,201,239,199,239,181,235,152,242,144,239,134,227,137,222,128,208,130,205,120,196,116,192,102"/>
+                                        <polygon id="fr-r8" points="292,41,292,41,277,57,270,65,272,76,260,82,260,96,253,105,257,113,254,122,260,135,272,144,289,142,292,139,298,142,301,152,311,159,319,156,325,156,323,147,328,143,323,139,321,128,315,126,313,120,301,110,298,98,300,93,299,82,303,77,301,68,311,66"/>
+                                        <polygon id="fr-r9" points="403,347,374,376,376,396,385,421,400,422,413,381,405,346"/>
+                                        <polygon id="fr-r10" points="339,214,333,220,326,216,319,219,315,212,319,195,313,190,320,173,317,159,322,156,329,155,326,149,334,141,348,141,366,149,366,155,374,170"/>
+                                        <polygon id="fr-r11" points="190,47,190,47,202,59,200,67,202,84,196,88,189,102,178,108,164,102,153,74,148,57"/>
+                                        <polygon id="fr-r12" points="202,86,191,101,197,114,205,120,209,127,223,127,226,134,238,133,242,124,252,123,255,114,253,105,243,92,231,94,216,86"/>
+                                        <polygon id="fr-r13" points="246,400,230,406,197,404,200,393,214,391,213,386,207,384,206,371,198,359,202,354,229,354,231,346,251,337,256,323,248,316,241,296,251,287,270,292,276,311,284,316,296,313,303,327,295,331,294,340,282,351"/>
+                                        <polygon id="fr-r14" points="181,219,171,225,170,229,173,238,166,246,168,251,180,253,182,255,185,273,191,278,211,284,214,265,224,262,222,243,226,239,226,226,215,217,202,217,182,219"/>
+                                        <polygon id="fr-r15" points="322,62,311,68,303,70,305,79,300,83,302,94,299,98,302,110,314,119,316,125,323,127,325,140,330,142,334,140,347,139,359,145,369,124,364,114,370,108,368,100,362,96,360,92,368,86,372,91,380,91,386,82"/>
+                                        <polygon id="fr-r16" points="192,280,181,296,175,299,173,319,142,330,134,328,132,343,142,355,132,370,129,385,197,397,200,391,212,391,212,388,206,385,205,371,197,360,200,352,227,353,229,345,248,336,255,325,247,318,239,297,232,287,225,295,212,300,210,286"/>
+                                        <polygon id="fr-r17" points="191,30,199,35,207,36,213,41,224,38,224,43,248,50,263,46,281,50,279,29,231,-2,190,2"/>
+                                        <polygon id="fr-r18" points="113,118,115,140,106,147,67,164,67,173,80,205,104,222,111,214,115,219,121,215,125,217,126,214,117,185,130,181,142,183,145,181,148,161,161,156,173,134,169,130,159,130,154,123,144,123,140,118"/>
+                                        <polygon id="fr-r19" points="189,43,204,58,202,65,204,84,216,84,231,93,244,91,253,101,258,96,258,82,271,75,269,65,280,52,264,48,247,53,223,45,222,40,215,42,205,37,193,32"/>
+                                        <polygon id="fr-r20" points="131,184,119,187,127,214,125,219,114,221,111,217,102,224,101,244,114,258,139,273,172,239,168,227,181,217,173,209,167,194,156,191,147,183,141,186,132,184"/>
+                                        <polygon id="fr-r21" points="364,275,350,272,347,275,352,284,343,284,324,303,332,313,328,321,317,318,313,313,299,313,305,328,298,332,295,340,282,354,339,372,377,359,405,325,374,284,366,275"/>
+                                        <polygon id="fr-r22" points="362,212,340,214,333,222,325,218,321,221,313,212,304,211,301,225,290,221,289,226,275,231,270,224,267,233,265,242,271,252,273,260,289,265,292,270,272,292,277,309,284,313,301,311,316,311,318,316,327,318,330,314,323,302,343,282,348,282,345,275,350,270,369,273,382,262,378,228,365,212"/>
+                                    </defs>
+                                    <g class="carte-fills">
+                                        <use href="#fr-r1" data-r="1" onmouseover="page2006.survolRegion(1);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(1);"><title>Alsace</title></use>
+                                        <use href="#fr-r2" data-r="2" onmouseover="page2006.survolRegion(2);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(2);"><title>Aquitaine</title></use>
+                                        <use href="#fr-r3" data-r="3" onmouseover="page2006.survolRegion(3);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(3);"><title>Auvergne</title></use>
+                                        <use href="#fr-r4" data-r="4" onmouseover="page2006.survolRegion(4);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(4);"><title>Basse-Normandie</title></use>
+                                        <use href="#fr-r5" data-r="5" onmouseover="page2006.survolRegion(5);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(5);"><title>Bourgogne</title></use>
+                                        <use href="#fr-r6" data-r="6" onmouseover="page2006.survolRegion(6);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(6);"><title>Bretagne</title></use>
+                                        <use href="#fr-r7" data-r="7" onmouseover="page2006.survolRegion(7);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(7);"><title>Centre</title></use>
+                                        <use href="#fr-r8" data-r="8" onmouseover="page2006.survolRegion(8);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(8);"><title>Champagne-Ardenne</title></use>
+                                        <use href="#fr-r9" data-r="9" onmouseover="page2006.survolRegion(9);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(9);"><title>Corse</title></use>
+                                        <use href="#fr-r10" data-r="10" onmouseover="page2006.survolRegion(10);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(10);"><title>Franche-Comté</title></use>
+                                        <use href="#fr-r11" data-r="11" onmouseover="page2006.survolRegion(11);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(11);"><title>Haute-Normandie</title></use>
+                                        <use href="#fr-r12" data-r="12" onmouseover="page2006.survolRegion(12);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(12);"><title>Île-de-France</title></use>
+                                        <use href="#fr-r13" data-r="13" onmouseover="page2006.survolRegion(13);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(13);"><title>Languedoc-Roussillon</title></use>
+                                        <use href="#fr-r14" data-r="14" onmouseover="page2006.survolRegion(14);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(14);"><title>Limousin</title></use>
+                                        <use href="#fr-r15" data-r="15" onmouseover="page2006.survolRegion(15);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(15);"><title>Lorraine</title></use>
+                                        <use href="#fr-r16" data-r="16" onmouseover="page2006.survolRegion(16);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(16);"><title>Midi-Pyrénées</title></use>
+                                        <use href="#fr-r17" data-r="17" onmouseover="page2006.survolRegion(17);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(17);"><title>Nord-Pas-de-Calais</title></use>
+                                        <use href="#fr-r18" data-r="18" onmouseover="page2006.survolRegion(18);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(18);"><title>Pays de la Loire</title></use>
+                                        <use href="#fr-r19" data-r="19" onmouseover="page2006.survolRegion(19);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(19);"><title>Picardie</title></use>
+                                        <use href="#fr-r20" data-r="20" onmouseover="page2006.survolRegion(20);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(20);"><title>Poitou-Charentes</title></use>
+                                        <use href="#fr-r21" data-r="21" onmouseover="page2006.survolRegion(21);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(21);"><title>Provence-Alpes-Côte d'Azur</title></use>
+                                        <use href="#fr-r22" data-r="22" onmouseover="page2006.survolRegion(22);return true;" onmouseout="page2006.quitteRegion();return true;" onclick="return page2006.entrerRegion(22);"><title>Rhône-Alpes</title></use>
+                                    </g>
+                                    <g class="carte-traits" aria-hidden="true">
+                                        <use href="#fr-r1"/>
+                                        <use href="#fr-r2"/>
+                                        <use href="#fr-r3"/>
+                                        <use href="#fr-r4"/>
+                                        <use href="#fr-r5"/>
+                                        <use href="#fr-r6"/>
+                                        <use href="#fr-r7"/>
+                                        <use href="#fr-r8"/>
+                                        <use href="#fr-r9"/>
+                                        <use href="#fr-r10"/>
+                                        <use href="#fr-r11"/>
+                                        <use href="#fr-r12"/>
+                                        <use href="#fr-r13"/>
+                                        <use href="#fr-r14"/>
+                                        <use href="#fr-r15"/>
+                                        <use href="#fr-r16"/>
+                                        <use href="#fr-r17"/>
+                                        <use href="#fr-r18"/>
+                                        <use href="#fr-r19"/>
+                                        <use href="#fr-r20"/>
+                                        <use href="#fr-r21"/>
+                                        <use href="#fr-r22"/>
+                                    </g>
+                                </svg>
                                 <br>
                                 <font face="Verdana" size="1" color="#FF00F8"><i>* Cette donnée sera sauvegardée… nulle part.</i></font>
                             </center>
@@ -1529,8 +1599,6 @@
                                 <font face="Verdana" size="4" color="#FF00F8">
                                     <b id="texte-chargement">Connexion depuis …</b>
                                 </font>
-                                <br>
-                                <font face="Verdana" size="2" color="#000000">Veuillez patienter…</font>
                                 <br><br>
                             </center>
                         </div>
@@ -1545,7 +1613,7 @@
                     <br><br>
                     <b>BIENVENUE</b>
                     <hr size="2" color="#FF00F8">
-                    Cliquez une région
+                    Cliquez sur une région
                     pour ouvrir
                     la page de recherche
                 </font>
@@ -1558,14 +1626,21 @@
        BIENVENUE reste à gauche, la carte au centre, la liste RÉGIONS passe
        à droite de la carte. */
     (function () {
-        var ligne = document.querySelector("#porte-region .rangee-accueil");
+        var pr = document.getElementById("porte-region");
+        if (!pr) return;
+        var ligne, rows = pr.getElementsByTagName("tr"), i;
+        for (i = 0; i < rows.length; i++) {
+            if ((" " + rows[i].className + " ").indexOf(" rangee-accueil ") !== -1) { ligne = rows[i]; break; }
+        }
         if (!ligne) return;
-        var bienvenue = ligne.querySelector(".marge-bienvenue");
-        var regions = ligne.querySelector(".marge-regions");
-        if (bienvenue) ligne.insertBefore(bienvenue, ligne.firstElementChild);
+        var bienvenue = ligne.getElementsByClassName("marge-bienvenue")[0];
+        var regions = ligne.getElementsByClassName("marge-regions")[0];
+        var premier = ligne.getElementsByTagName("td")[0];
+        if (bienvenue && premier) ligne.insertBefore(bienvenue, premier);
         if (regions) ligne.appendChild(regions);
     }());
 </script>
+</div><!-- .cadre -->
 </div>
 
 <div id="page-fouille">
@@ -1689,8 +1764,8 @@
                 <hr size="2" color="#FF00F8">
                 <font color="#FF00F8">→</font> <a href="#intro"><font color="#000000">La question</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#terrain"><font color="#000000">Le terrain</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Comment on a fouillé</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Se connecter</font></a>
+                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Méthodes de fouilles</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Comment on se connecte</font></a>
                 <br><br>
                 <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
                 <font color="#FF00F8">→</font> Le marché local<br>
@@ -1713,7 +1788,6 @@
                 <font color="#FF00F8">→</font> <a href="#conclusion"><font color="#000000">Conclusion</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#web-francais"><font color="#000000">Web « français »</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#archeologie"><font color="#000000">Tableau 2006</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#refaire"><font color="#000000">Refaire</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#trous"><font color="#000000">Trous noirs</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
@@ -1754,7 +1828,7 @@
                         <font face="Verdana" size="3">
 
                             <p>
-                                En 2006, le Web n'est déjà plus nouveau.
+                                En 2006, le <a class="wiki" href="https://web.archive.org/web/20060601000000/http://fr.wikipedia.org/wiki/World_Wide_Web" target="_blank" rel="noopener noreferrer">Web</a> n'est déjà plus nouveau.
                                 <img class="smiley-new" src="images/gifcities/new.gif" width="30" height="14" border="0" align="absmiddle" alt="">
                             </p>
 
@@ -1834,12 +1908,9 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                La parcelle est petite.
-                                Les traces sont incomplètes.
-                                Certaines ont disparu.
-                                D'autres ont été archivées.
-                                Ce qu'on observe aujourd'hui n'est jamais exactement
-                                ce que voyait un utilisateur en 2006.
+                                Les traces sont incomplètes : certaines ont disparu, d'autres
+                                ont été archivées. Ce qu'on observe aujourd'hui n'est jamais
+                                exactement ce que voyait un utilisateur en 2006.
                             </p>
                         </font>
 
@@ -1847,7 +1918,7 @@
                         <table width="100%" cellpadding="8" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
                             <tr>
                                 <td align="center">
-                                    <font face="Verdana" size="4" color="#FFFFFF"><b>COMMENT ON A FOUILLÉ</b></font>
+                                    <font face="Verdana" size="4" color="#FFFFFF"><b>MÉTHODES DE FOUILLES</b></font>
                                 </td>
                             </tr>
                         </table>
@@ -1856,23 +1927,24 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                On n'a pas seulement cherché des informations sur 2006.
-                                On a essayé de retrouver des traces produites à cette époque.
+                                On commence par essayer de retrouver du vrai contenu produit à
+                                cette époque, pas seulement de l'information.
                             </p>
                             <p>
                                 <b>01 — RETROUVER</b><br>
                                 <a class="wiki" href="https://web.archive.org/web/20060831052302/http://fr.wikipedia.org/wiki/Internet_Archive" target="_blank" rel="noopener noreferrer">Wayback Machine</a> ; archives de presse ; documents
-                                institutionnels ; articles publiés en 2006 ; captures
-                                d'écran ; formats de l'époque.
+                                institutionnels ; articles publiés en 2006 ;
+                                <a class="wiki" href="https://web.archive.org/web/20060601000000/http://fr.wikipedia.org/wiki/Capture_d%27%C3%A9cran" target="_blank" rel="noopener noreferrer">captures d'écran</a> ; formats de l'époque.
                                 La BnF rappelle que le Web français fait l'objet d'une
                                 collecte patrimoniale, et que ses archives remontent à 1996.
                                 Cette archive n'est pas une copie parfaite du Web vivant :
-                                les collectes se font à intervalles, le <a class="wiki" href="https://web.archive.org/web/20060214053338/http://fr.wikipedia.org/wiki/D%C3%A9p%C3%B4t_l%C3%A9gal" target="_blank" rel="noopener noreferrer">dépôt légal</a> du Web
+                                les collectes se font à intervalles, par des <a class="wiki" href="https://web.archive.org/web/20060601000000/http://fr.wikipedia.org/wiki/Robot_d%27indexation" target="_blank" rel="noopener noreferrer">robots d'indexation</a>
+                                qui ne parcourent pas toutes les pages, et le <a class="wiki" href="https://web.archive.org/web/20060214053338/http://fr.wikipedia.org/wiki/D%C3%A9p%C3%B4t_l%C3%A9gal" target="_blank" rel="noopener noreferrer">dépôt légal</a> du Web
                                 n'est pas exhaustif.
                                 <a class="ref" href="https://www.bnf.fr/fr/comprendre-le-depot-legal-du-web" target="_blank" rel="noopener noreferrer">[11]</a>
                             </p>
                             <p>
-                                Ce qui manque encore dans notre fouille, par exemple :
+                                Ce qui reste encore inaccessible même après recherche, par exemple :
                                 le détail de chaque page d'annonce Leboncoin au-delà
                                 des captures déjà réunies ; le poids exact des fichiers
                                 chargés ; l'expérience de la personne devant l'écran.
@@ -1897,7 +1969,7 @@
                         <table width="100%" cellpadding="8" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
                             <tr>
                                 <td align="center">
-                                    <font face="Verdana" size="4" color="#FFFFFF"><b>SE CONNECTER</b></font>
+                                    <font face="Verdana" size="4" color="#FFFFFF"><b>COMMENT ON SE CONNECTE</b></font>
                                 </td>
                             </tr>
                         </table>
@@ -1979,6 +2051,21 @@
                         </font>
 
 
+
+                        <br>
+
+                        <center>
+                        <div class="ipod-corps">
+                            <div class="ipod-nav">
+                                <a class="ipod-plus" href="#">+</a>
+                                <a class="ipod-prev" href="#">◀</a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-next" href="#">▶</a>
+                                <a class="ipod-minus" href="#">−</a>
+                            </div>
+                        </div>
+                        </center>
+
                     </td>
                 </tr>
             </table>
@@ -2030,23 +2117,6 @@
             </table>
         </td>
     </tr>
-    <tr>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-        <td width="580" bgcolor="#000000" class="ipod-bande" align="center" valign="middle">
-            <center>
-                        <div class="ipod-corps">
-                            <div class="ipod-nav">
-                                <a class="ipod-plus" href="#">+</a>
-                                <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
-                                <a class="ipod-next" href="#">▶</a>
-                                <a class="ipod-minus" href="#">−</a>
-                            </div>
-                        </div>
-            </center>
-        </td>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-    </tr>
     <!-- Menu bas : copie du menu haut (en 2006 on répète le menu en bas de page). -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
@@ -2094,7 +2164,7 @@
                     <a href="#dadvsi" class="pied">G</a> -
                     <a href="#web-francais" class="pied">H</a> -
                     <a href="#swf" class="pied">I</a> -
-                    <a href="#archeologie" class="pied">J</a> -
+                    <a href="#refaire" class="pied">J</a> -
                     <a href="#trous" class="pied">K</a> -
                     <a href="#question" class="pied">L</a> -
                     <a href="#bibliographie" class="pied">M</a> -
@@ -2145,14 +2215,14 @@
                     <a class="pied" href="https://www.lemonde.fr/technologies/article/2006/11/22/web-2-0-le-net-deuxieme-generation_837305_651865.html" target="_blank" rel="noopener noreferrer">[14] Le Monde</a>
                     <br>
                     <a href="index.html" class="pied">2006 DESIGN WEB</a>
-                    Copyright 2006 | Johann et Thaddée |
+                    Copyright 2006 | Johann et Thaddée n°1 page de recherche web |
                     <a href="#leboncoin" class="pied">Leboncoin</a>
                     |
                     <a href="#blogmusik" class="pied">Blogmusik</a>
                     |
                     <a href="#dadvsi" class="pied">DADVSI</a>
                     <br>
-                    archéologie du web, leboncoin, blogmusik, dadvsi, <a class="wiki" href="https://web.archive.org/web/20060815160459/http://fr.wikipedia.org:80/wiki/Haut_d%C3%A9bit" target="_blank" rel="noopener noreferrer">haut débit</a>, flash, wayback machine, 2006
+                    archéologie du web, leboncoin, blogmusik, dadvsi, haut débit, flash, wayback machine, 2006
                 </font>
             </center>
         </td>
@@ -2192,8 +2262,8 @@
                 <hr size="2" color="#FF00F8">
                 <font color="#FF00F8">→</font> <a href="#intro"><font color="#000000">La question</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#terrain"><font color="#000000">Le terrain</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Comment on a fouillé</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Se connecter</font></a>
+                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Méthodes de fouilles</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Comment on se connecte</font></a>
                 <br><br>
                 <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
                 <font color="#FF00F8">→</font> Le marché local<br>
@@ -2216,7 +2286,6 @@
                 <font color="#FF00F8">→</font> <a href="#conclusion"><font color="#000000">Conclusion</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#web-francais"><font color="#000000">Web « français »</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#archeologie"><font color="#000000">Tableau 2006</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#refaire"><font color="#000000">Refaire</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#trous"><font color="#000000">Trous noirs</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
@@ -2276,10 +2345,9 @@
                                 <a class="ref" href="https://leboncoincorporate.com/entreprise/" target="_blank" rel="noopener noreferrer">[02]</a>
                             </p>
                             <p>
-                                Internet est mondial.
-                                Mais l'interface demande : où êtes-vous ?
-                                Le réseau permet de chercher partout.
-                                Le service choisit de réduire cet espace.
+                                Internet est mondial, mais l'interface demande d'abord où on est.
+                                Le réseau permet de chercher partout, et le service choisit au
+                                contraire de réduire cet espace.
                             </p>
                             <p>
                                 Sur la chronologie de La revue des médias (INA),
@@ -2335,13 +2403,12 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                <b>Ce que nous voyons</b> sur cette capture du 15 juin 2006
-                                <a class="ref" href="https://web.archive.org/web/20060615002024/https://www.leboncoin.fr/" target="_blank" rel="noopener noreferrer">[06]</a> :
-                                du texte ; des catégories ; des listes ; des champs de
-                                recherche ; des liens ; de petites images ; des éléments
-                                graphiques simples.
-                                La page n'essaie pas de transformer l'écran en spectacle.
-                                Elle organise une quantité d'informations.
+                                Sur cette capture du 15 juin 2006
+                                <a class="ref" href="https://web.archive.org/web/20060615002024/https://www.leboncoin.fr/" target="_blank" rel="noopener noreferrer">[06]</a>, on voit
+                                du texte, des catégories, des listes, des champs de recherche,
+                                des liens, de petites images et des éléments graphiques simples.
+                                La page ne cherche pas à en mettre plein la vue, elle organise
+                                une grande quantité d'informations.
                             </p>
                         </font>
 
@@ -2376,11 +2443,6 @@
                                 éléments à charger et de rendre le service accessible au
                                 plus grand nombre
                                 <img src="images/gifcities/etoile-jaune.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
-                            </p>
-                            <p>
-                                Une image de plus, c'est un fichier, une requête, des données,
-                                un temps de chargement. On commence par lire. Puis on choisit.
-                                Puis on demande éventuellement davantage.
                             </p>
                         </font>
 
@@ -2417,6 +2479,35 @@
                             </tr>
                         </table>
 
+                        <font face="Verdana" size="3">
+                            <p>
+                                L'une des particularités du site est de remettre la
+                                proximité géographique au centre de l'expérience.
+                                <img src="images/gifcities/xp.gif" width="34" height="32" border="0" align="absmiddle" alt="">
+                                L'interface reprend l'organisation d'un journal de
+                                petites annonces local.
+                            </p>
+                            <p>
+                                Leboncoin ne présente pas Internet comme un espace sans
+                                frontières : il pose au contraire des limites territoriales.
+                                Ça va à l'encontre de l'idée d'un Web qui donne accès à des
+                                biens « partout dans le monde ». Le site mise plutôt sur la
+                                proximité et la rencontre entre particuliers.
+                                <a class="ref" href="https://leboncoincorporate.com/entreprise/" target="_blank" rel="noopener noreferrer">[02]</a>
+                            </p>
+                            <p>
+                                Le site met donc en avant l'accessibilité et la simplicité pour tous,
+                                aussi et surtout à petite échelle
+                                <img class="smiley" src="images/gifcities/heart.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                            </p>
+                            <p>
+                                Leboncoin remet en question l'idée d'un Web forcément mondial dans
+                                l'usage : le réseau est mondial, mais l'usage peut rester local.
+                                On peut se demander si c'est une spécificité française ou juste
+                                une façon d'utiliser un modèle déjà international (Blocket).
+                            </p>
+                        </font>
+
                         <br>
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF4E00">
@@ -2450,51 +2541,20 @@
                                 <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-annonce-desactivee_2006.png" width="440" border="2" alt="Annonce Leboncoin désactivée et non consultable">
                                     <br><br>
-                                    <font face="Courier New" size="2" class="legende">Une annonce désactivée : une trace qui ne permet plus de consulter le contenu initial</font>
+                                    <font face="Courier New" size="2" class="legende">Une annonce Leboncoin désactivée</font>
                                 </td>
                             </tr>
                         </table>
 
                         <font face="Verdana" size="3">
                             <p>
-                                Cette capture fait apparaître l'un des angles morts de l'archive :
-                                une petite annonce a existé, mais son contenu n'est plus accessible.
-                                Ces pages très nombreuses, souvent brèves et supprimées après leur
-                                publication, sont difficiles à conserver une par une. Elles disparaissent
-                                aussi du site lui-même lorsqu'elles ne sont plus utiles, notamment pour
-                                limiter le volume de données à stocker. L'archive garde alors parfois une
-                                adresse ou un écran d'erreur, mais plus l'annonce qui s'y trouvait.
-                            </p>
-                        </font>
-
-                        <font face="Verdana" size="3">
-                            <p>
-                                L'une des particularités du site est de remettre la
-                                proximité géographique au centre de l'expérience.
-                                <img src="images/gifcities/xp.gif" width="34" height="32" border="0" align="absmiddle" alt="">
-                                L'interface reprend l'organisation d'un journal de
-                                petites annonces local.
-                            </p>
-                            <p>
-                                Leboncoin n'impose pas Internet comme un espace sans
-                                frontières. Il impose des délimitations territoriales.
-                                Cette approche constitue une rupture avec l'idée d'un
-                                Web donnant accès à des biens « partout dans le monde ».
-                                Le site mise au contraire sur la proximité et la rencontre
-                                entre particuliers.
-                                <a class="ref" href="https://leboncoincorporate.com/entreprise/" target="_blank" rel="noopener noreferrer">[02]</a>
-                            </p>
-                            <p>
-                                Ainsi, le site prône l'accessibilité et la simplicité à tous
-                                <img class="smiley" src="images/gifcities/heart.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
-                            </p>
-                            <p>
-                                <b>Hypothèse.</b>
-                                Leboncoin fait remettre en question l'idée d'un Web
-                                nécessairement mondial dans l'expérience.
-                                Le réseau est mondial. L'usage peut être local.
-                                Est-ce une spécificité française, ou une manière particulière
-                                d'utiliser un modèle déjà internationalisé (Blocket) ?
+                                Ce screen montre une annonce Leboncoin désactivée : une page qui
+                                existait en 2006 mais qui n'a jamais été sauvegardée, et qu'on ne
+                                peut donc plus observer ni analyser. Ça illustre bien un problème de
+                                la conservation du web : ce genre de page (les petites annonces)
+                                existe en très grand nombre, elles ne peuvent pas toutes être
+                                archivées, et en plus elles sont souvent supprimées rapidement par
+                                les sites eux-mêmes, pour ne pas avoir à tout stocker.
                             </p>
                         </font>
 
@@ -2505,23 +2565,40 @@
                                 <td bgcolor="#FFD8C4" background="images/fond-damier-lbc-clair.png" class="lbcclair" align="center">
                                     <img src="images/leboncoin-info-juin_2006.png" width="440" border="2" alt="Page information de Leboncoin, juin 2006">
                                     <br><br>
-                                    <font face="Courier New" size="2" class="legende">Page « info » de Leboncoin, conservée à partir de juin 2006</font>
+                                    <font face="Courier New" size="2" class="legende">Page « infos » de Leboncoin, juin 2006</font>
                                 </td>
                             </tr>
                         </table>
 
                         <font face="Verdana" size="3">
                             <p>
-                                La page « info » expose d'emblée les droits d'auteur et les informations
-                                légales. Cette place accordée au cadre juridique tranche avec des sites plus
-                                petits, construits de façon plus organique, et signale le sérieux de l'arrivée
-                                de Leboncoin sur le marché français. La capture commence en juin 2006 ; elle ne
-                                permet toutefois pas de voir ce que cette page contenait avant août. Elle reste
-                                néanmoins révélatrice : ces informations précèdent l'adoption de la loi DADVSI,
-                                intervenue en août de la même année.
+                                Ce screen montre la page « infos » de leboncoin à l'époque, qui met
+                                en avant dès la première ligne les droits d'auteur et les
+                                informations légales. Ça fait une grosse différence avec les sites
+                                plus petits, faits de manière plus organique, et ça montre le
+                                sérieux avec lequel leboncoin arrive sur le marché français. Ce
+                                <a class="wiki" href="https://web.archive.org/web/20060601000000/http://fr.wikipedia.org/wiki/Capture_d%27%C3%A9cran" target="_blank" rel="noopener noreferrer">screenshot</a> date de juin 2006 et il n'existe pas de version archivée
+                                de cette page « infos » avant cette date, donc on ne peut pas savoir
+                                ce qu'elle contenait plus tôt. Ça reste intéressant vu que la loi
+                                DADVSI n'arrive qu'en août de la même année.
                             </p>
                         </font>
 
+
+
+                        <br>
+
+                        <center>
+                        <div class="ipod-corps">
+                            <div class="ipod-nav">
+                                <a class="ipod-plus" href="#">+</a>
+                                <a class="ipod-prev" href="#">◀</a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-next" href="#">▶</a>
+                                <a class="ipod-minus" href="#">−</a>
+                            </div>
+                        </div>
+                        </center>
 
                     </td>
                 </tr>
@@ -2574,23 +2651,6 @@
             </table>
         </td>
     </tr>
-    <tr>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-        <td width="580" bgcolor="#000000" class="ipod-bande" align="center" valign="middle">
-            <center>
-                        <div class="ipod-corps">
-                            <div class="ipod-nav">
-                                <a class="ipod-plus" href="#">+</a>
-                                <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
-                                <a class="ipod-next" href="#">▶</a>
-                                <a class="ipod-minus" href="#">−</a>
-                            </div>
-                        </div>
-            </center>
-        </td>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-    </tr>
     <!-- Menu bas : copie du menu haut (en 2006 on répète le menu en bas de page). -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
@@ -2638,7 +2698,7 @@
                     <a href="#dadvsi" class="pied">G</a> -
                     <a href="#web-francais" class="pied">H</a> -
                     <a href="#swf" class="pied">I</a> -
-                    <a href="#archeologie" class="pied">J</a> -
+                    <a href="#refaire" class="pied">J</a> -
                     <a href="#trous" class="pied">K</a> -
                     <a href="#question" class="pied">L</a> -
                     <a href="#bibliographie" class="pied">M</a> -
@@ -2689,14 +2749,14 @@
                     <a class="pied" href="https://www.lemonde.fr/technologies/article/2006/11/22/web-2-0-le-net-deuxieme-generation_837305_651865.html" target="_blank" rel="noopener noreferrer">[14] Le Monde</a>
                     <br>
                     <a href="index.html" class="pied">2006 DESIGN WEB</a>
-                    Copyright 2006 | Johann et Thaddée |
+                    Copyright 2006 | Johann et Thaddée n°1 page de recherche web |
                     <a href="#leboncoin" class="pied">Leboncoin</a>
                     |
                     <a href="#blogmusik" class="pied">Blogmusik</a>
                     |
                     <a href="#dadvsi" class="pied">DADVSI</a>
                     <br>
-                    archéologie du web, leboncoin, blogmusik, dadvsi, <a class="wiki" href="https://web.archive.org/web/20060815160459/http://fr.wikipedia.org:80/wiki/Haut_d%C3%A9bit" target="_blank" rel="noopener noreferrer">haut débit</a>, flash, wayback machine, 2006
+                    archéologie du web, leboncoin, blogmusik, dadvsi, haut débit, flash, wayback machine, 2006
                 </font>
             </center>
         </td>
@@ -2736,8 +2796,8 @@
                 <hr size="2" color="#FF00F8">
                 <font color="#FF00F8">→</font> <a href="#intro"><font color="#000000">La question</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#terrain"><font color="#000000">Le terrain</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Comment on a fouillé</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Se connecter</font></a>
+                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Méthodes de fouilles</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Comment on se connecte</font></a>
                 <br><br>
                 <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
                 <font color="#FF00F8">→</font> Le marché local<br>
@@ -2760,7 +2820,6 @@
                 <font color="#FF00F8">→</font> <a href="#conclusion"><font color="#000000">Conclusion</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#web-francais"><font color="#000000">Web « français »</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#archeologie"><font color="#000000">Tableau 2006</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#refaire"><font color="#000000">Refaire</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#trous"><font color="#000000">Trous noirs</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
@@ -2863,30 +2922,54 @@
                         <font face="Verdana" size="3">
                             <p>
                                 Avant même le catalogue, l'interface demande de se connecter :
-                                l'écoute n'est pas un simple affichage de page, c'est un
-                                compte, un accès, une session
+                                pour écouter il faut un compte et une session, ce n'est pas
+                                seulement une page qui s'affiche
                                 <img class="smiley" src="images/gifcities/mail2.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                            </p>
+                        </font>
+
+                        <font face="Verdana" size="4" color="#FF007A"><b>Reproduire un objet physique</b></font>
+                        <hr size="2" color="#FF007A">
+
+                        <font face="Verdana" size="3">
+                            <p>
+                                Dans la continuité du skeuomorphisme, un lecteur <a class="wiki" href="https://web.archive.org/web/20060103073143/http://fr.wikipedia.org:80/wiki/MP3" target="_blank" rel="noopener noreferrer">MP3</a>
+                                devient une interface dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>. En septembre 2006,
+                                TechCrunch décrit un lecteur <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Flash</a> « that looks like an iPod »
+                                <img class="smiley" src="images/gifcities/flower.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <a class="ref" href="https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/" target="_blank" rel="noopener noreferrer">[04]</a>
+                            </p>
+                            <p>
+                                L'interface rappelle les appareils tangibles que les
+                                utilisateurs possèdent déjà. Reprendre une forme familière
+                                rend un nouvel usage compréhensible : on reconnaît le
+                                baladeur, on sait comment lancer l'écoute.
                             </p>
                         </font>
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
                                 <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
-                                    <img src="images/blogmusik-archive-absente-wayback.png" width="440" border="2" alt="Archive Blogmusik absente de la Wayback Machine">
+                                    <img src="images/blogmusik-ipod_2006.jpg" width="440" border="2" alt="Réplique web de l'iPod sur Blogmusik">
                                     <br><br>
-                                    <font face="Courier New" size="2" class="legende">Une page Blogmusik demandée, mais non sauvegardée par la Wayback Machine</font>
+                                    <font face="Courier New" size="2" class="legende">Le lecteur musical dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a></font>
                                 </td>
                             </tr>
                         </table>
 
-                        <font face="Verdana" size="3">
-                            <p>
-                                Cette absence est aussi une information : l'archive ne reconstitue pas le site
-                                dans son intégralité. Une page peut avoir été accessible à l'époque sans avoir été
-                                collectée, ou sans que sa collecte soit aujourd'hui consultable. Ici, la lacune
-                                fait partie de l'objet étudié autant que les captures conservées.
-                            </p>
-                        </font>
+                        <br>
+
+                        <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
+                            <tr>
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
+                                    <img src="images/blogmusik-partage_2006.jpg" width="440" border="2" alt="Interface de partage sur le lecteur iPod Blogmusik">
+                                    <br><br>
+                                    <font face="Courier New" size="2" class="legende">Interface de partage de musique</font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <br>
 
                         <font face="Verdana" size="4" color="#FF007A">
                             <b>Organiser une bibliothèque musicale illimitée dans un écran limité</b>
@@ -2895,14 +2978,14 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                Le problème change complètement d'échelle. Comment présenter
-                                des milliers, puis des centaines de milliers de morceaux
-                                sans perdre l'utilisateur
-                                <img class="smiley" src="images/gifcities/ball.gif" width="16" height="16" border="0" align="absmiddle" alt=""> ?
+                                Le problème change complètement d'échelle : il faut présenter
+                                des milliers, puis des centaines de milliers de morceaux sans
+                                perdre l'utilisateur
+                                <img class="smiley" src="images/gifcities/ball.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
-                                La réponse passe par la recherche ; les listes ; les
-                                catégories ; les artistes ; les genres ; les liens.
+                                Ça passe par la recherche, les listes, les catégories, les
+                                artistes, les genres et les liens.
                             </p>
                         </font>
 
@@ -2950,80 +3033,57 @@
                                 <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-redirection-commerciale_2006.png" width="440" border="2" alt="Lien de redirection commerciale sur Blogmusik">
                                     <br><br>
-                                    <font face="Courier New" size="2" class="legende">Un lien de redirection vers un service commercial, ici un casino en ligne</font>
+                                    <font face="Courier New" size="2" class="legende">Un lien de redirection commerciale, ici vers un casino en ligne</font>
                                 </td>
                             </tr>
                         </table>
 
                         <font face="Verdana" size="3">
                             <p>
-                                Les liens ne servent pas seulement à naviguer dans le catalogue. Ils peuvent aussi
-                                envoyer l'utilisateur vers des partenaires commerciaux — casino en ligne ou site de
-                                rencontre — pour transformer l'audience en revenus. Cette circulation d'un lien à
-                                l'autre souligne l'économie fragile de ces services de partage : une apparence
-                                « pirate » ou informelle, mais des mécanismes d'acquisition et de conversion très concrets.
+                                Ce screen montre un des liens de redirection présents sur la page de
+                                blogmusik, qui servait à l'époque d'outil de partage pour attirer du
+                                monde. D'<a class="wiki" href="https://web.archive.org/web/20060601000000/http://fr.wikipedia.org/wiki/Hyperlien" target="_blank" rel="noopener noreferrer">hyperlien</a> en hyperlien, l'idée était de « convertir » (au
+                                sens économique du terme) un utilisateur vers un autre service, ici
+                                payant. C'est un exemple assez parlant pour illustrer le côté
+                                « pirate » de ces sites de partage de contenu sans droit d'auteur :
+                                ici le partenaire est un casino en ligne (on trouve aussi des sites
+                                de rencontre).
                             </p>
                         </font>
-
-                        <font face="Verdana" size="4" color="#FF007A"><b>Reproduire un objet physique</b></font>
-                        <hr size="2" color="#FF007A">
-
-                        <font face="Verdana" size="3">
-                            <p>
-                                Dans la continuité du skeuomorphisme, un lecteur <a class="wiki" href="https://web.archive.org/web/20060103073143/http://fr.wikipedia.org:80/wiki/MP3" target="_blank" rel="noopener noreferrer">MP3</a>
-                                devient une interface dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>. En septembre 2006,
-                                TechCrunch décrit un lecteur <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Flash</a> « that looks like an iPod »
-                                <img class="smiley" src="images/gifcities/flower.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
-                                <a class="ref" href="https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/" target="_blank" rel="noopener noreferrer">[04]</a>
-                            </p>
-                            <p>
-                                L'interface rappelle les appareils tangibles que les
-                                utilisateurs possèdent déjà. Reprendre une forme familière
-                                rend un nouvel usage compréhensible : on reconnaît le
-                                baladeur, on sait comment lancer l'écoute.
-                            </p>
-                        </font>
-
-                        <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
-                            <tr>
-                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
-                                    <img src="images/blogmusik-ipod_2006.jpg" width="440" border="2" alt="Réplique web de l'iPod sur Blogmusik">
-                                    <br><br>
-                                    <font face="Courier New" size="2" class="legende">Le lecteur musical dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a></font>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <br>
-
-                        <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
-                            <tr>
-                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
-                                    <img src="images/blogmusik-partage_2006.jpg" width="440" border="2" alt="Interface de partage sur le lecteur iPod Blogmusik">
-                                    <br><br>
-                                    <font face="Courier New" size="2" class="legende">Interface de partage de musique</font>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <br>
 
                         <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
                             <tr>
                                 <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
                                     <img src="images/blogmusik-blog-vitrine_2006.png" width="440" border="2" alt="Blog de Blogmusik en 2006">
                                     <br><br>
-                                    <font face="Courier New" size="2" class="legende">Le blog Blogmusik : une vitrine et un réseau social avant le changement de nom</font>
+                                    <font face="Courier New" size="2" class="legende">Le blog de Blogmusik</font>
                                 </td>
                             </tr>
                         </table>
 
                         <font face="Verdana" size="3">
                             <p>
-                                Le blog rappelle l'importance de ces espaces de vitrine : ils donnent une voix au
-                                service, relaient son actualité et prolongent la relation avec ses utilisateurs.
-                                Cette dimension sociale est si centrale qu'elle apparaît dans le nom même de Blogmusik,
-                                avant de disparaître avec l'adoption du nom Deezer.
+                                Ce screen montre le blog de blogmusik à l'époque, qui rappelle
+                                l'importance de ce type de réseau social — au point que le mot
+                                « blog » est dans le nom du site — avant que ça disparaisse avec le
+                                changement de nom pour Deezer.
+                            </p>
+                        </font>
+
+                        <table width="100%" cellpadding="12" cellspacing="0" border="2" bordercolor="#FF007A">
+                            <tr>
+                                <td bgcolor="#FFCCE4" background="images/fond-damier-bm-clair.png" class="bmclair" align="center">
+                                    <img src="images/blogmusik-archive-absente-wayback.png" width="440" border="2" alt="Archive Blogmusik absente de la Wayback Machine">
+                                    <br><br>
+                                    <font face="Courier New" size="2" class="legende">Une page de Blogmusik non sauvegardée par la <a class="wiki" href="https://web.archive.org/web/20060831052302/http://fr.wikipedia.org/wiki/Internet_Archive" target="_blank" rel="noopener noreferrer">Wayback Machine</a></font>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <font face="Verdana" size="3">
+                            <p>
+                                Ce screen illustre, pareil, une page de blogmusik qui n'a pas été
+                                sauvegardée par la <a class="wiki" href="https://web.archive.org/web/20060831052302/http://fr.wikipedia.org/wiki/Internet_Archive" target="_blank" rel="noopener noreferrer">Wayback Machine</a>.
                             </p>
                         </font>
 
@@ -3045,8 +3105,8 @@
                                 <b>Source rétrospective</b> : le dossier du Centre national
                                 de la musique raconte ensuite la même histoire depuis 2020.
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
-                                Les deux types de sources ne disent pas la même chose.
-                                L'une parle depuis 2006. L'autre interprète 2006 après coup.
+                                Les deux types de sources ne disent pas la même chose : l'une
+                                parle depuis 2006, l'autre revient sur 2006 après coup.
                             </p>
                         </font>
 
@@ -3072,8 +3132,8 @@
                                 de formats.
                             </p>
                             <p>
-                                Le lecteur musical de Blogmusik s'inscrit dans cette
-                                logique d'interface interactive, diffusée dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>.
+                                Le lecteur musical de Blogmusik suit cette logique d'interface
+                                interactive, dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>.
                             </p>
                         </font>
 
@@ -3090,10 +3150,9 @@
                                     </font>
                                     <br><br>
                                     <font face="Verdana" size="3">
-                                        Blogmusik constitue une trace d'un déplacement possible :
-                                        accéder à une œuvre depuis le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a> sans que
-                                        l'expérience repose nécessairement sur la possession
-                                        locale du fichier.
+                                        Blogmusik montre un changement possible : accéder à une
+                                        œuvre depuis le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a> sans que ça repose
+                                        forcément sur le fait d'avoir le fichier en local.
                                         <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
                                         En 2006, l'écoute reste encore largement associée au fichier,
                                         au téléchargement et au baladeur. Téléchargement, <a class="wiki" href="https://web.archive.org/web/20060103073143/http://fr.wikipedia.org:80/wiki/MP3" target="_blank" rel="noopener noreferrer">MP3</a>,
@@ -3117,17 +3176,31 @@
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
                             </p>
                             <p>
-                                Le lecteur fonctionne. L'interface fonctionne.
-                                La technique rend une pratique possible.
-                                Le droit en fixe les conditions.
+                                Le lecteur et l'interface fonctionnent : la technique rend la
+                                pratique possible, et le droit en fixe les conditions.
                             </p>
                             <p>
-                                Que devient un objet culturel lorsque le Web permet
-                                d'y accéder sans nécessairement le posséder sous la
-                                forme d'un fichier ?
+                                Ça pose la question de ce que devient un objet culturel quand
+                                le Web permet d'y accéder sans forcément le posséder sous forme
+                                de fichier.
                             </p>
                         </font>
 
+
+
+                        <br>
+
+                        <center>
+                        <div class="ipod-corps">
+                            <div class="ipod-nav">
+                                <a class="ipod-plus" href="#">+</a>
+                                <a class="ipod-prev" href="#">◀</a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-next" href="#">▶</a>
+                                <a class="ipod-minus" href="#">−</a>
+                            </div>
+                        </div>
+                        </center>
 
                     </td>
                 </tr>
@@ -3180,23 +3253,6 @@
             </table>
         </td>
     </tr>
-    <tr>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-        <td width="580" bgcolor="#000000" class="ipod-bande" align="center" valign="middle">
-            <center>
-                        <div class="ipod-corps">
-                            <div class="ipod-nav">
-                                <a class="ipod-plus" href="#">+</a>
-                                <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
-                                <a class="ipod-next" href="#">▶</a>
-                                <a class="ipod-minus" href="#">−</a>
-                            </div>
-                        </div>
-            </center>
-        </td>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-    </tr>
     <!-- Menu bas : copie du menu haut (en 2006 on répète le menu en bas de page). -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
@@ -3244,7 +3300,7 @@
                     <a href="#dadvsi" class="pied">G</a> -
                     <a href="#web-francais" class="pied">H</a> -
                     <a href="#swf" class="pied">I</a> -
-                    <a href="#archeologie" class="pied">J</a> -
+                    <a href="#refaire" class="pied">J</a> -
                     <a href="#trous" class="pied">K</a> -
                     <a href="#question" class="pied">L</a> -
                     <a href="#bibliographie" class="pied">M</a> -
@@ -3295,14 +3351,14 @@
                     <a class="pied" href="https://www.lemonde.fr/technologies/article/2006/11/22/web-2-0-le-net-deuxieme-generation_837305_651865.html" target="_blank" rel="noopener noreferrer">[14] Le Monde</a>
                     <br>
                     <a href="index.html" class="pied">2006 DESIGN WEB</a>
-                    Copyright 2006 | Johann et Thaddée |
+                    Copyright 2006 | Johann et Thaddée n°1 page de recherche web |
                     <a href="#leboncoin" class="pied">Leboncoin</a>
                     |
                     <a href="#blogmusik" class="pied">Blogmusik</a>
                     |
                     <a href="#dadvsi" class="pied">DADVSI</a>
                     <br>
-                    archéologie du web, leboncoin, blogmusik, dadvsi, <a class="wiki" href="https://web.archive.org/web/20060815160459/http://fr.wikipedia.org:80/wiki/Haut_d%C3%A9bit" target="_blank" rel="noopener noreferrer">haut débit</a>, flash, wayback machine, 2006
+                    archéologie du web, leboncoin, blogmusik, dadvsi, haut débit, flash, wayback machine, 2006
                 </font>
             </center>
         </td>
@@ -3342,8 +3398,8 @@
                 <hr size="2" color="#FF00F8">
                 <font color="#FF00F8">→</font> <a href="#intro"><font color="#000000">La question</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#terrain"><font color="#000000">Le terrain</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Comment on a fouillé</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Se connecter</font></a>
+                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Méthodes de fouilles</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Comment on se connecte</font></a>
                 <br><br>
                 <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
                 <font color="#FF00F8">→</font> Le marché local<br>
@@ -3366,7 +3422,6 @@
                 <font color="#FF00F8">→</font> <a href="#conclusion"><font color="#000000">Conclusion</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#web-francais"><font color="#000000">Web « français »</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#archeologie"><font color="#000000">Tableau 2006</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#refaire"><font color="#000000">Refaire</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#trous"><font color="#000000">Trous noirs</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
@@ -3492,9 +3547,8 @@
                                 <img class="smiley" src="images/gifcities/mouse.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
-                                Ainsi pour l'utilisateur, cela crée une situation simple
-                                mais problématique : il possède ou a obtenu un contenu,
-                                mais ne peut pas forcément l'utiliser comme il le souhaite.
+                                Pour l'utilisateur, ça crée un problème concret : il a un
+                                contenu, mais il ne peut pas forcément l'utiliser comme il veut.
                             </p>
                         </font>
 
@@ -3553,15 +3607,15 @@
 
                         <br>
 
-                        <font face="Verdana" size="4" color="#3C14FF"><b>Une tension entre simplicité et contrôle</b></font>
+                        <font face="Verdana" size="4" color="#3C14FF"><b>Entre accès simple et contrôle</b></font>
                         <hr size="2" color="#3C14FF">
 
                         <font face="Verdana" size="3">
                             <p>
-                                Le Web de 2006 révèle alors une contradiction. Les nouvelles
-                                interfaces cherchent à rendre l'accès aux contenus toujours
-                                plus simple. Dans le même temps, les ayants droit et les
-                                plateformes cherchent à contrôler leur circulation.
+                                En 2006, il y a une contradiction : les nouvelles interfaces
+                                cherchent à rendre l'accès aux contenus toujours plus simple,
+                                et en même temps les ayants droit et les plateformes cherchent
+                                à contrôler leur circulation.
                             </p>
                             <p>
                                 Le projet de loi a fait l'objet de débats au Parlement
@@ -3576,11 +3630,11 @@
                                 la collecte depuis 1999, et réalise un instantané du domaine
                                 .fr en 2002.
                                 <a class="ref" href="https://www.bnf.fr/fr/le-depot-legal-numerique" target="_blank" rel="noopener noreferrer">[12]</a>
-                                2006 n'est donc pas seulement une année d'usages nouveaux :
-                                c'est aussi le moment où le Web commence à être pensé comme
-                                un patrimoine à conserver. La même loi qui encadre le
-                                <a class="wiki" href="https://web.archive.org/web/20060831212356/http://fr.wikipedia.org/wiki/Droit_d'auteur" target="_blank" rel="noopener noreferrer">droit d'auteur</a> donne une base juridique à l'archivage.
-                                Réguler les contenus, et en conserver une partie.
+                                2006 n'est pas qu'une année d'usages nouveaux : c'est aussi le
+                                moment où on commence à voir le Web comme un patrimoine à
+                                conserver. La même loi qui encadre le
+                                <a class="wiki" href="https://web.archive.org/web/20060831212356/http://fr.wikipedia.org/wiki/Droit_d'auteur" target="_blank" rel="noopener noreferrer">droit d'auteur</a> donne une base juridique à l'archivage :
+                                réguler les contenus, et en garder une partie.
                                 <a class="ref" href="https://www.bnf.fr/fr/comprendre-le-depot-legal-du-web" target="_blank" rel="noopener noreferrer">[11]</a>
                             </p>
                         </font>
@@ -3599,6 +3653,21 @@
                             </tr>
                         </table>
 
+
+
+                        <br>
+
+                        <center>
+                        <div class="ipod-corps">
+                            <div class="ipod-nav">
+                                <a class="ipod-plus" href="#">+</a>
+                                <a class="ipod-prev" href="#">◀</a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-next" href="#">▶</a>
+                                <a class="ipod-minus" href="#">−</a>
+                            </div>
+                        </div>
+                        </center>
 
                     </td>
                 </tr>
@@ -3651,23 +3720,6 @@
             </table>
         </td>
     </tr>
-    <tr>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-        <td width="580" bgcolor="#000000" class="ipod-bande" align="center" valign="middle">
-            <center>
-                        <div class="ipod-corps">
-                            <div class="ipod-nav">
-                                <a class="ipod-plus" href="#">+</a>
-                                <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
-                                <a class="ipod-next" href="#">▶</a>
-                                <a class="ipod-minus" href="#">−</a>
-                            </div>
-                        </div>
-            </center>
-        </td>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-    </tr>
     <!-- Menu bas : copie du menu haut (en 2006 on répète le menu en bas de page). -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
@@ -3715,7 +3767,7 @@
                     <a href="#dadvsi" class="pied">G</a> -
                     <a href="#web-francais" class="pied">H</a> -
                     <a href="#swf" class="pied">I</a> -
-                    <a href="#archeologie" class="pied">J</a> -
+                    <a href="#refaire" class="pied">J</a> -
                     <a href="#trous" class="pied">K</a> -
                     <a href="#question" class="pied">L</a> -
                     <a href="#bibliographie" class="pied">M</a> -
@@ -3766,14 +3818,14 @@
                     <a class="pied" href="https://www.lemonde.fr/technologies/article/2006/11/22/web-2-0-le-net-deuxieme-generation_837305_651865.html" target="_blank" rel="noopener noreferrer">[14] Le Monde</a>
                     <br>
                     <a href="index.html" class="pied">2006 DESIGN WEB</a>
-                    Copyright 2006 | Johann et Thaddée |
+                    Copyright 2006 | Johann et Thaddée n°1 page de recherche web |
                     <a href="#leboncoin" class="pied">Leboncoin</a>
                     |
                     <a href="#blogmusik" class="pied">Blogmusik</a>
                     |
                     <a href="#dadvsi" class="pied">DADVSI</a>
                     <br>
-                    archéologie du web, leboncoin, blogmusik, dadvsi, <a class="wiki" href="https://web.archive.org/web/20060815160459/http://fr.wikipedia.org:80/wiki/Haut_d%C3%A9bit" target="_blank" rel="noopener noreferrer">haut débit</a>, flash, wayback machine, 2006
+                    archéologie du web, leboncoin, blogmusik, dadvsi, haut débit, flash, wayback machine, 2006
                 </font>
             </center>
         </td>
@@ -3813,8 +3865,8 @@
                 <hr size="2" color="#FF00F8">
                 <font color="#FF00F8">→</font> <a href="#intro"><font color="#000000">La question</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#terrain"><font color="#000000">Le terrain</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Comment on a fouillé</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Se connecter</font></a>
+                <font color="#FF00F8">→</font> <a href="#fouille"><font color="#000000">Méthodes de fouilles</font></a><br><br>
+                <font color="#FF00F8">→</font> <a href="#connecter"><font color="#000000">Comment on se connecte</font></a>
                 <br><br>
                 <font color="#FF4E00"><b>LEBONCOIN</b></font><br>
                 <font color="#FF00F8">→</font> Le marché local<br>
@@ -3837,7 +3889,6 @@
                 <font color="#FF00F8">→</font> <a href="#conclusion"><font color="#000000">Conclusion</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#web-francais"><font color="#000000">Web « français »</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#swf"><font color="#000000">Fichier .SWF</font></a><br><br>
-                <font color="#FF00F8">→</font> <a href="#archeologie"><font color="#000000">Tableau 2006</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#refaire"><font color="#000000">Refaire</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#trous"><font color="#000000">Trous noirs</font></a><br><br>
                 <font color="#FF00F8">→</font> <a href="#question"><font color="#000000">Question de recherche</font></a><br><br>
@@ -3898,22 +3949,19 @@
                                 <a class="ref" href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000266350" target="_blank" rel="noopener noreferrer">[05]</a>
                             </p>
                             <p>
-                                Alors qu'est-ce qui est français ?
-                                Peut-être pas le réseau.
-                                Peut-être : la langue ; les usages ; les entreprises ;
-                                le droit ; les manières de concevoir les interfaces.
+                                Alors qu'est-ce qui est français là-dedans ? Sans doute pas le
+                                réseau, plutôt la langue, les usages, les entreprises, le droit
+                                et les façons de concevoir les interfaces.
                             </p>
                             <p>
-                                La BnF utilise « Web français » pour le périmètre de
-                                sa collecte. Ce n'est pas une propriété technique du
-                                réseau. C'est une catégorie documentaire, juridique,
-                                patrimoniale.
+                                La BnF utilise « Web français » pour définir le périmètre de
+                                sa collecte. Ce n'est pas une propriété technique du réseau,
+                                c'est une catégorie documentaire, juridique et patrimoniale.
                                 <a class="ref" href="https://www.bnf.fr/fr/comprendre-le-depot-legal-du-web" target="_blank" rel="noopener noreferrer">[11]</a>
                             </p>
                             <p>
-                                <b>Hypothèse.</b>
-                                Le Web n'a peut-être pas de nationalité.
-                                Mais les usages peuvent être territorialisés.
+                                Le Web n'a peut-être pas de nationalité, mais les usages peuvent
+                                être rattachés à un territoire.
                             </p>
                         </font>
 
@@ -3948,79 +3996,10 @@
                                 reproduire certaines interactions riches, <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Flash</a> devient un
                                 outil majeur pour créer des expériences multimédias
                                 directement dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>. Le lecteur musical de
-                                Blogmusik s'inscrit par exemple dans cette logique.
+                                Blogmusik en est un exemple.
                             </p>
                         </font>
 
-
-                        <!-- Tableau d'archéologie 2006 : observer, pas comparer à aujourd'hui. -->
-
-                        <a name="2006-2026"></a>
-                        <a name="archeologie"></a>
-                        <br><br>
-
-                        <table width="100%" cellpadding="10" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
-                            <tr>
-                                <td align="center">
-                                    <font face="Verdana" size="5" color="#FFFFFF"><b>TABLEAU D'ARCHÉOLOGIE — 2006</b></font>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <br>
-
-                        <font face="Verdana" size="2">
-                            Le but n'est pas de montrer que nous serions « meilleurs »
-                            aujourd'hui. Le but est de comprendre 2006 : ce que l'on
-                            a observé, et ce que cela produit dans les interfaces.
-                        </font>
-
-                        <br><br>
-
-                        <table class="arch-2006" width="100%" cellpadding="6" cellspacing="0" border="2" bordercolor="#000000">
-                            <tr bgcolor="#000000" background="images/fond-damier.png" class="noir">
-                                <td width="28%"><font face="Verdana" size="1" color="#FFFFFF"><b>2006</b></font></td>
-                                <td width="36%"><font face="Verdana" size="1" color="#FFFFFF"><b>CE QUE NOUS AVONS OBSERVÉ</b></font></td>
-                                <td width="36%"><font face="Verdana" size="1" color="#FFFFFF"><b>CE QUE CELA PRODUIT</b></font></td>
-                            </tr>
-                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
-                                <td><font face="Verdana" size="1"><b>Haut débit en expansion</b></font></td>
-                                <td><font face="Verdana" size="1">ARCEP : 12,7 M d'accès haut débit fin 2006 <a class="ref" href="https://www.arcep.fr/fileadmin/reprise/observatoire/haut-debit/trim04-2006/obs-htdebit-t42006.pdf" target="_blank" rel="noopener noreferrer">[01]</a></font></td>
-                                <td><font face="Verdana" size="1">davantage de services connectés</font></td>
-                            </tr>
-                            <tr>
-                                <td><font face="Verdana" size="1"><b>Images coûteuses à charger</b></font></td>
-                                <td><font face="Verdana" size="1">captures Leboncoin <a class="ref" href="https://web.archive.org/web/20060615002024/https://www.leboncoin.fr/" target="_blank" rel="noopener noreferrer">[06]</a></font></td>
-                                <td><font face="Verdana" size="1">hiérarchie texte / image</font></td>
-                            </tr>
-                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
-                                <td><font face="Verdana" size="1"><b>Grandes quantités de contenus</b></font></td>
-                                <td><font face="Verdana" size="1">Blogmusik <a class="ref" href="https://web.archive.org/web/20060826080205/http://blogmusik.net/" target="_blank" rel="noopener noreferrer">[06]</a></font></td>
-                                <td><font face="Verdana" size="1">recherche et catégorisation</font></td>
-                            </tr>
-                            <tr>
-                                <td><font face="Verdana" size="1"><b>Flash</b></font></td>
-                                <td><font face="Verdana" size="1">lecteur Blogmusik <a class="ref" href="https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/" target="_blank" rel="noopener noreferrer">[04]</a></font></td>
-                                <td><font face="Verdana" size="1">interface multimédia propriétaire</font></td>
-                            </tr>
-                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
-                                <td><font face="Verdana" size="1"><b>DRM / mesures techniques</b></font></td>
-                                <td><font face="Verdana" size="1">DADVSI <a class="ref" href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000266350" target="_blank" rel="noopener noreferrer">[05]</a></font></td>
-                                <td><font face="Verdana" size="1">contraintes d'accès et d'interopérabilité</font></td>
-                            </tr>
-                            <tr>
-                                <td><font face="Verdana" size="1"><b>Web archivé</b></font></td>
-                                <td><font face="Verdana" size="1">BnF / Wayback <a class="ref" href="https://www.bnf.fr/fr/comprendre-le-depot-legal-du-web" target="_blank" rel="noopener noreferrer">[11]</a></font></td>
-                                <td><font face="Verdana" size="1">nouvelle question : que conserver ?</font></td>
-                            </tr>
-                            <tr bgcolor="#FFE6FE" background="images/fond-damier-fluo.png" class="fluo">
-                                <td><font face="Verdana" size="1"><b>Interfaces fixes</b></font></td>
-                                <td><font face="Verdana" size="1">captures 2006</font></td>
-                                <td><font face="Verdana" size="1">conception pour un environnement matériel donné</font></td>
-                            </tr>
-                        </table>
-
-                        <br>
 
                         <a name="refaire"></a>
                         <table width="100%" cellpadding="10" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
@@ -4035,13 +4014,12 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                Reproduire une page de 2006 n'est pas un exercice de nostalgie.
-                                C'est une manipulation : tableaux, images pesées, absence
-                                d'adaptation à plusieurs écrans, métaphore du baladeur.
-                                La réplique MP3 en bas de page, les damiers, les GIFs
-                                et la carte d'entrée sont des tests. Ils montrent des
-                                contraintes. Ils montrent aussi des échecs : une archive
-                                ne se recharge pas comme un site vivant.
+                                Reproduire une page de 2006, ce n'est pas de la nostalgie, c'est
+                                une manipulation : tableaux, images pesées, pas d'adaptation à
+                                plusieurs écrans, métaphore du baladeur. La réplique MP3 en bas
+                                de page, les damiers, les GIFs et la carte d'entrée sont des
+                                tests : ils montrent des contraintes, et aussi des échecs, parce
+                                qu'une archive ne se recharge pas comme un site vivant.
                             </p>
                         </font>
 
@@ -4092,24 +4070,23 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                Une archive du Web ne restitue pas exactement le Web
-                                du passé. Elle restitue une trace.
+                                Une archive du web ne montre pas exactement le web du passé,
+                                juste ce qu'il en reste.
                             </p>
                             <p>
-                                Une capture Leboncoin ne dit pas combien de personnes
-                                utilisaient le site.
-                                Une archive Blogmusik ne dit pas comment chacun écoutait.
-                                Une loi renseigne le cadre, pas les pratiques quotidiennes.
-                                Une capture montre une interface, pas la personne assise devant.
+                                Une capture Leboncoin ne dit pas combien de gens utilisaient le
+                                site, une archive Blogmusik ne dit pas comment chacun écoutait,
+                                une loi dit ce qui était permis mais pas ce que les gens faisaient
+                                vraiment, et une capture montre une interface, pas la personne
+                                devant l'écran.
                             </p>
                             <p>
-                                La collecte du Web n'est pas exhaustive.
-                                L'archive résulte de choix : quoi collecter, quand,
-                                comment conserver, comment rendre consultable.
+                                La collecte du web n'est pas complète : on choisit quoi garder,
+                                quand, comment le stocker et comment le rendre consultable.
                                 <a class="ref" href="https://www.bnf.fr/fr/comprendre-le-depot-legal-du-web" target="_blank" rel="noopener noreferrer">[11]</a>
                             </p>
                             <p>
-                                On fouille un Web déjà fouillé par d'autres.
+                                Et on fouille un web déjà fouillé par d'autres.
                             </p>
                         </font>
 
@@ -4181,27 +4158,25 @@
 
                         <font face="Verdana" size="3">
                             <p>
-                                Le design ne cherche pas encore seulement à être fluide
-                                ou invisible. Il doit composer avec la technologie
-                                disponible à ce moment-là. Ces contraintes contribuent
-                                à définir des usages, sans que l'on puisse y lire
-                                une évolution nécessaire vers le Web d'aujourd'hui
+                                À cette époque, le design ne cherche pas seulement à être
+                                fluide ou invisible : il doit faire avec la technologie
+                                disponible. Ces contraintes participent à définir des usages,
+                                sans qu'on puisse y voir une évolution obligée vers le Web
+                                d'aujourd'hui
                                 <img class="smiley" src="images/gifcities/planete.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
-                                Ces trois traces ne suffisent pas à raconter le Web
-                                français de 2006. Elles déplacent la question.
-                                Le Web n'est pas devenu français parce qu'il aurait existé
-                                une version française du réseau.
-                                Il se localise par les usages, les entreprises, les
-                                territoires que les interfaces organisent, les règles
-                                qui tentent de les encadrer.
+                                Ces trois exemples ne suffisent pas à raconter le Web français
+                                de 2006, mais ils déplacent la question. Le Web n'est pas
+                                devenu français parce qu'il aurait existé une version française
+                                du réseau : il se localise par les usages, les entreprises, les
+                                territoires que les interfaces organisent et les règles qui
+                                essaient de les encadrer.
                             </p>
                             <p>
-                                Alors : un réseau mondial peut-il avoir une nationalité ?
-                                Peut-être pas. Mais il peut avoir des territoires.
-                                Visibles dans une barre de recherche, une catégorie,
-                                un catalogue, un <a class="wiki" href="https://web.archive.org/web/20060831181130/http://fr.wikipedia.org/wiki/Digital_rights_management" target="_blank" rel="noopener noreferrer">DRM</a>, une loi, une archive.
+                                Un réseau mondial n'a donc peut-être pas de nationalité, mais il
+                                peut avoir des territoires, visibles dans une barre de recherche,
+                                une catégorie, un catalogue, un <a class="wiki" href="https://web.archive.org/web/20060831181130/http://fr.wikipedia.org/wiki/Digital_rights_management" target="_blank" rel="noopener noreferrer">DRM</a>, une loi ou une archive.
                             </p>
                         </font>
 
@@ -4222,22 +4197,6 @@
                         <br>
 
                         <br>
-
-                        <table width="100%" cellpadding="8" cellspacing="0" border="0" bgcolor="#000000" background="images/fond-damier.png" class="noir">
-                            <tr>
-                                <td align="center">
-                                    <font face="Verdana" size="3" color="#FFFFFF"><b>MATRICE DES SOURCES</b></font>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <br>
-
-                        <font face="Verdana" size="2">
-                            Chaque trace autorise certaines lectures, et en interdit d'autres.
-                        </font>
-
-                        <br><br>
 
                         <table class="arch-2006" width="100%" cellpadding="4" cellspacing="0" border="2" bordercolor="#000000">
                             <tr bgcolor="#000000" background="images/fond-damier.png" class="noir">
@@ -4490,6 +4449,21 @@
                             </tr>
                         </table>
 
+
+                        <br>
+
+                        <center>
+                        <div class="ipod-corps">
+                            <div class="ipod-nav">
+                                <a class="ipod-plus" href="#">+</a>
+                                <a class="ipod-prev" href="#">◀</a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-next" href="#">▶</a>
+                                <a class="ipod-minus" href="#">−</a>
+                            </div>
+                        </div>
+                        </center>
+
                     </td>
                 </tr>
             </table>
@@ -4541,23 +4515,6 @@
             </table>
         </td>
     </tr>
-    <tr>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-        <td width="580" bgcolor="#000000" class="ipod-bande" align="center" valign="middle">
-            <center>
-                        <div class="ipod-corps">
-                            <div class="ipod-nav">
-                                <a class="ipod-plus" href="#">+</a>
-                                <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
-                                <a class="ipod-next" href="#">▶</a>
-                                <a class="ipod-minus" href="#">−</a>
-                            </div>
-                        </div>
-            </center>
-        </td>
-        <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">&nbsp;</td>
-    </tr>
     <!-- Menu bas : copie du menu haut (en 2006 on répète le menu en bas de page). -->
     <tr>
         <td colspan="3" height="35" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc">
@@ -4605,7 +4562,7 @@
                     <a href="#dadvsi" class="pied">G</a> -
                     <a href="#web-francais" class="pied">H</a> -
                     <a href="#swf" class="pied">I</a> -
-                    <a href="#archeologie" class="pied">J</a> -
+                    <a href="#refaire" class="pied">J</a> -
                     <a href="#trous" class="pied">K</a> -
                     <a href="#question" class="pied">L</a> -
                     <a href="#bibliographie" class="pied">M</a> -
@@ -4656,14 +4613,14 @@
                     <a class="pied" href="https://www.lemonde.fr/technologies/article/2006/11/22/web-2-0-le-net-deuxieme-generation_837305_651865.html" target="_blank" rel="noopener noreferrer">[14] Le Monde</a>
                     <br>
                     <a href="index.html" class="pied">2006 DESIGN WEB</a>
-                    Copyright 2006 | Johann et Thaddée |
+                    Copyright 2006 | Johann et Thaddée n°1 page de recherche web |
                     <a href="#leboncoin" class="pied">Leboncoin</a>
                     |
                     <a href="#blogmusik" class="pied">Blogmusik</a>
                     |
                     <a href="#dadvsi" class="pied">DADVSI</a>
                     <br>
-                    archéologie du web, leboncoin, blogmusik, dadvsi, <a class="wiki" href="https://web.archive.org/web/20060815160459/http://fr.wikipedia.org:80/wiki/Haut_d%C3%A9bit" target="_blank" rel="noopener noreferrer">haut débit</a>, flash, wayback machine, 2006
+                    archéologie du web, leboncoin, blogmusik, dadvsi, haut débit, flash, wayback machine, 2006
                 </font>
             </center>
         </td>
