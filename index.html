@@ -172,6 +172,32 @@
         a.ipod-son:hover img, a.ipod-son:active img {
             filter: brightness(0) invert(1);
         }
+        /* Page 1 : pas de "page précédente" (on vient de démarrer), et un petit
+           mot griffonné à la main pour indiquer la flèche "page suivante". */
+        #page-haut .ipod-prev { display: none; }
+        div.ipod-corps-wrap {
+            position: relative;
+            display: inline-block;
+        }
+        div.note-suivant {
+            position: absolute;
+            left: 100%;
+            top: -6px;
+            width: 100px;
+            margin-left: 38px;
+            text-align: left;
+            line-height: 1.15;
+            transform: rotate(-5deg);
+            transform-origin: left top;
+        }
+        div.note-suivant font {
+            font-family: "Comic Sans MS", "Chalkboard SE", "Bradley Hand", cursive;
+        }
+        svg.note-suivant-fleche {
+            display: block;
+            margin-bottom: -4px;
+            transform: scaleX(-1);
+        }
         .titre-rubrique { cursor: url("images/curseur-main-2006.cur"), url("images/curseur-main-2006.png") 8 2, pointer; }
         .titre-rubrique:hover { background-color: #FF00F8; color: #FFFFFF !important; }
         #fx-2000 {
@@ -1749,7 +1775,7 @@
 <div id="rail-pages">
 <table id="train-pages" cellpadding="0" cellspacing="0" border="0">
     <tr>
-<td class="page-h" valign="top" width="906">
+<td id="page-haut" class="page-h" valign="top" width="906">
 <div class="cadre">
 <table width="900" cellpadding="0" cellspacing="2" border="0" bgcolor="#000000" class="site">
     <tr>
@@ -2050,6 +2076,7 @@
                         <br><br>
 
                         <center>
+                        <div class="ipod-corps-wrap">
                         <div class="ipod-corps">
                             <div class="ipod-nav">
                                 <a class="ipod-plus" href="#">+</a>
@@ -2058,6 +2085,14 @@
                                 <a class="ipod-next" href="#">▶</a>
                                 <a class="ipod-minus" href="#">−</a>
                             </div>
+                        </div>
+                        <div class="note-suivant">
+                            <svg class="note-suivant-fleche" width="60" height="40" viewBox="0 0 60 40" aria-hidden="true">
+                                <path d="M4,6 C 18,4 34,16 50,30" fill="none" stroke="#FF00F8" stroke-width="2" stroke-linecap="round"/>
+                                <path d="M50,30 L41,26 M50,30 L47,20" fill="none" stroke="#FF00F8" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            <font color="#FF00F8" size="2"><b>c'est ici pour<br>la page suivante&nbsp;;)</b></font>
+                        </div>
                         </div>
                         </center>
 
