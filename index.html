@@ -445,10 +445,10 @@
             padding-top: 20px;
             padding-bottom: 20px;
         }
-        td.aa-lbc { background-image: url("images/AA-leboncoin.gif?t=trans"); }
-        td.aa-bm { background-image: url("images/AA-blogmusik.gif?t=trans"); }
-        td.aa-da { background-image: url("images/AA-dadvsi.gif?t=trans"); }
-        td.aa-fluo { background-image: url("images/AA-fluo.gif?t=trans"); }
+        td.aa-lbc { background-image: url("images/AA-leboncoin.gif"); }
+        td.aa-bm { background-image: url("images/AA-blogmusik.gif"); }
+        td.aa-da { background-image: url("images/AA-dadvsi.gif"); }
+        td.aa-fluo { background-image: url("images/AA-fluo.gif"); }
         td.barre-hd, table.barre-hd {
             width: 42px;
             background-color: #FF00F8;
@@ -742,7 +742,7 @@
             for (i = 0; i < noms.length; i++) {
                 a = document.createElement("audio");
                 a.preload = "auto";
-                a.src = "images/sons/" + noms[i] + ".wav";
+                a.src = "images/" + noms[i] + ".wav";
                 this.sons[noms[i]] = a;
             }
         };
@@ -761,7 +761,7 @@
             var imgs, i, src;
             this.sonActif = !this.sonActif;
             imgs = document.getElementsByTagName("img");
-            src = this.sonActif ? "images/gifcities/speaker-on.gif" : "images/gifcities/speaker-off.gif";
+            src = this.sonActif ? "images/speaker-on.gif" : "images/speaker-off.gif";
             for (i = 0; i < imgs.length; i++) {
                 if (String(imgs[i].getAttribute("src") || "").indexOf("speaker-") !== -1) {
                     imgs[i].src = src;
@@ -1531,7 +1531,7 @@
                                     </td>
                                     <td width="14">&nbsp;</td>
                                     <td valign="middle">
-                                        <img src="images/gifcities/oncle-sam-pointe.gif" width="28" height="40" border="0" alt="Oncle Sam qui pointe du doigt">
+                                        <img src="images/oncle-sam-pointe.gif" width="28" height="40" border="0" alt="Oncle Sam qui pointe du doigt">
                                     </td>
                                 </tr>
                             </table>
@@ -1620,7 +1620,7 @@
                         <div id="chargement-region" style="display:none;">
                             <center>
                                 <br><br>
-                                <img src="images/gifcities/computer.gif" width="16" height="16" border="0" alt="">
+                                <img src="images/computer.gif" width="16" height="16" border="0" alt="">
                                 <br><br>
                                 <font face="Verdana" size="4" color="#FF00F8">
                                     <b id="texte-chargement">Connexion depuis …</b>
@@ -1635,7 +1635,7 @@
         <td width="160" bgcolor="#FFFFFF" background="images/fond-damier-blanc.png" class="blanc marge-bienvenue" valign="top">
             <center>
                 <font face="Verdana" size="2" color="#000000">
-                    <img src="images/gifcities/globe.gif" width="48" height="48" border="0" alt="Planète">
+                    <img src="images/globe.gif" width="48" height="48" border="0" alt="Planète">
                     <br><br>
                     <b>BIENVENUE</b>
                     <hr size="2" color="#FF00F8">
@@ -1855,7 +1855,7 @@
 
                             <p>
                                 En 2006, le <a class="wiki" href="https://web.archive.org/web/20060601000000/http://fr.wikipedia.org/wiki/World_Wide_Web" target="_blank" rel="noopener noreferrer">Web</a> n'est déjà plus nouveau.
-                                <img class="smiley-new" src="images/gifcities/new.gif" width="30" height="14" border="0" align="absmiddle" alt="">
+                                <img class="smiley-new" src="images/new.gif" width="30" height="14" border="0" align="absmiddle" alt="">
                             </p>
 
                             <p>
@@ -1876,7 +1876,7 @@
                             <p>
                                 Acheter, vendre ou partager des contenus devient petit à petit
                                 une activité normale sur Internet.
-                                <img class="smiley" src="images/gifcities/globe.gif" width="16" height="16" border="0" align="absmiddle" alt="">
+                                <img class="smiley" src="images/globe.gif" width="16" height="16" border="0" align="absmiddle" alt="">
                             </p>
 
                             <p>
@@ -1885,7 +1885,7 @@
                                 à leur époque. Les sites sont encore pensés pour des écrans
                                 donnés. Le développement d'interfaces riches repose encore
                                 largement sur des technologies comme <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Flash</a>
-                                <img src="images/gifcities/flash.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
+                                <img src="images/flash.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
                             </p>
 
                         </font>
@@ -2081,7 +2081,7 @@
                             <div class="ipod-nav">
                                 <a class="ipod-plus" href="#">+</a>
                                 <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
                                 <a class="ipod-next" href="#">▶</a>
                                 <a class="ipod-minus" href="#">−</a>
                             </div>
@@ -2371,7 +2371,7 @@
                                 présenté comme gratuit, sans commission, et cherche à
                                 rapprocher les utilisateurs : trouver « son bonheur au coin
                                 de la rue et non au bout du monde »
-                                <img class="smiley" src="images/gifcities/smiley.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/smiley.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://leboncoincorporate.com/entreprise/" target="_blank" rel="noopener noreferrer">[02]</a>
                             </p>
                             <p>
@@ -2384,7 +2384,7 @@
                                 « Les grandes dates de l'internet, des terminaux et des
                                 services de contenus numériques », le lancement de
                                 leboncoin est daté du 1er janvier 2006
-                                <img class="smiley" src="images/gifcities/star.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/star.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://larevuedesmedias.ina.fr/chronologie/les-grandes-dates-de-linternet-des-terminaux-et-des-services-de-contenus-numeriques" target="_blank" rel="noopener noreferrer">[08]</a>
                             </p>
                         </font>
@@ -2459,7 +2459,7 @@
                         <font face="Verdana" size="3">
                             <p>
                                 Le premier intérêt du site réside dans sa simplicité
-                                <img class="smiley" src="images/gifcities/wink.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/wink.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Le design ne cherche pas à impressionner par des effets
@@ -2472,7 +2472,7 @@
                                 de l'époque : une interface légère permet de limiter les
                                 éléments à charger et de rendre le service accessible au
                                 plus grand nombre
-                                <img src="images/gifcities/etoile-jaune.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
+                                <img src="images/etoile-jaune.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -2513,7 +2513,7 @@
                             <p>
                                 L'une des particularités du site est de remettre la
                                 proximité géographique au centre de l'expérience.
-                                <img src="images/gifcities/xp.gif" width="34" height="32" border="0" align="absmiddle" alt="">
+                                <img src="images/xp.gif" width="34" height="32" border="0" align="absmiddle" alt="">
                                 L'interface reprend l'organisation d'un journal de
                                 petites annonces local.
                             </p>
@@ -2528,7 +2528,7 @@
                             <p>
                                 Le site met donc en avant l'accessibilité et la simplicité pour tous,
                                 aussi et surtout à petite échelle
-                                <img class="smiley" src="images/gifcities/heart.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/heart.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Leboncoin remet en question l'idée d'un Web forcément mondial dans
@@ -2555,7 +2555,7 @@
                                 Dans ses premières versions, les images associées aux
                                 annonces ne s'affichent pas directement : des icônes
                                 les remplacent
-                                <img src="images/gifcities/recycle.gif" width="28" height="25" border="0" align="absmiddle" alt="">. La page reste plus légère, et voir la
+                                <img src="images/recycle.gif" width="28" height="25" border="0" align="absmiddle" alt="">. La page reste plus légère, et voir la
                                 photo demande un clic supplémentaire. Cette décision
                                 répond aux contraintes techniques du chargement, mais
                                 elle aligne aussi l'interface sur l'aspect « journal »
@@ -2623,7 +2623,7 @@
                             <div class="ipod-nav">
                                 <a class="ipod-plus" href="#">+</a>
                                 <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
                                 <a class="ipod-next" href="#">▶</a>
                                 <a class="ipod-minus" href="#">−</a>
                             </div>
@@ -2895,13 +2895,13 @@
                                 En juin 2006, Daniel Marhely lance Blogmusik, un service
                                 permettant d'écouter de la musique en ligne depuis un
                                 <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>, comme un « baladeur iPod virtuel »
-                                <img class="smiley" src="images/gifcities/ipod.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/ipod.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
                             </p>
                             <p>
                                 Dès l'automne 2006, le service propose déjà plus de
                                 200 000 titres à l'écoute
-                                <img class="smiley" src="images/gifcities/note.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/note.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 Le projet deviendra ensuite Deezer (relance sous ce nom
                                 en 2007).
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
@@ -2954,7 +2954,7 @@
                                 Avant même le catalogue, l'interface demande de se connecter :
                                 pour écouter il faut un compte et une session, ce n'est pas
                                 seulement une page qui s'affiche
-                                <img class="smiley" src="images/gifcities/mail2.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/mail2.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -2966,7 +2966,7 @@
                                 Dans la continuité du skeuomorphisme, un lecteur <a class="wiki" href="https://web.archive.org/web/20060103073143/http://fr.wikipedia.org:80/wiki/MP3" target="_blank" rel="noopener noreferrer">MP3</a>
                                 devient une interface dans le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>. En septembre 2006,
                                 TechCrunch décrit un lecteur <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Flash</a> « that looks like an iPod »
-                                <img class="smiley" src="images/gifcities/flower.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/flower.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/" target="_blank" rel="noopener noreferrer">[04]</a>
                             </p>
                             <p>
@@ -3011,7 +3011,7 @@
                                 Le problème change complètement d'échelle : il faut présenter
                                 des milliers, puis des centaines de milliers de morceaux sans
                                 perdre l'utilisateur
-                                <img class="smiley" src="images/gifcities/ball.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/ball.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Ça passe par la recherche, les listes, les catégories, les
@@ -3036,7 +3036,7 @@
                                 les catégories musicales et les informations associées
                                 aux morceaux transforment une immense quantité de
                                 données en bibliothèque navigable
-                                <img src="images/gifcities/bateau.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
+                                <img src="images/bateau.gif" width="22" height="22" border="0" align="absmiddle" alt="">.
                             </p>
                         </font>
 
@@ -3147,7 +3147,7 @@
                             <p>
                                 À cette période, les lecteurs <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Flash Player</a> jouent un rôle
                                 important dans la conception d'interfaces interactives
-                                <img class="smiley" src="images/gifcities/fire.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/fire.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 Blogmusik s'appuie sur cette technologie pour développer
                                 le service et pour lire la musique depuis le <a class="wiki" href="https://web.archive.org/web/20060823074942/http://fr.wikipedia.org/wiki/Navigateur_Web" target="_blank" rel="noopener noreferrer">navigateur</a>.
                                 <a class="ref" href="https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/" target="_blank" rel="noopener noreferrer">[03]</a>
@@ -3176,7 +3176,7 @@
                                     <font face="Verdana" size="3">
                                         <b>NE PLUS NÉCESSAIREMENT POSSÉDER LE FICHIER<br>
                                         POUR ACCÉDER À LA MUSIQUE
-                                <img class="smiley" src="images/gifcities/phone.gif" width="16" height="16" border="0" align="absmiddle" alt="">.</b>
+                                <img class="smiley" src="images/phone.gif" width="16" height="16" border="0" align="absmiddle" alt="">.</b>
                                     </font>
                                     <br><br>
                                     <font face="Verdana" size="3">
@@ -3196,7 +3196,7 @@
                             <p>
                                 Mais en 2006, cette nouvelle pratique se heurte encore
                                 directement à la question des <a class="wiki" href="https://web.archive.org/web/20060831212356/http://fr.wikipedia.org/wiki/Droit_d'auteur" target="_blank" rel="noopener noreferrer">droits d'auteur</a>
-                                <img class="smiley" src="images/gifcities/warning.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/warning.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Dès l'automne 2006, Daniel Marhely cherche à se mettre
@@ -3225,7 +3225,7 @@
                             <div class="ipod-nav">
                                 <a class="ipod-plus" href="#">+</a>
                                 <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
                                 <a class="ipod-next" href="#">▶</a>
                                 <a class="ipod-minus" href="#">−</a>
                             </div>
@@ -3546,7 +3546,7 @@
                             <p>
                                 La loi DADVSI de 2006 est destinée à encadrer et réguler
                                 les utilisations non autorisées d'une œuvre numérique.
-                                <img src="images/gifcities/joconde.gif" width="20" height="26" alt="" border="0" align="absmiddle">
+                                <img src="images/joconde.gif" width="20" height="26" alt="" border="0" align="absmiddle">
                                 Ces protections peuvent par exemple limiter la copie, le
                                 transfert ou l'utilisation d'un fichier sur certains
                                 appareils. La loi prévoit cependant que ces protections
@@ -3574,7 +3574,7 @@
                                 fichier peut être utilisable sur un appareil mais pas sur
                                 un autre. Il peut également être lié à un logiciel ou à
                                 une plateforme particulière
-                                <img class="smiley" src="images/gifcities/mouse.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/mouse.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Pour l'utilisateur, ça crée un problème concret : il a un
@@ -3692,7 +3692,7 @@
                             <div class="ipod-nav">
                                 <a class="ipod-plus" href="#">+</a>
                                 <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
                                 <a class="ipod-next" href="#">▶</a>
                                 <a class="ipod-minus" href="#">−</a>
                             </div>
@@ -4026,7 +4026,7 @@
                                 documentation indique que ce système permet de lier
                                 graphismes vectoriels, texte, vidéo et son sur Internet,
                                 via <a class="wiki" href="https://web.archive.org/web/20060113041726/http://fr.wikipedia.org:80/wiki/Macromedia_Flash" target="_blank" rel="noopener noreferrer">Adobe Flash Player</a> par exemple
-                                <img class="smiley" src="images/gifcities/flash.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/flash.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                 <a class="ref" href="https://web.archive.org/web/20210927020520/www.adobe.com/devnet/swf.html" target="_blank" rel="noopener noreferrer">[07]</a>
                             </p>
                             <p>
@@ -4076,7 +4076,7 @@
                                         <font color="#FF007A"><b>Blogmusik</b></font>
                                         répond à la seconde par la recherche, la catégorisation
                                         et la métaphore du lecteur musical
-                                        <img class="smiley" src="images/gifcities/cd.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                        <img class="smiley" src="images/cd.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                                     </font>
                                 </td>
                             </tr>
@@ -4154,7 +4154,7 @@
                                                 économiques et juridiques ont-elles façonné
                                                 les formes du design web et les nouveaux
                                                 usages numériques
-                                                <img class="smiley" src="images/gifcities/ball.gif" width="16" height="16" border="0" align="absmiddle" alt=""> ?
+                                                <img class="smiley" src="images/ball.gif" width="16" height="16" border="0" align="absmiddle" alt=""> ?
                                             </b>
                                         </font>
                                     </center>
@@ -4170,7 +4170,7 @@
                             <br><br>
                             <font color="#FF007A"><b>BLOGMUSIK</b></font><br>
                             <font color="#FF00F8">→</font> recherche<br><font color="#FF00F8">→</font> organisation des données<br><font color="#FF00F8">→</font> lecteur multimédia
-                            <img class="smiley" src="images/gifcities/note.gif" width="16" height="16" border="0" align="absmiddle" alt=""><br><font color="#FF00F8">→</font> <a class="wiki" href="https://web.archive.org/web/20060106045632/http://fr.wikipedia.org:80/wiki/Streaming" target="_blank" rel="noopener noreferrer">streaming</a>
+                            <img class="smiley" src="images/note.gif" width="16" height="16" border="0" align="absmiddle" alt=""><br><font color="#FF00F8">→</font> <a class="wiki" href="https://web.archive.org/web/20060106045632/http://fr.wikipedia.org:80/wiki/Streaming" target="_blank" rel="noopener noreferrer">streaming</a>
                             <br><br>
                             <font color="#3C14FF"><b>DADVSI</b></font><br>
                             <font color="#FF00F8">→</font> <a class="wiki" href="https://web.archive.org/web/20060831212356/http://fr.wikipedia.org/wiki/Droit_d'auteur" target="_blank" rel="noopener noreferrer">droits d'auteur</a><br><font color="#FF00F8">→</font> mesures techniques / <a class="wiki" href="https://web.archive.org/web/20060831181130/http://fr.wikipedia.org/wiki/Digital_rights_management" target="_blank" rel="noopener noreferrer">DRM</a><br><font color="#FF00F8">→</font> <a class="wiki" href="https://web.archive.org/web/20060815040405/http://fr.wikipedia.org/wiki/Interop%C3%A9rabilit%C3%A9" target="_blank" rel="noopener noreferrer">interopérabilité</a>
@@ -4201,7 +4201,7 @@
                                 disponible. Ces contraintes participent à définir des usages,
                                 sans qu'on puisse y voir une évolution obligée vers le Web
                                 d'aujourd'hui
-                                <img class="smiley" src="images/gifcities/planete.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
+                                <img class="smiley" src="images/planete.gif" width="16" height="16" border="0" align="absmiddle" alt="">.
                             </p>
                             <p>
                                 Ces trois exemples ne suffisent pas à raconter le Web français
@@ -4495,7 +4495,7 @@
                             <div class="ipod-nav">
                                 <a class="ipod-plus" href="#">+</a>
                                 <a class="ipod-prev" href="#">◀</a>
-                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/gifcities/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
+                                <a class="ipod-son" href="#" title="Activer ou couper le son"><img src="images/speaker-off.gif" width="16" height="16" border="0" alt="Son coupé"></a>
                                 <a class="ipod-next" href="#">▶</a>
                                 <a class="ipod-minus" href="#">−</a>
                             </div>
