@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+	<title>Sources du projet</title>
+	<description>Bibliographie des sources consultées pour le projet de recherche</description>
+	<language>fr</language>
+	<link>https://example.org</link>
+	<atom:link href="https://example.org/sources-projet.xml" rel="self" type="application/rss+xml"/>
+
+	<item>
+		<title>ARCEP — Observatoire des marchés des communications électroniques, 4e trimestre 2006</title>
+		<link>https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/observatoire-des-marches-des-communications-electroniques-en-france/imports/stats/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006.html</link>
+		<guid>https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/observatoire-des-marches-des-communications-electroniques-en-france/imports/stats/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006/le-marche-des-services-de-telecommunications-en-france-au-4eme-trimestre-2006.html</guid>
+		<description>Source institutionnelle (régulateur), 2006.</description>
+	</item>
+
+	<item>
+		<title>leboncoin Corporate — L'entreprise / L'histoire du boncoin</title>
+		<link>https://leboncoincorporate.com/entreprise/</link>
+		<guid>https://leboncoincorporate.com/entreprise/</guid>
+		<description>Page institutionnelle, consultée pour le récit officiel 2006.</description>
+	</item>
+
+	<item>
+		<title>Centre national de la musique — Deezer, une licorne du « freemium » née en France</title>
+		<link>https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/</link>
+		<guid>https://cnm.fr/dossier/deezer-une-licorne-du-freemium-nee-en-france/</guid>
+		<pubDate>Thu, 21 Sep 2023 00:00:00 +0000</pubDate>
+		<description>Source institutionnelle. Publié le 10 avril 2020, mis à jour le 21 septembre 2023.</description>
+	</item>
+
+	<item>
+		<title>Michael Arrington, TechCrunch — Check out Blogmusik Before It's Pulled off the Internet</title>
+		<link>https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/</link>
+		<guid>https://techcrunch.com/2006/09/09/check-out-blogmusik-before-its-pulled-off-the-internet/</guid>
+		<pubDate>Sat, 09 Sep 2006 00:00:00 +0000</pubDate>
+		<description>Presse contemporaine.</description>
+	</item>
+
+	<item>
+		<title>Légifrance — Loi n° 2006-961 du 1er août 2006</title>
+		<link>https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000266350</link>
+		<guid>https://www.legifrance.gouv.fr/loda/id/JORFTEXT000000266350</guid>
+		<pubDate>Tue, 01 Aug 2006 00:00:00 +0000</pubDate>
+		<description>Texte juridique officiel.</description>
+	</item>
+
+	<item>
+		<title>Internet Archive, Wayback Machine — Archive de l'interface Leboncoin (2006)</title>
+		<link>https://web.archive.org/web/20060615002024/https://www.leboncoin.fr/</link>
+		<guid>https://web.archive.org/web/20060615002024/https://www.leboncoin.fr/</guid>
+		<pubDate>Thu, 15 Jun 2006 00:00:00 +0000</pubDate>
+		<description>Archive de l'interface Leboncoin telle qu'elle apparaissait en 2006.</description>
+	</item>
+
+	<item>
+		<title>Internet Archive, Wayback Machine — Archive de l'interface Blogmusik (2006)</title>
+		<link>https://web.archive.org/web/20060826080205/http://blogmusik.net/</link>
+		<guid>https://web.archive.org/web/20060826080205/http://blogmusik.net/</guid>
+		<pubDate>Sat, 26 Aug 2006 00:00:00 +0000</pubDate>
+		<description>Archive de l'interface Blogmusik telle qu'elle apparaissait en 2006.</description>
+	</item>
+
+	<item>
+		<title>Adobe — SWF and AMF Technology Center (documentation historique, archive)</title>
+		<link>https://web.archive.org/web/20210927020520/www.adobe.com/devnet/swf.html</link>
+		<guid>https://web.archive.org/web/20210927020520/www.adobe.com/devnet/swf.html</guid>
+		<pubDate>Mon, 27 Sep 2021 00:00:00 +0000</pubDate>
+		<description>Source technique éditeur, consultée via archive.</description>
+	</item>
+
+	<item>
+		<title>INA / La revue des médias — Les grandes dates de l'internet, des terminaux et des services de contenus numériques</title>
+		<link>https://larevuedesmedias.ina.fr/chronologie/les-grandes-dates-de-linternet-des-terminaux-et-des-services-de-contenus-numeriques</link>
+		<guid>https://larevuedesmedias.ina.fr/chronologie/les-grandes-dates-de-linternet-des-terminaux-et-des-services-de-contenus-numeriques</guid>
+		<description>Chronologie.</description>
+	</item>
+
+	<item>
+		<title>Wikipédia — Chronologie de la loi DADVSI</title>
+		<link>https://fr.wikipedia.org/wiki/Chronologie_de_la_loi_DADVSI</link>
+		<guid>https://fr.wikipedia.org/wiki/Chronologie_de_la_loi_DADVSI</guid>
+		<description>Section « Opposition / Formes de l'opposition ».</description>
+	</item>
+
+	<item>
+		<title>Vincent Alzieu, Les Numériques — Le projet de loi DADVSI adopté à l'Assemblée : ses conséquences</title>
+		<link>https://www.lesnumeriques.com/loisirs/projet-loi-dadvsi-adopte-assemblee-consequences-a249.html</link>
+		<guid>https://www.lesnumeriques.com/loisirs/projet-loi-dadvsi-adopte-assemblee-consequences-a249.html</guid>
+		<pubDate>Wed, 22 Mar 2006 00:00:00 +0000</pubDate>
+		<description>Presse contemporaine.</description>
+	</item>
+
+</channel>
+</rss>
